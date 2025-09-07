@@ -2,7 +2,10 @@ package dev.meyba.justHousing.guis;
 
 import dev.meyba.justHousing.JustHousing;
 import dev.meyba.justHousing.managers.HousingManager;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,10 +50,6 @@ public class HousingListGUI implements Listener {
 
         public Material getIcon() {
             return icon;
-        }
-
-        public String getSkullOwner() {
-            return skullOwner;
         }
     }
 

@@ -15,7 +15,6 @@ public final class JustHousing extends JavaPlugin {
         this.saveDefaultConfig();
 
         this.housingManager = new HousingManager(this);
-        this.housingManager.loadHousings();
         this.housingListGUI = new HousingListGUI(this, this.housingManager);
 
         this.getCommand("housing").setExecutor(new HousingCommands(this.housingManager, this, this.housingListGUI));
@@ -28,7 +27,9 @@ public final class JustHousing extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.housingManager.saveHousings();
+        if (housingManager != null) {
+            housingManager.saveHousings();
+        }
         getLogger().info("HousingPlugin has been disabled!");
     }
 }

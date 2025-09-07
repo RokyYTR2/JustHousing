@@ -18,6 +18,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -228,6 +229,55 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     player.spigot().sendMessage(ChatMessageType.CHAT, confirmMessage);
                 }
                 return true;
+//            case "kick":
+//                Player kickTarget = plugin.getServer().getPlayer(args[1]);
+//                if (kickTarget == null || !housingManager.containsKey(kickTarget.getUniqueId())) {
+//                    player.sendMessage(ChatColor.RED + "Hráč není ve vašem housingu!");
+//                    return true;
+//                }
+//                String reason = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
+//                housingManager.removeMember(kickTarget.getUniqueId());
+//                kickTarget.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+//                kickTarget.sendMessage(ChatColor.RED + "Byl jste vyhozen z " + housingManager.getName() + "! Důvod: " + reason);
+//                player.sendMessage(ChatColor.GREEN + "Hráč " + kickTarget.getName() + " byl vyhozen!");
+//                housingManager.saveHousings();
+//                return true;
+//            case "ban":
+//                Player banTarget = plugin.getServer().getPlayer(args[1]);
+//                if (banTarget == null) {
+//                    player.sendMessage(ChatColor.RED + "Hráč nenalezen!");
+//                    return true;
+//                }
+//                if (housingManager.isBanned(banTarget.getUniqueId())) {
+//                    player.sendMessage(ChatColor.RED + "Hráč již je zabanován!");
+//                    return true;
+//                }
+//                String banReason = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
+//                housingManager.banPlayer(banTarget.getUniqueId());
+//                if (housingManager.getMembers().containsKey(banTarget.getUniqueId())) {
+//                    housingManager.removeMember(banTarget.getUniqueId());
+//                }
+//                if (banTarget.getWorld().getName().equals(housingManager.getId())) {
+//                    banTarget.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+//                    banTarget.sendMessage(ChatColor.RED + "Byl jste zabanován z " + housingManager.getName() + "! Důvod: " + banReason);
+//                }
+//                player.sendMessage(ChatColor.GREEN + "Hráč " + banTarget.getName() + " byl zabanován!");
+//                housingManager.saveHousings();
+//                return true;
+//            case "unban":
+//                Player unbanTarget = plugin.getServer().getPlayer(args[1]);
+//                if (unbanTarget == null) {
+//                    player.sendMessage(ChatColor.RED + "Hráč nenalezen!");
+//                    return true;
+//                }
+//                if (!housingManager.isBanned(unbanTarget.getUniqueId())) {
+//                    player.sendMessage(ChatColor.RED + "Hráč není zabanován!");
+//                    return true;
+//                }
+//                housingManager.unbanPlayer(unbanTarget.getUniqueId());
+//                player.sendMessage(ChatColor.GREEN + "Hráč " + unbanTarget.getName() + " byl odbanován!");
+//                housingManager.saveHousings();
+//                return true;
         }
         player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "&cᴜꜱᴀɢᴇ: /housing help"));
         return true;

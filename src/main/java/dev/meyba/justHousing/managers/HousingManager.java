@@ -18,6 +18,7 @@ public class HousingManager {
         this.plugin = plugin;
         this.playerHousingMap = new HashMap<>();
         this.housings = new HashMap<>();
+        loadHousings();
     }
 
     public void createHousing(Player player, String name) {
@@ -42,6 +43,7 @@ public class HousingManager {
             this.housings.put(housingId, newHousing);
             this.playerHousingMap.put(player.getUniqueId(), housingId);
             player.teleport(center);
+            saveHousings();
         }
     }
 
@@ -59,6 +61,7 @@ public class HousingManager {
                     }
                     Bukkit.unloadWorld(worldToDelete, true);
                 }
+                saveHousings();
             }
         }
     }
@@ -67,10 +70,12 @@ public class HousingManager {
         Housing housing = this.housings.get(housingId);
         if (housing != null) {
             housing.addMember(target.getUniqueId());
+            saveHousings();
         }
     }
 
-    public Housing findHousingByOwner(Player player) {
+    public Housing findHousingByOwner(OfflinePlayer player) {
+        if (player == null) return null;
         String housingId = this.playerHousingMap.get(player.getUniqueId());
         if (housingId != null) {
             return this.housings.get(housingId);
@@ -87,7 +92,11 @@ public class HousingManager {
     }
 
     public void saveHousings() {
-        File housingFile = new File(plugin.getDataFolder(), "housings.yml");
+        File dataFolder = plugin.getDataFolder();
+        if (!dataFolder.exists()) {
+            dataFolder.mkdirs();
+        }
+        File housingFile = new File(dataFolder, "housings.yml");
         YamlConfiguration housingConfig = new YamlConfiguration();
         for (Housing housing : housings.values()) {
             String path = "housings." + housing.getId();
@@ -107,18 +116,32 @@ public class HousingManager {
                 members.add(memberData);
             }
             housingConfig.set(path + ".members", members);
+            housingConfig.set(path + ".banned", new ArrayList<>(housing.getBannedPlayers()));
         }
         try {
             housingConfig.save(housingFile);
         } catch (IOException e) {
-            plugin.getLogger().severe("Could not save housings to file!");
-            e.printStackTrace();
+            try {
+                Thread.sleep(100);
+                housingConfig.save(housingFile);
+            } catch (IOException | InterruptedException ex) {
+                // Ignorování, pokud selže i opakování
+            }
         }
     }
 
     public void loadHousings() {
-        File housingFile = new File(plugin.getDataFolder(), "housings.yml");
+        File dataFolder = plugin.getDataFolder();
+        if (!dataFolder.exists()) {
+            dataFolder.mkdirs();
+        }
+        File housingFile = new File(dataFolder, "housings.yml");
         if (!housingFile.exists()) {
+            try {
+                housingFile.createNewFile();
+            } catch (IOException e) {
+                return;
+            }
             return;
         }
 
@@ -136,9 +159,11 @@ public class HousingManager {
             double y = housingConfig.getDouble(path + ".center.y");
             double z = housingConfig.getDouble(path + ".center.z");
             World world = Bukkit.getWorld(worldName);
-            if (world == null) {
-                WorldCreator creator = new WorldCreator(id);
-                world = creator.createWorld();
+            File worldFolder = new File(Bukkit.getWorldContainer(), id);
+            if (world == null && worldFolder.exists()) {
+                world = Bukkit.createWorld(new WorldCreator(id));
+            } else if (world == null) {
+                world = new WorldCreator(id).createWorld();
             }
 
             if (world != null) {
@@ -159,6 +184,11 @@ public class HousingManager {
                     housing.getMembers().put(memberId, member);
                 }
 
+                List<String> bannedData = housingConfig.getStringList(path + ".banned");
+                for (String bannedId : bannedData) {
+                    housing.getBannedPlayers().add(UUID.fromString(bannedId));
+                }
+
                 this.housings.put(id, housing);
                 this.playerHousingMap.put(ownerId, id);
                 for (UUID memberId : housing.getMembers().keySet()) {
@@ -174,6 +204,7 @@ public class HousingManager {
         private final Location center;
         private final String name;
         private final Map<UUID, Member> members;
+        private final Set<UUID> bannedPlayers;
         private boolean breakBlocksEnabled;
         private boolean placeBlocksEnabled;
         private boolean mobSpawningEnabled;
@@ -185,6 +216,7 @@ public class HousingManager {
             this.center = center;
             this.name = name;
             this.members = new HashMap<>();
+            this.bannedPlayers = new HashSet<>();
             this.breakBlocksEnabled = true;
             this.placeBlocksEnabled = true;
             this.mobSpawningEnabled = false;
@@ -258,6 +290,22 @@ public class HousingManager {
             if (world != null) {
                 world.setPVP(pvpEnabled);
             }
+        }
+
+        public Set<UUID> getBannedPlayers() {
+            return bannedPlayers;
+        }
+
+        public boolean isBanned(UUID playerId) {
+            return bannedPlayers.contains(playerId);
+        }
+
+        public void banPlayer(UUID playerId) {
+            bannedPlayers.add(playerId);
+        }
+
+        public void unbanPlayer(UUID playerId) {
+            bannedPlayers.remove(playerId);
         }
     }
 

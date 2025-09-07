@@ -7,7 +7,7 @@ description: Just a housing plugin.
 commands:
   housing:
     description: Manages housing worlds
-    usage: /<command> [create [name]|invite <player>|join <player>|settings|reload|help|list|delete|delete confirm]
+    usage: /<command> [create [name]|invite <player>|join <player>|settings|reload|help|list|delete|delete confirm|kick <player> [reason]|ban <player> [reason]]
 permissions:
   housing.use:
     description: Allows use of basic housing commands
@@ -32,4 +32,13 @@ permissions:
     default: op
   housing.deleteconfirm:
     description: Allows confirming deleting a housing
+    default: op
+  housing.kick:
+    description: Allows kicking players
+    default: op
+  housing.ban:
+    description: Allows banning players
+    default: op
+  housing.unban:
+    description: Allows unbanning players
     default: op
