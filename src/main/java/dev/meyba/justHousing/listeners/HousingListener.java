@@ -13,6 +13,9 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class HousingListener implements Listener {
     private final HousingManager housingManager;
@@ -23,18 +26,48 @@ public class HousingListener implements Listener {
         this.plugin = plugin;
     }
 
+    private void updatePlayerVisibility(Player player) {
+        String playerWorldName = player.getWorld().getName();
+        boolean playerIsInHousing = playerWorldName.startsWith("housing_");
+
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if (player.equals(onlinePlayer)) continue;
+
+            String onlinePlayerWorldName = onlinePlayer.getWorld().getName();
+            boolean onlinePlayerIsInHousing = onlinePlayerWorldName.startsWith("housing_");
+
+            if (playerIsInHousing) {
+                if (playerWorldName.equals(onlinePlayerWorldName)) {
+                    player.showPlayer(plugin, onlinePlayer);
+                    onlinePlayer.showPlayer(plugin, player);
+                } else {
+                    player.hidePlayer(plugin, onlinePlayer);
+                    onlinePlayer.hidePlayer(plugin, player);
+                }
+            } else {
+                if (onlinePlayerIsInHousing) {
+                    player.hidePlayer(plugin, onlinePlayer);
+                    onlinePlayer.hidePlayer(plugin, player);
+                } else {
+                    player.showPlayer(plugin, onlinePlayer);
+                    onlinePlayer.showPlayer(plugin, player);
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         HousingManager.Housing housing = housingManager.getHousingById(event.getBlock().getWorld().getName());
         if (housing != null) {
-            boolean isOwner = housing.getOwner().equals(player.getUniqueId());
-            boolean isMember = housing.getMembers().containsKey(player.getUniqueId());
-
-            if (!isOwner && !isMember) {
-                String noPermissionMsg = this.plugin.getConfig().getString("messages.no-permission-break");
+            boolean isOwner = player.getUniqueId().equals(housing.getOwner());
+            boolean isAdmin = housing.isMemberAdmin(player.getUniqueId());
+            if (!housing.isBreakBlocksEnabled() && !isOwner && !isAdmin) {
                 event.setCancelled(true);
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
+                String prefix = plugin.getConfig().getString("prefix");
+                String msg = plugin.getConfig().getString("messages.break-blocks-denied");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
             }
         }
     }
@@ -44,13 +77,13 @@ public class HousingListener implements Listener {
         Player player = event.getPlayer();
         HousingManager.Housing housing = housingManager.getHousingById(event.getBlock().getWorld().getName());
         if (housing != null) {
-            boolean isOwner = housing.getOwner().equals(player.getUniqueId());
-            boolean isMember = housing.getMembers().containsKey(player.getUniqueId());
-
-            if (!isOwner && !isMember) {
-                String noPermissionMsg = this.plugin.getConfig().getString("messages.no-permission-place");
+            boolean isOwner = player.getUniqueId().equals(housing.getOwner());
+            boolean isAdmin = housing.isMemberAdmin(player.getUniqueId());
+            if (!housing.isPlaceBlocksEnabled() && !isOwner && !isAdmin) {
                 event.setCancelled(true);
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
+                String prefix = plugin.getConfig().getString("prefix");
+                String msg = plugin.getConfig().getString("messages.place-blocks-denied");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
             }
         }
     }
@@ -75,38 +108,37 @@ public class HousingListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            Player player = event.getPlayer();
-            String worldName = player.getWorld().getName();
-
-            if (worldName.startsWith("housing_")) {
-                HousingManager.Housing housing = housingManager.getHousingById(worldName);
-                if (housing != null) {
-                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                        if (!onlinePlayer.getWorld().getName().equals(worldName)) {
-                            player.hidePlayer(plugin, onlinePlayer);
-                            onlinePlayer.hidePlayer(plugin, player);
-                        }
-                    }
-                }
-            } else {
-                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    if (onlinePlayer.getWorld().getName().startsWith("housing_")) {
-                        player.hidePlayer(plugin, onlinePlayer);
-                        onlinePlayer.hidePlayer(plugin, player);
-                    }
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
+            Player damager = (Player) event.getDamager();
+            HousingManager.Housing housing = housingManager.getHousingById(damager.getWorld().getName());
+            if (housing != null) {
+                if (!housing.isPvpEnabled()) {
+                    event.setCancelled(true);
                 }
             }
-        }, 1L);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> updatePlayerVisibility(event.getPlayer()), 1L);
+    }
+
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        if (event.getFrom().getWorld() == null || event.getTo().getWorld() == null || event.getFrom().getWorld().equals(event.getTo().getWorld())) {
+            return;
+        }
+        Bukkit.getScheduler().runTaskLater(plugin, () -> updatePlayerVisibility(event.getPlayer()), 1L);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+        Player quittingPlayer = event.getPlayer();
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (!onlinePlayer.getWorld().getName().startsWith("housing_") || !player.getWorld().getName().startsWith("housing_")) {
-                onlinePlayer.showPlayer(plugin, player);
+            if (!onlinePlayer.equals(quittingPlayer)) {
+                onlinePlayer.showPlayer(plugin, quittingPlayer);
             }
         }
     }

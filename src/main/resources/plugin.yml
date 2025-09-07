@@ -30,3 +30,6 @@ permissions:
   housing.delete:
     description: Allows deleting a housing
     default: op
+  housing.deleteconfirm:
+    description: Allows confirming deleting a housing
+    default: op

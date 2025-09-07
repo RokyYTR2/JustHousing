@@ -7,8 +7,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,13 +32,13 @@ public class HousingSettingsGUI implements Listener {
     public HousingSettingsGUI(JustHousing plugin, HousingManager.Housing housing) {
         this.plugin = plugin;
         this.housing = housing;
-        this.inventory = Bukkit.createInventory(null, 27, GUI_NAME);
+        this.inventory = Bukkit.createInventory(null, 45, GUI_NAME);
         setupInventory();
     }
 
     private void setupInventory() {
         ItemStack grayGlassPane = createItem(Material.GRAY_STAINED_GLASS_PANE, "§r", Collections.emptyList());
-        for (int i = 0; i < 27; i++) {
+        for (int i = 0; i < 45; i++) {
             inventory.setItem(i, grayGlassPane);
         }
 
@@ -45,38 +47,36 @@ public class HousingSettingsGUI implements Listener {
         ItemStack breakBlocksItem = createItem(
                 housing.isBreakBlocksEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                 breakBlocksName,
-                breakBlocksLore.stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList())
+                breakBlocksLore
         );
-        inventory.setItem(11, breakBlocksItem);
+        inventory.setItem(19, breakBlocksItem);
 
         String placeBlocksName = plugin.getConfig().getString("gui.settings.place-blocks.name");
         List<String> placeBlocksLore = plugin.getConfig().getStringList("gui.settings.place-blocks.lore");
         ItemStack placeBlocksItem = createItem(
                 housing.isPlaceBlocksEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                 placeBlocksName,
-                placeBlocksLore.stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList())
+                placeBlocksLore
         );
-        inventory.setItem(13, placeBlocksItem);
+        inventory.setItem(21, placeBlocksItem);
 
         String mobSpawningName = plugin.getConfig().getString("gui.settings.mob-spawning.name");
         List<String> mobSpawningLore = plugin.getConfig().getStringList("gui.settings.mob-spawning.lore");
         ItemStack mobSpawningItem = createItem(
-                housing.isMobSpawningEnabled() ? Material.ZOMBIE_HEAD : Material.SKELETON_SKULL,
+                housing.isMobSpawningEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                 mobSpawningName,
-                mobSpawningLore.stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList())
+                mobSpawningLore
         );
-        inventory.setItem(15, mobSpawningItem);
-    }
+        inventory.setItem(23, mobSpawningItem);
 
-    private ItemStack createItem(Material material, String name, List<String> lore) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-            meta.setLore(lore);
-            item.setItemMeta(meta);
-        }
-        return item;
+        String pvpName = plugin.getConfig().getString("gui.settings.pvp.name");
+        List<String> pvpLore = plugin.getConfig().getStringList("gui.settings.pvp.lore");
+        ItemStack pvpItem = createItem(
+                housing.isPvpEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
+                pvpName,
+                pvpLore
+        );
+        inventory.setItem(25, pvpItem);
     }
 
     public void open(Player player) {
@@ -84,43 +84,61 @@ public class HousingSettingsGUI implements Listener {
         openGUIs.put(player, this);
     }
 
+    private ItemStack createItem(Material material, String name, List<String> lore) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+            meta.setLore(lore.stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList()));
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getView().getTitle().equals(GUI_NAME)) {
+            openGUIs.remove((Player) event.getPlayer());
+            HandlerList.unregisterAll(this);
+        }
+    }
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        if (!event.getView().getTitle().equals(GUI_NAME)) return;
+
+        event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
-        if (event.getView().getTitle().equals(GUI_NAME)) {
-            event.setCancelled(true);
-            HousingSettingsGUI gui = openGUIs.get(player);
-            if (gui == null) return;
+        HousingSettingsGUI gui = openGUIs.get(player);
+        if (gui == null || !event.getClickedInventory().equals(gui.inventory)) return;
 
-            ItemStack clickedItem = event.getCurrentItem();
-            if (clickedItem == null || clickedItem.getType().equals(Material.AIR)) return;
+        HousingManager.Housing currentHousing = gui.housing;
+        String prefix = plugin.getConfig().getString("prefix");
 
-            HousingManager.Housing currentHousing = gui.housing;
-            String prefix = plugin.getConfig().getString("prefix");
-
-            switch (event.getRawSlot()) {
-                case 11:
-                    boolean currentStateBreak = currentHousing.isBreakBlocksEnabled();
-                    currentHousing.setBreakBlocksEnabled(!currentStateBreak);
-                    gui.setupInventory();
-                    String msgBreak = plugin.getConfig().getString("messages.break-blocks-toggled").replace("%status%", currentHousing.isBreakBlocksEnabled() ? "enabled" : "disabled");
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgBreak));
-                    break;
-                case 13:
-                    boolean currentStatePlace = currentHousing.isPlaceBlocksEnabled();
-                    currentHousing.setPlaceBlocksEnabled(!currentStatePlace);
-                    gui.setupInventory();
-                    String msgPlace = plugin.getConfig().getString("messages.place-blocks-toggled").replace("%status%", currentHousing.isPlaceBlocksEnabled() ? "enabled" : "disabled");
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgPlace));
-                    break;
-                case 15:
-                    boolean currentStateMobSpawning = currentHousing.isMobSpawningEnabled();
-                    currentHousing.setMobSpawningEnabled(!currentStateMobSpawning);
-                    gui.setupInventory();
-                    String msgMobSpawning = plugin.getConfig().getString("messages.mob-spawning-toggled").replace("%status%", currentHousing.isMobSpawningEnabled() ? "enabled" : "disabled");
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgMobSpawning));
-                    break;
-            }
+        switch (event.getSlot()) {
+            case 19:
+                currentHousing.setBreakBlocksEnabled(!currentHousing.isBreakBlocksEnabled());
+                String msgBreak = plugin.getConfig().getString("messages.break-blocks-toggled").replace("%status%", currentHousing.isBreakBlocksEnabled() ? "§aenabled" : "§cdisabled");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgBreak));
+                break;
+            case 21:
+                currentHousing.setPlaceBlocksEnabled(!currentHousing.isPlaceBlocksEnabled());
+                String msgPlace = plugin.getConfig().getString("messages.place-blocks-toggled").replace("%status%", currentHousing.isPlaceBlocksEnabled() ? "§aenabled" : "§cdisabled");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgPlace));
+                break;
+            case 23:
+                currentHousing.setMobSpawningEnabled(!currentHousing.isMobSpawningEnabled());
+                String msgMobSpawning = plugin.getConfig().getString("messages.mob-spawning-toggled").replace("%status%", currentHousing.isMobSpawningEnabled() ? "§aenabled" : "§cdisabled");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgMobSpawning));
+                break;
+            case 25:
+                currentHousing.setPvpEnabled(!currentHousing.isPvpEnabled());
+                String msgPvp = plugin.getConfig().getString("messages.pvp-toggled").replace("%status%", currentHousing.isPvpEnabled() ? "§aenabled" : "§cdisabled");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgPvp));
+                break;
+            default:
+                return;
         }
+        gui.setupInventory();
     }
 }

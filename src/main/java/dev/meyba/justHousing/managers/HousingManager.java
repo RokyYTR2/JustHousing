@@ -2,11 +2,12 @@ package dev.meyba.justHousing.managers;
 
 import dev.meyba.justHousing.JustHousing;
 import org.bukkit.*;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 public class HousingManager {
     private final Map<UUID, String> playerHousingMap;
@@ -33,9 +34,10 @@ public class HousingManager {
         World world = creator.createWorld();
 
         if (world != null) {
+            world.setPVP(false);
             world.getWorldBorder().setCenter(0, 0);
             world.getWorldBorder().setSize(64);
-            Location center = new Location(world, 0.5, 4, 0.5);
+            Location center = new Location(world, 0.5, -60, 0.5);
             Housing newHousing = new Housing(housingId, player.getUniqueId(), center);
             this.housings.put(housingId, newHousing);
             this.playerHousingMap.put(player.getUniqueId(), housingId);
@@ -76,27 +78,91 @@ public class HousingManager {
         return null;
     }
 
-    public Housing getHousingById(String housingId) {
-        return this.housings.get(housingId);
+    public Housing getHousingById(String id) {
+        return this.housings.get(id);
     }
 
     public Map<String, Housing> getHousings() {
         return this.housings;
     }
 
-    public static class Member {
-        private boolean isAdmin;
+    public void saveHousings() {
+        File housingFile = new File(plugin.getDataFolder(), "housings.yml");
+        YamlConfiguration housingConfig = new YamlConfiguration();
+        for (Housing housing : housings.values()) {
+            String path = "housings." + housing.getId();
+            housingConfig.set(path + ".owner", housing.getOwner().toString());
+            housingConfig.set(path + ".center.world", housing.getCenter().getWorld().getName());
+            housingConfig.set(path + ".center.x", housing.getCenter().getX());
+            housingConfig.set(path + ".center.y", housing.getCenter().getY());
+            housingConfig.set(path + ".center.z", housing.getCenter().getZ());
+            housingConfig.set(path + ".breakBlocksEnabled", housing.isBreakBlocksEnabled());
+            housingConfig.set(path + ".placeBlocksEnabled", housing.isPlaceBlocksEnabled());
+            housingConfig.set(path + ".mobSpawningEnabled", housing.isMobSpawningEnabled());
+            housingConfig.set(path + ".pvpEnabled", housing.isPvpEnabled());
+            List<String> members = new ArrayList<>();
+            for (Map.Entry<UUID, Member> entry : housing.getMembers().entrySet()) {
+                String memberData = entry.getKey().toString() + ":" + entry.getValue().isAdmin();
+                members.add(memberData);
+            }
+            housingConfig.set(path + ".members", members);
+        }
+        try {
+            housingConfig.save(housingFile);
+        } catch (IOException e) {
+            plugin.getLogger().severe("Could not save housings to file!");
+            e.printStackTrace();
+        }
+    }
 
-        public Member() {
-            this.isAdmin = false;
+    public void loadHousings() {
+        File housingFile = new File(plugin.getDataFolder(), "housings.yml");
+        if (!housingFile.exists()) {
+            return;
         }
 
-        public boolean isAdmin() {
-            return isAdmin;
+        YamlConfiguration housingConfig = YamlConfiguration.loadConfiguration(housingFile);
+        if (!housingConfig.isConfigurationSection("housings")) {
+            return;
         }
 
-        public void setAdmin(boolean admin) {
-            isAdmin = admin;
+        for (String id : housingConfig.getConfigurationSection("housings").getKeys(false)) {
+            String path = "housings." + id;
+            UUID ownerId = UUID.fromString(housingConfig.getString(path + ".owner"));
+            String worldName = housingConfig.getString(path + ".center.world");
+            double x = housingConfig.getDouble(path + ".center.x");
+            double y = housingConfig.getDouble(path + ".center.y");
+            double z = housingConfig.getDouble(path + ".center.z");
+            World world = Bukkit.getWorld(worldName);
+            if (world == null) {
+                WorldCreator creator = new WorldCreator(id);
+                world = creator.createWorld();
+            }
+
+            if (world != null) {
+                Location center = new Location(world, x, y, z);
+                Housing housing = new Housing(id, ownerId, center);
+                housing.setBreakBlocksEnabled(housingConfig.getBoolean(path + ".breakBlocksEnabled", true));
+                housing.setPlaceBlocksEnabled(housingConfig.getBoolean(path + ".placeBlocksEnabled", true));
+                housing.setMobSpawningEnabled(housingConfig.getBoolean(path + ".mobSpawningEnabled", false));
+                housing.setPvpEnabled(housingConfig.getBoolean(path + ".pvpEnabled", false));
+
+                List<String> membersData = housingConfig.getStringList(path + ".members");
+                for (String memberData : membersData) {
+                    String[] parts = memberData.split(":");
+                    UUID memberId = UUID.fromString(parts[0]);
+                    boolean isAdmin = Boolean.parseBoolean(parts[1]);
+                    Member member = new Member();
+                    member.setAdmin(isAdmin);
+                    housing.getMembers().put(memberId, member);
+                }
+
+                this.housings.put(id, housing);
+                this.playerHousingMap.put(ownerId, id);
+                for (UUID memberId : housing.getMembers().keySet()) {
+                    this.playerHousingMap.put(memberId, id);
+                }
+            }
         }
     }
 
@@ -105,27 +171,33 @@ public class HousingManager {
         private final UUID owner;
         private final Location center;
         private final Map<UUID, Member> members;
-        private boolean breakBlocksEnabled = true;
-        private boolean placeBlocksEnabled = true;
-        private boolean mobSpawningEnabled = true;
+        private boolean breakBlocksEnabled;
+        private boolean placeBlocksEnabled;
+        private boolean mobSpawningEnabled;
+        private boolean pvpEnabled;
 
         public Housing(String id, UUID owner, Location center) {
             this.id = id;
             this.owner = owner;
             this.center = center;
             this.members = new HashMap<>();
-        }
-
-        public boolean isInHousing(Location location) {
-            return location.getWorld().getName().equals(this.center.getWorld().getName());
+            this.breakBlocksEnabled = true;
+            this.placeBlocksEnabled = true;
+            this.mobSpawningEnabled = false;
+            this.pvpEnabled = false;
         }
 
         public UUID getOwner() {
-            return this.owner;
+            return owner;
         }
 
         public Map<UUID, Member> getMembers() {
             return this.members;
+        }
+
+        public boolean isMemberAdmin(UUID playerId) {
+            Member member = this.members.get(playerId);
+            return member != null && member.isAdmin();
         }
 
         public void addMember(UUID playerId) {
@@ -166,6 +238,34 @@ public class HousingManager {
 
         public void setMobSpawningEnabled(boolean mobSpawningEnabled) {
             this.mobSpawningEnabled = mobSpawningEnabled;
+        }
+
+        public boolean isPvpEnabled() {
+            return pvpEnabled;
+        }
+
+        public void setPvpEnabled(boolean pvpEnabled) {
+            this.pvpEnabled = pvpEnabled;
+            World world = Bukkit.getWorld(this.id);
+            if (world != null) {
+                world.setPVP(pvpEnabled);
+            }
+        }
+    }
+
+    public static class Member {
+        private boolean admin;
+
+        public Member() {
+            this.admin = false;
+        }
+
+        public boolean isAdmin() {
+            return admin;
+        }
+
+        public void setAdmin(boolean admin) {
+            this.admin = admin;
         }
     }
 }
