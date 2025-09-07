@@ -12,8 +12,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +39,12 @@ public class HousingListGUI implements Listener {
 
     private void setupInventory() {
         inventory.clear();
+        ItemStack grayGlassPane = createItem(Material.GRAY_STAINED_GLASS_PANE, "§r", Collections.emptyList());
+        for (int i = 0; i < 54; i++) {
+            inventory.setItem(i, grayGlassPane);
+        }
+
+        int slot = 0;
         for (HousingManager.Housing housing : housingManager.getHousings().values()) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(housing.getOwner());
             if (owner != null) {
@@ -55,10 +64,22 @@ public class HousingListGUI implements Listener {
                     meta.setLore(lore);
 
                     playerHead.setItemMeta(meta);
-                    inventory.addItem(playerHead);
+                    inventory.setItem(slot, playerHead);
+                    slot++;
                 }
             }
         }
+    }
+
+    private ItemStack createItem(Material material, String name, List<String> lore) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+            meta.setLore(lore.stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList()));
+            item.setItemMeta(meta);
+        }
+        return item;
     }
 
     public void open(Player player) {

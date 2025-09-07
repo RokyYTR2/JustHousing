@@ -14,8 +14,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.stream.Collectors;
-
 public class HousingListener implements Listener {
     private final HousingManager housingManager;
     private final JustHousing plugin;
