@@ -7,7 +7,7 @@ description: Just a housing plugin.
 commands:
   housing:
     description: Manages housing worlds
-    usage: /<command> [create|invite <player>|join <player>|settings|reload|help|list|delete|delete confirm]
+    usage: /<command> [create [name]|invite <player>|join <player>|settings|reload|help|list|delete|delete confirm]
 permissions:
   housing.use:
     description: Allows use of basic housing commands
