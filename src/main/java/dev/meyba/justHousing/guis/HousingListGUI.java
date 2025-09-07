@@ -168,10 +168,8 @@ public class HousingListGUI implements Listener {
                 .collect(Collectors.toList()));
 
         ItemStack item = new ItemStack(mode.getIcon());
-        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            OfflinePlayer skullOwner = Bukkit.getOfflinePlayer(mode.getSkullOwner());
-            meta.setOwningPlayer(skullOwner);
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
             meta.setLore(lore);
             item.setItemMeta(meta);

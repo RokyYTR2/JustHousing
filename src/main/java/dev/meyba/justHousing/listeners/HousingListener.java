@@ -29,29 +29,29 @@ public class HousingListener implements Listener {
     private void updatePlayerVisibility(Player player) {
         String playerWorldName = player.getWorld().getName();
         boolean playerIsInHousing = playerWorldName.startsWith("housing_");
+        HousingManager.Housing playerHousing = playerIsInHousing ? housingManager.getHousingById(playerWorldName) : null;
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             if (player.equals(onlinePlayer)) continue;
 
             String onlinePlayerWorldName = onlinePlayer.getWorld().getName();
             boolean onlinePlayerIsInHousing = onlinePlayerWorldName.startsWith("housing_");
+            HousingManager.Housing onlinePlayerHousing = onlinePlayerIsInHousing ? housingManager.getHousingById(onlinePlayerWorldName) : null;
 
-            if (playerIsInHousing) {
-                if (playerWorldName.equals(onlinePlayerWorldName)) {
-                    player.showPlayer(plugin, onlinePlayer);
-                    onlinePlayer.showPlayer(plugin, player);
-                } else {
+            if (playerIsInHousing && onlinePlayerIsInHousing) {
+                if (playerHousing != null && onlinePlayerHousing != null && !playerHousing.getId().equals(onlinePlayerHousing.getId())) {
                     player.hidePlayer(plugin, onlinePlayer);
                     onlinePlayer.hidePlayer(plugin, player);
+                } else {
+                    player.showPlayer(plugin, onlinePlayer);
+                    onlinePlayer.showPlayer(plugin, player);
                 }
+            } else if (playerIsInHousing || onlinePlayerIsInHousing) {
+                player.hidePlayer(plugin, onlinePlayer);
+                onlinePlayer.hidePlayer(plugin, player);
             } else {
-                if (onlinePlayerIsInHousing) {
-                    player.hidePlayer(plugin, onlinePlayer);
-                    onlinePlayer.hidePlayer(plugin, player);
-                } else {
-                    player.showPlayer(plugin, onlinePlayer);
-                    onlinePlayer.showPlayer(plugin, player);
-                }
+                player.showPlayer(plugin, onlinePlayer);
+                onlinePlayer.showPlayer(plugin, player);
             }
         }
     }
@@ -100,17 +100,30 @@ public class HousingListener implements Listener {
 
     @EventHandler
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
-        String worldName = event.getPlayer().getWorld().getName();
-        if (worldName.startsWith("housing_")) {
-            event.getRecipients().clear();
-            event.getRecipients().addAll(event.getPlayer().getWorld().getPlayers());
+        Player sender = event.getPlayer();
+        String senderWorldName = sender.getWorld().getName();
+        boolean senderIsInHousing = senderWorldName.startsWith("housing_");
+        HousingManager.Housing senderHousing = senderIsInHousing ? housingManager.getHousingById(senderWorldName) : null;
+
+        event.getRecipients().clear();
+        for (Player recipient : Bukkit.getOnlinePlayers()) {
+            String recipientWorldName = recipient.getWorld().getName();
+            boolean recipientIsInHousing = recipientWorldName.startsWith("housing_");
+            HousingManager.Housing recipientHousing = recipientIsInHousing ? housingManager.getHousingById(recipientWorldName) : null;
+
+            if (senderIsInHousing && recipientIsInHousing) {
+                if (senderHousing != null && recipientHousing != null && senderHousing.getId().equals(recipientHousing.getId())) {
+                    event.getRecipients().add(recipient);
+                }
+            } else if (!senderIsInHousing && !recipientIsInHousing) {
+                event.getRecipients().add(recipient);
+            }
         }
     }
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
-            Player damager = (Player) event.getDamager();
+        if (event.getDamager() instanceof Player damager && event.getEntity() instanceof Player) {
             HousingManager.Housing housing = housingManager.getHousingById(damager.getWorld().getName());
             if (housing != null) {
                 if (!housing.isPvpEnabled()) {
