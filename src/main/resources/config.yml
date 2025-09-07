@@ -1,0 +1,62 @@
+# =======================
+# HousingPlugin Config
+# =======================
+
+# Prefix used for all plugin messages
+prefix: "&x&A&2&8&B&5&9&lʜ&x&A&4&8&D&5&A&lᴏ&x&A&5&8&E&5&C&lᴜ&x&A&7&9&0&5&D&lꜱ&x&A&9&9&1&5&E&lɪ&x&A&A&9&3&6&0&lɴ&x&A&C&9&4&6&1&lɢ &8» &f"
+
+# =======================
+# Messages
+# =======================
+# Messages shown in chat
+messages:
+  housing-created: "&aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ʜᴀꜱ ʙᴇᴇɴ ᴄʀᴇᴀᴛᴇᴅ!"
+  already-own-housing: "&cʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ᴏᴡɴ ᴀ ʜᴏᴜꜱɪɴɢ!"
+  no-housing: "&cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ!"
+  player-not-found: "&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ!"
+  player-invited: "&aᴘʟᴀʏᴇʀ %player% ʜᴀꜱ ʙᴇᴇɴ ɪɴᴠɪᴛᴇᴅ ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
+  already-invited: "&cʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ɪɴᴠɪᴛᴇᴅ %player% ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
+  invite-received: "&aʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ɪɴᴠɪᴛᴇᴅ ᴛᴏ %player%'ꜱ ʜᴏᴜꜱɪɴɢ! "
+  click-here: "&l&n[ᴄʟɪᴄᴋ ʜᴇʀᴇ ᴛᴏ ᴊᴏɪɴ]"
+  housing-not-found: "&cʜᴏᴜꜱɪɴɢ ꜰᴏʀ %player% ɴᴏᴛ ꜰᴏᴜɴᴅ!"
+  no-permission: "&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ."
+  not-a-player: "&cʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ꜰʀᴏᴍ ᴛʜᴇ ᴄᴏɴꜱᴏʟᴇ."
+  reload-success: "&aᴄᴏɴꜰɪɢᴜʀᴀᴛɪᴏɴ ʜᴀꜱ ʙᴇᴇɴ ʀᴇʟᴏᴀᴅᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ!"
+  no-permission-join: "&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴊᴏɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
+  joined-housing: "&aʏᴏᴜ ʜᴀᴠᴇ ᴊᴏɪɴᴇᴅ %player%'ꜱ ʜᴏᴜꜱɪɴɢ!"
+  no-permission-break: "&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ʙʀᴇᴀᴋ ʙʟᴏᴄᴋꜱ ɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
+  no-permission-place: "&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴘʟᴀᴄᴇ ʙʟᴏᴄᴋꜱ ɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
+  break-blocks-toggled: "&aʙʟᴏᴄᴋ ʙʀᴇᴀᴋɪɴɢ ɪꜱ ɴᴏᴡ %status%."
+  place-blocks-toggled: "&aʙʟᴏᴄᴋ ᴘʟᴀᴄɪɴɢ ɪꜱ ɴᴏᴡ %status%."
+  housing-list-title: "&lʜᴏᴜꜱɪɴɢ ʟɪꜱᴛ"
+  housing-list-lore: "&7Click to join this housing."
+
+# =======================
+# ActionBar Messages
+# =======================
+# Messages shown in the ActionBar
+actionbar:
+  housing-created: "&aʜᴏᴜꜱɪɴɢ ᴄʀᴇᴀᴛᴇᴅ!"
+  player-invited: "&aɪɴᴠɪᴛᴇᴅ %player%!"
+
+# =======================
+# Sounds
+# =======================
+# Sounds that play for actions
+sounds:
+  housing-created: "ENTITY_PLAYER_LEVELUP"
+  player-invited: "ENTITY_VILLAGER_YES"
+  invite-received: "ENTITY_EXPERIENCE_ORB_PICKUP"
+
+# =======================
+# GUI
+# =======================
+# GUI settings
+gui:
+  settings:
+    break-blocks:
+      name: "&a&lToggle Break Blocks"
+      lore: "&7Click to toggle block breaking permission for members."
+    place-blocks:
+      name: "&a&lToggle Place Blocks"
+      lore: "&7Click to toggle block placing permission for members."

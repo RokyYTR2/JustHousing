@@ -1,0 +1,29 @@
+name: JustHousing
+version: '0.0.1'
+main: dev.meyba.justHousing.JustHousing
+api-version: '1.21'
+authors: [ Meyba._. ]
+description: Just a housing plugin.
+commands:
+  housing:
+    description: Manages housing worlds
+    usage: /<command> [create|invite <player>|join <player>|settings|permissions|list|reload|help]
+permissions:
+  housing.use:
+    description: Allows use of basic housing commands
+    default: op
+  housing.reload:
+    description: Allows reloading the config
+    default: op
+  housing.help:
+    description: Allows viewing the help menu
+    default: op
+  housing.settings:
+    description: Allows opening the housing settings GUI
+    default: op
+  housing.permissions:
+    description: Allows opening the housing permissions GUI
+    default: op
+  housing.list:
+    description: Allows opening the housing list GUI
+    default: true
