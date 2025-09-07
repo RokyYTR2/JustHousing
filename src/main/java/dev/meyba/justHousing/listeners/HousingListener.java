@@ -9,8 +9,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.stream.Collectors;
 
 public class HousingListener implements Listener {
     private final HousingManager housingManager;
@@ -54,25 +58,58 @@ public class HousingListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        HousingManager.Housing housing = housingManager.findHousingByOwner(player);
-        if (housing == null) return;
-
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (!housing.getMembers().containsKey(onlinePlayer.getUniqueId())) {
-                player.hidePlayer(plugin, onlinePlayer);
-                onlinePlayer.hidePlayer(plugin, player);
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        HousingManager.Housing housing = housingManager.getHousingById(event.getLocation().getWorld().getName());
+        if (housing != null) {
+            if (!housing.isMobSpawningEnabled()) {
+                event.setCancelled(true);
             }
         }
+    }
+
+    @EventHandler
+    public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
+        String worldName = event.getPlayer().getWorld().getName();
+        if (worldName.startsWith("housing_")) {
+            event.getRecipients().clear();
+            event.getRecipients().addAll(event.getPlayer().getWorld().getPlayers());
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            Player player = event.getPlayer();
+            String worldName = player.getWorld().getName();
+
+            if (worldName.startsWith("housing_")) {
+                HousingManager.Housing housing = housingManager.getHousingById(worldName);
+                if (housing != null) {
+                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                        if (!onlinePlayer.getWorld().getName().equals(worldName)) {
+                            player.hidePlayer(plugin, onlinePlayer);
+                            onlinePlayer.hidePlayer(plugin, player);
+                        }
+                    }
+                }
+            } else {
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    if (onlinePlayer.getWorld().getName().startsWith("housing_")) {
+                        player.hidePlayer(plugin, onlinePlayer);
+                        onlinePlayer.hidePlayer(plugin, player);
+                    }
+                }
+            }
+        }, 1L);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.showPlayer(plugin, player);
-            player.showPlayer(plugin, onlinePlayer);
+            if (!onlinePlayer.getWorld().getName().startsWith("housing_") || !player.getWorld().getName().startsWith("housing_")) {
+                onlinePlayer.showPlayer(plugin, player);
+            }
         }
     }
 }

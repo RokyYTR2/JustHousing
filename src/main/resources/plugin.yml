@@ -7,7 +7,7 @@ description: Just a housing plugin.
 commands:
   housing:
     description: Manages housing worlds
-    usage: /<command> [create|invite <player>|join <player>|settings|permissions|list|reload|help]
+    usage: /<command> [create|invite <player>|join <player>|settings|reload|help|list|delete|delete confirm]
 permissions:
   housing.use:
     description: Allows use of basic housing commands
@@ -21,9 +21,12 @@ permissions:
   housing.settings:
     description: Allows opening the housing settings GUI
     default: op
-  housing.permissions:
-    description: Allows opening the housing permissions GUI
-    default: op
   housing.list:
     description: Allows opening the housing list GUI
     default: true
+  housing.permissions:
+    description: Allows opening the housing permissions GUI
+    default: op
+  housing.delete:
+    description: Allows deleting a housing
+    default: op

@@ -3,49 +3,51 @@
 # =======================
 
 # Prefix used for all plugin messages
-prefix: "&x&A&2&8&B&5&9&lʜ&x&A&4&8&D&5&A&lᴏ&x&A&5&8&E&5&C&lᴜ&x&A&7&9&0&5&D&lꜱ&x&A&9&9&1&5&E&lɪ&x&A&A&9&3&6&0&lɴ&x&A&C&9&4&6&1&lɢ &8» &f"
+prefix: "§x§A§2§8§B§5§9§lʜ§x§A§4§8§D§5§A§lᴏ§x§A§5§8§E§5§C§lᴜ§x§A§7§9§0§5§D§lꜱ§x§A§9§9§1§5§E§lɪ§x§A§A§9§3§6§0§lɴ§x§A§C§9§4§6§1§lɢ §8» §f"
 
 # =======================
 # Messages
 # =======================
 # Messages shown in chat
 messages:
-  housing-created: "&aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ʜᴀꜱ ʙᴇᴇɴ ᴄʀᴇᴀᴛᴇᴅ!"
-  already-own-housing: "&cʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ᴏᴡɴ ᴀ ʜᴏᴜꜱɪɴɢ!"
-  no-housing: "&cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ!"
-  player-not-found: "&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ!"
-  player-invited: "&aᴘʟᴀʏᴇʀ %player% ʜᴀꜱ ʙᴇᴇɴ ɪɴᴠɪᴛᴇᴅ ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
-  already-invited: "&cʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ɪɴᴠɪᴛᴇᴅ %player% ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
-  invite-received: "&aʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ɪɴᴠɪᴛᴇᴅ ᴛᴏ %player%'ꜱ ʜᴏᴜꜱɪɴɢ! "
-  click-here: "&l&n[ᴄʟɪᴄᴋ ʜᴇʀᴇ ᴛᴏ ᴊᴏɪɴ]"
-  housing-not-found: "&cʜᴏᴜꜱɪɴɢ ꜰᴏʀ %player% ɴᴏᴛ ꜰᴏᴜɴᴅ!"
-  no-permission: "&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ."
-  not-a-player: "&cʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ ꜰʀᴏᴍ ᴛʜᴇ ᴄᴏɴꜱᴏʟᴇ."
-  reload-success: "&aᴄᴏɴꜰɪɢᴜʀᴀᴛɪᴏɴ ʜᴀꜱ ʙᴇᴇɴ ʀᴇʟᴏᴀᴅᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ!"
-  no-permission-join: "&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴊᴏɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
-  joined-housing: "&aʏᴏᴜ ʜᴀᴠᴇ ᴊᴏɪɴᴇᴅ %player%'ꜱ ʜᴏᴜꜱɪɴɢ!"
-  no-permission-break: "&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ʙʀᴇᴀᴋ ʙʟᴏᴄᴋꜱ ɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
-  no-permission-place: "&cʏᴏᴜ ᴅᴏ ɴᴏᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴘʟᴀᴄᴇ ʙʟᴏᴄᴋꜱ ɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
-  break-blocks-toggled: "&aʙʟᴏᴄᴋ ʙʀᴇᴀᴋɪɴɢ ɪꜱ ɴᴏᴡ %status%."
-  place-blocks-toggled: "&aʙʟᴏᴄᴋ ᴘʟᴀᴄɪɴɢ ɪꜱ ɴᴏᴡ %status%."
-  housing-list-title: "&lʜᴏᴜꜱɪɴɢ ʟɪꜱᴛ"
-  housing-list-lore: "&7Click to join this housing."
+  housing-created: "§aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ʜᴀꜱ ʙᴇᴇɴ ᴄʀᴇᴀᴛᴇᴅ!"
+  already-own-housing: "§cʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ᴏᴡɴ ᴀ ʜᴏᴜꜱɪɴɢ!"
+  no-housing: "§cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ!"
+  no-housing-to-delete: "§cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ ᴛᴏ ᴅᴇʟᴇᴛᴇ!"
+  housing-deleted: "§aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ʜᴀꜱ ʙᴇᴇɴ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ!"
+  player-not-found: "§cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ!"
+  player-invited: "§aᴘʟᴀʏᴇʀ %player% ʜᴀꜱ ʙᴇᴇɴ ɪɴᴠɪᴛᴇᴅ ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
+  already-invited: "§cʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ɪɴᴠɪᴛᴇᴅ %player% ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
+  invite-received: "§aʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ɪɴᴠɪᴛᴇᴅ ᴛᴏ ᴀ ʜᴏᴜꜱɪɴɢ! §eᴄʟɪᴄᴋ §7ᴛᴏ ᴊᴏɪɴ!"
+  joined-housing: "§aʏᴏᴜ ʜᴀᴠᴇ ᴊᴏɪɴᴇᴅ %player%'ꜱ ʜᴏᴜꜱɪɴɢ!"
+  housing-not-found: "§cʜᴏᴜꜱɪɴɢ ꜰᴏʀ %player% ɴᴏᴛ ꜰᴏᴜɴᴅ!"
+  not-a-player: "§cᴏɴʟʏ ᴘʟᴀʏᴇʀꜱ ᴄᴀɴ ᴇxᴇᴄᴜᴛᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ."
+  no-permission: "§cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ."
+  no-permission-break: "§cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ʙʀᴇᴀᴋ ʙʟᴏᴄᴋꜱ ɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
+  no-permission-place: "§cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴘʟᴀᴄᴇ ʙʟᴏᴄᴋꜱ ɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
+  no-permission-join: "§cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴊᴏɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
+  reload-success: "§aᴄᴏɴꜰɪɢ ʀᴇʟᴏᴀᴅᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ!"
+  click-here: "§7[§aᴄʟɪᴄᴋ ʜᴇʀᴇ§7]"
+  delete-confirm-prompt: "§cᴀʀᴇ ʏᴏᴜ ꜱᴜʀᴇ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴅᴇʟᴇᴛᴇ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ? ᴛʜɪꜱ ᴀᴄᴛɪᴏɴ ɪꜱ ɪʀʀᴇᴠᴇʀꜱɪʙʟᴇ. §7[§eᴄʟɪᴄᴋ ᴛᴏ ᴄᴏɴꜰɪʀᴍ§7]"
+  break-blocks-toggled: "§aʙʟᴏᴄᴋ ʙʀᴇᴀᴋɪɴɢ ɪꜱ ɴᴏᴡ %status%."
+  place-blocks-toggled: "§aʙʟᴏᴄᴋ ᴘʟᴀᴄɪɴɢ ɪꜱ ɴᴏᴡ %status%."
+  mob-spawning-toggled: "§aᴍᴏʙ ꜱᴘᴀᴡɴɪɴɢ ɪꜱ ɴᴏᴡ %status%."
 
 # =======================
-# ActionBar Messages
+# Action Bars
 # =======================
-# Messages shown in the ActionBar
+# Action bar messages shown
 actionbar:
-  housing-created: "&aʜᴏᴜꜱɪɴɢ ᴄʀᴇᴀᴛᴇᴅ!"
-  player-invited: "&aɪɴᴠɪᴛᴇᴅ %player%!"
+  housing-created: "§aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ʜᴀꜱ ʙᴇᴇɴ ᴄʀᴇᴀᴛᴇᴅ!"
+  player-invited: "§aʏᴏᴜ ʜᴀᴠᴇ ɪɴᴠɪᴛᴇᴅ %player% ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
 
 # =======================
 # Sounds
 # =======================
-# Sounds that play for actions
+# Sounds played on certain events
 sounds:
   housing-created: "ENTITY_PLAYER_LEVELUP"
-  player-invited: "ENTITY_VILLAGER_YES"
+  player-invited: "ENTITY_VILLAGER_TRADE"
   invite-received: "ENTITY_EXPERIENCE_ORB_PICKUP"
 
 # =======================
@@ -55,8 +57,18 @@ sounds:
 gui:
   settings:
     break-blocks:
-      name: "&a&lToggle Break Blocks"
-      lore: "&7Click to toggle block breaking permission for members."
+      name: "§a§lToggle Break Blocks"
+      lore: "§7Click to toggle block breaking permission for members."
     place-blocks:
-      name: "&a&lToggle Place Blocks"
-      lore: "&7Click to toggle block placing permission for members."
+      name: "§a§lToggle Place Blocks"
+      lore: "§7Click to toggle block placing permission for members."
+    mob-spawning:
+      name: "§a§lToggle Mob Spawning"
+      lore: "§7Click to toggle mob spawning in your housing."
+  list:
+    name: "&lʜᴏᴜꜱɪɴɢ ʟɪꜱᴛ"
+    item:
+      lore:
+        - "§7Owner: §a%owner%"
+        - "§7Members: §b%members_count%"
+        - "§7Click to join this housing!"

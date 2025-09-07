@@ -12,13 +12,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class HousingListGUI implements Listener {
     private static final String GUI_NAME = ChatColor.translateAlternateColorCodes('&', "&lʜᴏᴜꜱɪɴɢ ʟɪꜱᴛ");
@@ -37,48 +36,34 @@ public class HousingListGUI implements Listener {
 
     private void setupInventory() {
         inventory.clear();
-        ItemStack grayGlassPane = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
-        for (int i = 0; i < 54; i++) {
-            inventory.setItem(i, grayGlassPane);
-        }
-
-        int slot = 0;
         for (HousingManager.Housing housing : housingManager.getHousings().values()) {
-            if (slot >= 54) break;
             OfflinePlayer owner = Bukkit.getOfflinePlayer(housing.getOwner());
+            if (owner != null) {
+                ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+                SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
+                if (meta != null) {
+                    meta.setOwningPlayer(owner);
+                    String name = plugin.getConfig().getString("gui.list.item.name", "&a%player%'s Housing").replace("%player%", owner.getName());
+                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
 
-            ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
-            SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-            if (skullMeta == null) continue;
+                    List<String> loreConfig = plugin.getConfig().getStringList("gui.list.item.lore");
+                    List<String> lore = loreConfig.stream()
+                            .map(line -> line.replace("%owner%", owner.getName())
+                                    .replace("%members_count%", String.valueOf(housing.getMembers().size())))
+                            .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                            .collect(Collectors.toList());
+                    meta.setLore(lore);
 
-            skullMeta.setOwningPlayer(owner);
-            skullMeta.setDisplayName(ChatColor.AQUA + owner.getName() + "'s Housing");
-
-            List<String> lore = new ArrayList<>();
-            lore.add(ChatColor.GRAY + "Click to join this housing.");
-            skullMeta.setLore(lore);
-            skull.setItemMeta(skullMeta);
-
-            inventory.setItem(slot, skull);
-            slot++;
+                    playerHead.setItemMeta(meta);
+                    inventory.addItem(playerHead);
+                }
+            }
         }
-    }
-
-    private ItemStack createItem(Material material, String name) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-            item.setItemMeta(meta);
-        }
-        return item;
     }
 
     public void open(Player player) {
+        setupInventory();
         player.openInventory(inventory);
-        if (!openGUIs.containsKey(player)) {
-            Bukkit.getPluginManager().registerEvents(this, plugin);
-        }
         openGUIs.put(player, this);
     }
 
@@ -100,11 +85,13 @@ public class HousingListGUI implements Listener {
             HousingManager.Housing housing = gui.housingManager.findHousingByOwner(housingOwner.getPlayer());
             if (housing != null) {
                 player.teleport(housing.getCenter());
-                String msg = gui.plugin.getConfig().getString("messages.joined-housing").replace("%player%", housingOwner.getName());
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+                String prefix = plugin.getConfig().getString("prefix");
+                String msg = gui.plugin.getConfig().getString("messages.joined-housing", "&aYou have joined %player%'s housing!").replace("%player%", housingOwner.getName());
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
             } else {
-                String msg = gui.plugin.getConfig().getString("messages.housing-not-found").replace("%player%", housingOwner.getName());
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg));
+                String prefix = plugin.getConfig().getString("prefix");
+                String msg = gui.plugin.getConfig().getString("messages.housing-not-found", "&cHousing for %player% not found!").replace("%player%", housingOwner.getName());
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
             }
             player.closeInventory();
         }
