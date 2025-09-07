@@ -40,14 +40,24 @@ public class HousingListGUI implements Listener {
     private void setupInventory() {
         inventory.clear();
         ItemStack grayGlassPane = createItem(Material.GRAY_STAINED_GLASS_PANE, "§r", Collections.emptyList());
-        for (int i = 0; i < 54; i++) {
+
+        for (int i = 0; i < 9; i++) {
+            inventory.setItem(i, grayGlassPane);
+        }
+        for (int i = 45; i < 54; i++) {
             inventory.setItem(i, grayGlassPane);
         }
 
-        int slot = 0;
+        for (int i = 9; i < 45; i += 9) {
+            inventory.setItem(i, grayGlassPane);
+            inventory.setItem(i + 8, grayGlassPane);
+        }
+
+        int slot = 10;
         for (HousingManager.Housing housing : housingManager.getHousings().values()) {
             OfflinePlayer owner = Bukkit.getOfflinePlayer(housing.getOwner());
             if (owner != null) {
+                if (slot > 43) break;
                 ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
                 if (meta != null) {
