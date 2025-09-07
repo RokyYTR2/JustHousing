@@ -20,7 +20,7 @@ public class HousingManager {
         this.housings = new HashMap<>();
     }
 
-    public void createHousing(Player player) {
+    public void createHousing(Player player, String name) {
         String housingId = "housing_" + player.getUniqueId();
         World existingWorld = Bukkit.getWorld(housingId);
         if (existingWorld != null) {
@@ -38,7 +38,7 @@ public class HousingManager {
             world.getWorldBorder().setCenter(0, 0);
             world.getWorldBorder().setSize(64);
             Location center = new Location(world, 0.5, -60, 0.5);
-            Housing newHousing = new Housing(housingId, player.getUniqueId(), center);
+            Housing newHousing = new Housing(housingId, player.getUniqueId(), center, name);
             this.housings.put(housingId, newHousing);
             this.playerHousingMap.put(player.getUniqueId(), housingId);
             player.teleport(center);
@@ -92,6 +92,7 @@ public class HousingManager {
         for (Housing housing : housings.values()) {
             String path = "housings." + housing.getId();
             housingConfig.set(path + ".owner", housing.getOwner().toString());
+            housingConfig.set(path + ".name", housing.getName());
             housingConfig.set(path + ".center.world", housing.getCenter().getWorld().getName());
             housingConfig.set(path + ".center.x", housing.getCenter().getX());
             housingConfig.set(path + ".center.y", housing.getCenter().getY());
@@ -129,6 +130,7 @@ public class HousingManager {
         for (String id : housingConfig.getConfigurationSection("housings").getKeys(false)) {
             String path = "housings." + id;
             UUID ownerId = UUID.fromString(housingConfig.getString(path + ".owner"));
+            String name = housingConfig.getString(path + ".name", "Unknown Housing");
             String worldName = housingConfig.getString(path + ".center.world");
             double x = housingConfig.getDouble(path + ".center.x");
             double y = housingConfig.getDouble(path + ".center.y");
@@ -141,7 +143,7 @@ public class HousingManager {
 
             if (world != null) {
                 Location center = new Location(world, x, y, z);
-                Housing housing = new Housing(id, ownerId, center);
+                Housing housing = new Housing(id, ownerId, center, name);
                 housing.setBreakBlocksEnabled(housingConfig.getBoolean(path + ".breakBlocksEnabled", true));
                 housing.setPlaceBlocksEnabled(housingConfig.getBoolean(path + ".placeBlocksEnabled", true));
                 housing.setMobSpawningEnabled(housingConfig.getBoolean(path + ".mobSpawningEnabled", false));
@@ -170,16 +172,18 @@ public class HousingManager {
         private final String id;
         private final UUID owner;
         private final Location center;
+        private final String name;
         private final Map<UUID, Member> members;
         private boolean breakBlocksEnabled;
         private boolean placeBlocksEnabled;
         private boolean mobSpawningEnabled;
         private boolean pvpEnabled;
 
-        public Housing(String id, UUID owner, Location center) {
+        public Housing(String id, UUID owner, Location center, String name) {
             this.id = id;
             this.owner = owner;
             this.center = center;
+            this.name = name;
             this.members = new HashMap<>();
             this.breakBlocksEnabled = true;
             this.placeBlocksEnabled = true;
@@ -189,6 +193,10 @@ public class HousingManager {
 
         public UUID getOwner() {
             return owner;
+        }
+
+        public String getName() {
+            return name;
         }
 
         public Map<UUID, Member> getMembers() {

@@ -10,7 +10,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -77,7 +76,7 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "ʜᴇʟᴘ ᴍᴇɴᴜ:"));
-                player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "/housing create - ᴄʀᴇᴀᴛᴇꜱ ᴀ ɴᴇᴡ ʜᴏᴜꜱɪɴɢ."));
+                player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "/housing create [name] - ᴄʀᴇᴀᴛᴇꜱ ᴀ ɴᴇᴡ ʜᴏᴜꜱɪɴɢ."));
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "/housing invite <player> - ɪɴᴠɪᴛᴇꜱ ᴀ ᴘʟᴀʏᴇʀ ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."));
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "/housing join <player> - ᴊᴏɪɴꜱ ᴀ ᴘʟᴀʏᴇʀ'ꜱ ʜᴏᴜꜱɪɴɢ."));
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "/housing settings - ᴏᴘᴇɴꜱ ᴛʜᴇ ʜᴏᴜꜱɪɴɢ ꜱᴇᴛᴛɪɴɢꜱ ᴍᴇɴᴜ."));
@@ -96,7 +95,8 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', alreadyOwnMsg));
                     return true;
                 }
-                housingManager.createHousing(player);
+                String housingName = args.length > 1 ? String.join(" ", args).substring(args[0].length() + 1) : player.getName() + "'s Housing";
+                housingManager.createHousing(player, housingName);
                 player.playSound(player.getLocation(), Sound.valueOf(plugin.getConfig().getString("sounds.housing-created")), 1, 1);
                 String createdMsg = this.plugin.getConfig().getString("messages.housing-created");
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', createdMsg));
@@ -252,12 +252,12 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("housing.help")) {
                 completions.add("help");
             }
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("invite") && sender.hasPermission("housing.use")) {
+        } else if (args.length >= 2 && args[0].equalsIgnoreCase("invite") && sender.hasPermission("housing.use")) {
             return Bukkit.getOnlinePlayers().stream()
                     .map(Player::getName)
                     .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
                     .collect(Collectors.toList());
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("join") && sender.hasPermission("housing.use")) {
+        } else if (args.length >= 2 && args[0].equalsIgnoreCase("join") && sender.hasPermission("housing.use")) {
             return Bukkit.getOnlinePlayers().stream()
                     .map(Player::getName)
                     .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
