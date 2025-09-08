@@ -1,9 +1,9 @@
 package dev.meyba.justHousing.listeners;
 
 import dev.meyba.justHousing.JustHousing;
+import dev.meyba.justHousing.managers.ChatManager;
 import dev.meyba.justHousing.managers.HousingManager;
 import dev.meyba.justHousing.managers.ScoreboardManager;
-import dev.meyba.justHousing.managers.ChatManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

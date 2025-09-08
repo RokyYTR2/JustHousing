@@ -64,6 +64,7 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 this.plugin.reloadConfig();
+                plugin.getServer().getOnlinePlayers().forEach(plugin.getScoreboardManager()::updateScoreboard);
                 String reloadSuccessMsg = this.plugin.getConfig().getString("messages.reload-success");
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', reloadSuccessMsg));
                 return true;

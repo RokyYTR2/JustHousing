@@ -3,8 +3,9 @@ package dev.meyba.justHousing;
 import dev.meyba.justHousing.commands.HousingCommands;
 import dev.meyba.justHousing.guis.HousingListGUI;
 import dev.meyba.justHousing.listeners.HousingListener;
-import dev.meyba.justHousing.managers.HousingManager;
 import dev.meyba.justHousing.managers.ChatManager;
+import dev.meyba.justHousing.managers.HousingManager;
+import dev.meyba.justHousing.managers.ScoreboardManager;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,6 +13,7 @@ public final class JustHousing extends JavaPlugin {
     private HousingManager housingManager;
     private HousingListGUI housingListGUI;
     private ChatManager chatManager;
+    private ScoreboardManager scoreboardManager;
 
     @Override
     public void onEnable() {
@@ -41,5 +43,9 @@ public final class JustHousing extends JavaPlugin {
             housingManager.saveHousings();
         }
         getLogger().info("HousingPlugin has been disabled!");
+    }
+
+    public ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
     }
 }
