@@ -124,8 +124,7 @@ public class HousingManager {
             try {
                 Thread.sleep(100);
                 housingConfig.save(housingFile);
-            } catch (IOException | InterruptedException ex) {
-                // Ignorování, pokud selže i opakování
+            } catch (IOException | InterruptedException ignored) {
             }
         }
     }
