@@ -27,12 +27,14 @@ public class HousingListGUI implements Listener {
 
     private static final Map<Player, HousingListGUI> openGUIs = new HashMap<>();
     private static final Map<Player, SortMode> playerSortModes = new HashMap<>();
+    private static final Map<UUID, UUID> playerLastVoted = new HashMap<>();
 
     private enum SortMode {
-        DEFAULT("§aDefault Sort", Material.PLAYER_HEAD, "MHF_ArrowRight"),
-        MOST_PLAYERS("§aMost Players", Material.PLAYER_HEAD, "MHF_ArrowUp"),
-        LEAST_PLAYERS("§aLeast Players", Material.PLAYER_HEAD, "MHF_ArrowDown"),
-        ALPHABETICAL("§aAlphabetical", Material.PLAYER_HEAD, "MHF_Book");
+        DEFAULT("§aᴅᴇꜰᴀᴜʟᴛ ꜱᴏʀᴛ", Material.PLAYER_HEAD, "MHF_ArrowRight"),
+        MOST_PLAYERS("§aᴍᴏꜱᴛ ᴘʟᴀʏᴇʀꜱ", Material.PLAYER_HEAD, "MHF_ArrowUp"),
+        LEAST_PLAYERS("§aʟᴇᴀꜱᴛ ᴘʟᴀʏᴇʀꜱ", Material.PLAYER_HEAD, "MHF_ArrowDown"),
+        ALPHABETICAL("§aᴀʟᴘʜᴀʙᴇᴛɪᴄᴀʟ", Material.PLAYER_HEAD, "MHF_Book"),
+        MOST_VOTES("§aᴍᴏꜱᴛ ᴠᴏᴛᴇꜱ", Material.PLAYER_HEAD, "MHF_Star");
 
         private final String displayName;
         private final Material icon;
@@ -97,6 +99,9 @@ public class HousingListGUI implements Listener {
             case ALPHABETICAL:
                 housings.sort((h1, h2) -> h1.getName().compareToIgnoreCase(h2.getName()));
                 break;
+            case MOST_VOTES:
+                housings.sort((h1, h2) -> Integer.compare(h2.getVotes(), h1.getVotes()));
+                break;
             case DEFAULT:
             default:
                 break;
@@ -147,6 +152,7 @@ public class HousingListGUI implements Listener {
                     .map(line -> line.replace("%online_status%", owner.isOnline() ? "Online" : "Offline"))
                     .map(line -> line.replace("%player_count%", String.valueOf(housing.getMembers().size() + (owner.isOnline() ? 1 : 0))))
                     .map(line -> line.replace("%members_count%", String.valueOf(housing.getMembers().size())))
+                    .map(line -> line.replace("%votes%", String.valueOf(housing.getVotes())))
                     .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                     .collect(Collectors.toList());
             skullMeta.setDisplayName(displayName);
@@ -218,13 +224,33 @@ public class HousingListGUI implements Listener {
         OfflinePlayer housingOwner = skullMeta.getOwningPlayer();
         HousingManager.Housing housing = gui.housingManager.findHousingByOwner(housingOwner.getPlayer());
         if (housing != null) {
-            player.teleport(housing.getCenter());
             String prefix = plugin.getConfig().getString("prefix");
-            String msg = gui.plugin.getConfig().getString("messages.joined-housing", "&aYou have joined %player%'s housing!").replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown");
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
+            if (event.isRightClick()) {
+                if (housing.getOwner().equals(player.getUniqueId())) {
+                    String ownerCannotVoteMsg = plugin.getConfig().getString("messages.owner-cannot-vote");
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + ownerCannotVoteMsg));
+                    return;
+                }
+                UUID lastVotedHousing = playerLastVoted.get(player.getUniqueId());
+                if (lastVotedHousing != null && lastVotedHousing.equals(housing.getOwner())) {
+                    String alreadyVotedMsg = plugin.getConfig().getString("messages.already-voted");
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + alreadyVotedMsg));
+                } else {
+                    housing.addVote();
+                    playerLastVoted.put(player.getUniqueId(), housing.getOwner());
+                    gui.housingManager.saveHousings();
+                    String votedMsg = plugin.getConfig().getString("messages.voted");
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + votedMsg.replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown")));
+                    gui.setupInventory(player);
+                }
+            } else {
+                player.teleport(housing.getCenter());
+                String msg = gui.plugin.getConfig().getString("messages.joined-housing").replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
+            }
         } else {
             String prefix = plugin.getConfig().getString("prefix");
-            String msg = gui.plugin.getConfig().getString("messages.housing-not-found", "&cHousing for %player% not found!").replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown");
+            String msg = gui.plugin.getConfig().getString("messages.housing-not-found").replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
         }
         player.closeInventory();

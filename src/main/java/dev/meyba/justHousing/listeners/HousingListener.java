@@ -2,6 +2,7 @@ package dev.meyba.justHousing.listeners;
 
 import dev.meyba.justHousing.JustHousing;
 import dev.meyba.justHousing.managers.HousingManager;
+import dev.meyba.justHousing.managers.ScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -19,10 +20,12 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 public class HousingListener implements Listener {
     private final HousingManager housingManager;
     private final JustHousing plugin;
+    private final ScoreboardManager scoreboardManager;
 
     public HousingListener(HousingManager housingManager, JustHousing plugin) {
         this.housingManager = housingManager;
         this.plugin = plugin;
+        this.scoreboardManager = new ScoreboardManager(plugin, housingManager);
     }
 
     private void updatePlayerVisibility(Player player) {
@@ -134,7 +137,10 @@ public class HousingListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> updatePlayerVisibility(event.getPlayer()), 1L);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            updatePlayerVisibility(event.getPlayer());
+            scoreboardManager.updateScoreboard(event.getPlayer());
+        }, 1L);
     }
 
     @EventHandler
@@ -142,7 +148,10 @@ public class HousingListener implements Listener {
         if (event.getFrom().getWorld() == null || event.getTo().getWorld() == null || event.getFrom().getWorld().equals(event.getTo().getWorld())) {
             return;
         }
-        Bukkit.getScheduler().runTaskLater(plugin, () -> updatePlayerVisibility(event.getPlayer()), 1L);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            updatePlayerVisibility(event.getPlayer());
+            scoreboardManager.updateScoreboard(event.getPlayer());
+        }, 1L);
     }
 
     @EventHandler
@@ -153,5 +162,6 @@ public class HousingListener implements Listener {
                 onlinePlayer.showPlayer(plugin, quittingPlayer);
             }
         }
+        scoreboardManager.clearScoreboard(quittingPlayer);
     }
 }
