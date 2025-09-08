@@ -28,10 +28,13 @@ public class ScoreboardManager {
         }
 
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("housingInfo", Criteria.DUMMY, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("scoreboard.title", "&lHousing Info")));
+        String title = plugin.getConfig().getString("scoreboard.title");
+        title = ChatColor.translateAlternateColorCodes('&', title)
+                .replace("%name%", housing.getName());
+        Objective objective = scoreboard.registerNewObjective("housingInfo", Criteria.DUMMY, title);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        OfflinePlayer owner = Bukkit.getOfflinePlayer(housing.getOwner());
+        OfflinePlayer owner = Bukkit.getServer().getOfflinePlayer(housing.getOwner());
         String ownerName = owner.getName() != null ? owner.getName() : "Unknown";
         int playerCount = housing.getMembers().size() + (owner.isOnline() ? 1 : 0);
 

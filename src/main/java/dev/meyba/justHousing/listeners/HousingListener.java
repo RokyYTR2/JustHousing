@@ -143,9 +143,15 @@ public class HousingListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        String worldName = player.getWorld().getName();
+        if (worldName.startsWith("housing_")) {
+            player.teleport(Bukkit.getWorld("world").getSpawnLocation());
+        }
+
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            updatePlayerVisibility(event.getPlayer());
-            scoreboardManager.updateScoreboard(event.getPlayer());
+            updatePlayerVisibility(player);
+            scoreboardManager.updateScoreboard(player);
         }, 1L);
     }
 

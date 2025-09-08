@@ -178,9 +178,8 @@ gui:
 # =======================
 # Scoreboard configuration
 scoreboard:
-  title: "&lʜᴏᴜꜱɪɴɢ ɪɴꜰᴏ"
+  title: "&a%name%"
   lines:
-    - "&8» &7ɴᴀᴍᴇ: &a%name%"
     - "&8» &7ᴏᴡɴᴇʀ: &a%owner%"
     - "&8» &7ᴠᴏᴛᴇꜱ: &a%votes%"
     - "&8» &7ᴘʟᴀʏᴇʀꜱ: &a%player_count%"
