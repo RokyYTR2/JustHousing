@@ -32,18 +32,27 @@ public class HousingManager {
         creator.environment(World.Environment.NORMAL);
         creator.type(WorldType.FLAT);
         creator.generateStructures(false);
+
         World world = creator.createWorld();
 
         if (world != null) {
             world.setPVP(false);
             world.getWorldBorder().setCenter(0, 0);
             world.getWorldBorder().setSize(64);
+
+            world.setAutoSave(true);
+
             Location center = new Location(world, 0.5, -60, 0.5);
+            world.setSpawnLocation(center.getBlockX(), center.getBlockY(), center.getBlockZ());
+
             Housing newHousing = new Housing(housingId, player.getUniqueId(), center, name);
             this.housings.put(housingId, newHousing);
             this.playerHousingMap.put(player.getUniqueId(), housingId);
-            player.teleport(center);
+
+            world.save();
             saveHousings();
+
+            player.teleport(center);
         }
     }
 
@@ -54,15 +63,40 @@ public class HousingManager {
             if (housing != null) {
                 this.playerHousingMap.remove(player.getUniqueId());
                 housing.getMembers().forEach((uuid, member) -> this.playerHousingMap.remove(uuid));
+
                 World worldToDelete = Bukkit.getWorld(housingId);
                 if (worldToDelete != null) {
                     for (Player p : worldToDelete.getPlayers()) {
                         p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
                     }
-                    Bukkit.unloadWorld(worldToDelete, true);
+
+                    worldToDelete.save();
+
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        if (Bukkit.unloadWorld(worldToDelete, false)) {
+                            File worldFolder = worldToDelete.getWorldFolder();
+                            deleteWorldFolder(worldFolder);
+                        }
+                    }, 20L);
                 }
                 saveHousings();
             }
+        }
+    }
+
+    private void deleteWorldFolder(File folder) {
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteWorldFolder(file);
+                    } else {
+                        file.delete();
+                    }
+                }
+            }
+            folder.delete();
         }
     }
 
@@ -70,6 +104,7 @@ public class HousingManager {
         Housing housing = this.housings.get(housingId);
         if (housing != null) {
             housing.addMember(target.getUniqueId());
+            this.playerHousingMap.put(target.getUniqueId(), housingId);
             saveHousings();
         }
     }
@@ -98,18 +133,29 @@ public class HousingManager {
         }
         File housingFile = new File(dataFolder, "housings.yml");
         YamlConfiguration housingConfig = new YamlConfiguration();
+
         for (Housing housing : housings.values()) {
             String path = "housings." + housing.getId();
             housingConfig.set(path + ".owner", housing.getOwner().toString());
             housingConfig.set(path + ".name", housing.getName());
-            housingConfig.set(path + ".center.world", housing.getCenter().getWorld().getName());
-            housingConfig.set(path + ".center.x", housing.getCenter().getX());
-            housingConfig.set(path + ".center.y", housing.getCenter().getY());
-            housingConfig.set(path + ".center.z", housing.getCenter().getZ());
+
+            World world = Bukkit.getWorld(housing.getId());
+            if (world != null) {
+                housingConfig.set(path + ".center.world", world.getName());
+                housingConfig.set(path + ".center.x", housing.getCenter().getX());
+                housingConfig.set(path + ".center.y", housing.getCenter().getY());
+                housingConfig.set(path + ".center.z", housing.getCenter().getZ());
+
+                housingConfig.set(path + ".worldExists", true);
+            } else {
+                housingConfig.set(path + ".worldExists", false);
+            }
+
             housingConfig.set(path + ".breakBlocksEnabled", housing.isBreakBlocksEnabled());
             housingConfig.set(path + ".placeBlocksEnabled", housing.isPlaceBlocksEnabled());
             housingConfig.set(path + ".mobSpawningEnabled", housing.isMobSpawningEnabled());
             housingConfig.set(path + ".pvpEnabled", housing.isPvpEnabled());
+
             List<String> members = new ArrayList<>();
             for (Map.Entry<UUID, Member> entry : housing.getMembers().entrySet()) {
                 String memberData = entry.getKey().toString() + ":" + entry.getValue().isAdmin();
@@ -118,14 +164,16 @@ public class HousingManager {
             housingConfig.set(path + ".members", members);
             housingConfig.set(path + ".banned", new ArrayList<>(housing.getBannedPlayers()));
         }
+
         try {
             housingConfig.save(housingFile);
         } catch (IOException e) {
-            try {
-                Thread.sleep(100);
-                housingConfig.save(housingFile);
-            } catch (IOException | InterruptedException ignored) {
-            }
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                try {
+                    housingConfig.save(housingFile);
+                } catch (IOException ignored) {
+                }
+            }, 20L);
         }
     }
 
@@ -151,22 +199,44 @@ public class HousingManager {
 
         for (String id : housingConfig.getConfigurationSection("housings").getKeys(false)) {
             String path = "housings." + id;
-            UUID ownerId = UUID.fromString(housingConfig.getString(path + ".owner"));
-            String name = housingConfig.getString(path + ".name", "Unknown Housing");
-            String worldName = housingConfig.getString(path + ".center.world");
-            double x = housingConfig.getDouble(path + ".center.x");
-            double y = housingConfig.getDouble(path + ".center.y");
-            double z = housingConfig.getDouble(path + ".center.z");
-            World world = Bukkit.getWorld(worldName);
-            File worldFolder = new File(Bukkit.getWorldContainer(), id);
-            if (world == null && worldFolder.exists()) {
-                world = Bukkit.createWorld(new WorldCreator(id));
-            } else if (world == null) {
-                world = new WorldCreator(id).createWorld();
-            }
 
-            if (world != null) {
+            try {
+                UUID ownerId = UUID.fromString(housingConfig.getString(path + ".owner"));
+                String name = housingConfig.getString(path + ".name", "Unknown Housing");
+                boolean worldExists = housingConfig.getBoolean(path + ".worldExists", true);
+
+                World world = null;
+                File worldFolder = new File(Bukkit.getWorldContainer(), id);
+
+                if (worldExists && worldFolder.exists()) {
+                    world = Bukkit.getWorld(id);
+                    if (world == null) {
+                        WorldCreator creator = new WorldCreator(id);
+                        creator.environment(World.Environment.NORMAL);
+                        creator.type(WorldType.FLAT);
+                        creator.generateStructures(false);
+                        world = creator.createWorld();
+                    }
+                } else if (!worldExists || !worldFolder.exists()) {
+                    continue;
+                }
+
+                if (world == null) {
+                    continue;
+                }
+
+                world.getWorldBorder().setCenter(0, 0);
+                world.getWorldBorder().setSize(64);
+                world.setPVP(housingConfig.getBoolean(path + ".pvpEnabled", false));
+                world.setAutoSave(true);
+
+                double x = housingConfig.getDouble(path + ".center.x", 0.5);
+                double y = housingConfig.getDouble(path + ".center.y", -60);
+                double z = housingConfig.getDouble(path + ".center.z", 0.5);
                 Location center = new Location(world, x, y, z);
+
+                world.setSpawnLocation(center.getBlockX(), center.getBlockY(), center.getBlockZ());
+
                 Housing housing = new Housing(id, ownerId, center, name);
                 housing.setBreakBlocksEnabled(housingConfig.getBoolean(path + ".breakBlocksEnabled", true));
                 housing.setPlaceBlocksEnabled(housingConfig.getBoolean(path + ".placeBlocksEnabled", true));
@@ -175,24 +245,30 @@ public class HousingManager {
 
                 List<String> membersData = housingConfig.getStringList(path + ".members");
                 for (String memberData : membersData) {
-                    String[] parts = memberData.split(":");
-                    UUID memberId = UUID.fromString(parts[0]);
-                    boolean isAdmin = Boolean.parseBoolean(parts[1]);
-                    Member member = new Member();
-                    member.setAdmin(isAdmin);
-                    housing.getMembers().put(memberId, member);
+                    try {
+                        String[] parts = memberData.split(":");
+                        UUID memberId = UUID.fromString(parts[0]);
+                        boolean isAdmin = Boolean.parseBoolean(parts[1]);
+                        Member member = new Member();
+                        member.setAdmin(isAdmin);
+                        housing.getMembers().put(memberId, member);
+                        this.playerHousingMap.put(memberId, id);
+                    } catch (Exception ignored) {
+                    }
                 }
 
                 List<String> bannedData = housingConfig.getStringList(path + ".banned");
                 for (String bannedId : bannedData) {
-                    housing.getBannedPlayers().add(UUID.fromString(bannedId));
+                    try {
+                        housing.getBannedPlayers().add(UUID.fromString(bannedId));
+                    } catch (Exception ignored) {
+                    }
                 }
 
                 this.housings.put(id, housing);
                 this.playerHousingMap.put(ownerId, id);
-                for (UUID memberId : housing.getMembers().keySet()) {
-                    this.playerHousingMap.put(memberId, id);
-                }
+
+            } catch (Exception ignored) {
             }
         }
     }

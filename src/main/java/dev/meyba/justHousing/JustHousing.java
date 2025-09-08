@@ -4,6 +4,7 @@ import dev.meyba.justHousing.commands.HousingCommands;
 import dev.meyba.justHousing.guis.HousingListGUI;
 import dev.meyba.justHousing.listeners.HousingListener;
 import dev.meyba.justHousing.managers.HousingManager;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class JustHousing extends JavaPlugin {
@@ -28,6 +29,12 @@ public final class JustHousing extends JavaPlugin {
     @Override
     public void onDisable() {
         if (housingManager != null) {
+            for (String id : housingManager.getHousings().keySet()) {
+                World world = getServer().getWorld(id);
+                if (world != null) {
+                    world.save();
+                }
+            }
             housingManager.saveHousings();
         }
         getLogger().info("HousingPlugin has been disabled!");
