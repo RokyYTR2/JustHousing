@@ -57,7 +57,7 @@ sounds:
   invite-received: "ENTITY_EXPERIENCE_ORB_PICKUP"
 
 # =======================
-# GUI
+# GUI Configuration
 # =======================
 # GUI settings
 gui:
@@ -176,12 +176,23 @@ gui:
 # =======================
 # Scoreboard Configuration
 # =======================
+# Scoreboard configuration
 scoreboard:
   title: "&lʜᴏᴜꜱɪɴɢ ɪɴꜰᴏ"
   lines:
-    name: "&7ɴᴀᴍᴇ: &a%name%"
-    owner: "&7ᴏᴡɴᴇʀ: &a%owner%"
-    votes: "&7ᴠᴏᴛᴇꜱ: &a%votes%"
-    players: "&7ᴘʟᴀʏᴇʀꜱ: &a%player_count%"
-    members: "&7ᴍᴇᴍʙᴇʀꜱ: &a%members_count%"
-    no_housing: "&cɴᴏᴛ ɪɴ ᴀ ʜᴏᴜꜱɪɴɢ"
+    - "&8» &7ɴᴀᴍᴇ: &a%name%"
+    - "&8» &7ᴏᴡɴᴇʀ: &a%owner%"
+    - "&8» &7ᴠᴏᴛᴇꜱ: &a%votes%"
+    - "&8» &7ᴘʟᴀʏᴇʀꜱ: &a%player_count%"
+    - "&8» &7ᴍᴇᴍʙᴇʀꜱ: &a%members_count%"
+
+# =======================
+# Chat Configuration
+# =======================
+# Chat configuration
+chat:
+  format: "%rank% &f%player% &8» &r%message%"
+  default-rank: ""
+  ranks:
+    owner: "&4Owner"
+    member: "&7Member"

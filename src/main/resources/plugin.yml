@@ -23,7 +23,7 @@ permissions:
     default: op
   housing.list:
     description: Allows opening the housing list GUI
-    default: true
+    default: op
   housing.permissions:
     description: Allows opening the housing permissions GUI
     default: op

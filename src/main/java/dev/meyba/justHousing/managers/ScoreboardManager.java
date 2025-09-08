@@ -7,6 +7,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
+import java.util.List;
+
 public class ScoreboardManager {
     private final JustHousing plugin;
     private final HousingManager housingManager;
@@ -20,36 +22,43 @@ public class ScoreboardManager {
         String worldName = player.getWorld().getName();
         HousingManager.Housing housing = housingManager.getHousingById(worldName);
 
+        if (housing == null) {
+            clearScoreboard(player);
+            return;
+        }
+
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective objective = scoreboard.registerNewObjective("housingInfo", "dummy", ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("scoreboard.title", "&lHousing Info")));
+        Objective objective = scoreboard.registerNewObjective("housingInfo", Criteria.DUMMY, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("scoreboard.title", "&lHousing Info")));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        if (housing != null) {
-            OfflinePlayer owner = Bukkit.getOfflinePlayer(housing.getOwner());
-            String ownerName = owner.getName() != null ? owner.getName() : "Unknown";
-            int playerCount = housing.getMembers().size() + (owner.isOnline() ? 1 : 0);
+        OfflinePlayer owner = Bukkit.getOfflinePlayer(housing.getOwner());
+        String ownerName = owner.getName() != null ? owner.getName() : "Unknown";
+        int playerCount = housing.getMembers().size() + (owner.isOnline() ? 1 : 0);
 
-            addScoreboardLine(scoreboard, objective, "name", "&7Name: &a" + housing.getName(), 5);
-            addScoreboardLine(scoreboard, objective, "owner", "&7Owner: &a" + ownerName, 4);
-            addScoreboardLine(scoreboard, objective, "votes", "&7Votes: &a" + housing.getVotes(), 3);
-            addScoreboardLine(scoreboard, objective, "players", "&7Players: &a" + playerCount, 2);
-            addScoreboardLine(scoreboard, objective, "members", "&7Members: &a" + housing.getMembers().size(), 1);
-        } else {
-            addScoreboardLine(scoreboard, objective, "no_housing", "&cNot in a housing", 1);
+        List<String> lines = plugin.getConfig().getStringList("scoreboard.lines");
+        int score = lines.size();
+
+        for (String line : lines) {
+            String formattedText = ChatColor.translateAlternateColorCodes('&', line)
+                    .replace("%name%", housing.getName())
+                    .replace("%owner%", ownerName)
+                    .replace("%votes%", String.valueOf(housing.getVotes()))
+                    .replace("%player_count%", String.valueOf(playerCount))
+                    .replace("%members_count%", String.valueOf(housing.getMembers().size()));
+
+            if (formattedText.length() > 40) {
+                formattedText = formattedText.substring(0, 40);
+            }
+
+            String entryName = "line_" + score;
+            Team team = scoreboard.registerNewTeam(entryName);
+            team.addEntry(ChatColor.values()[score % ChatColor.values().length].toString());
+            team.setPrefix(formattedText);
+            objective.getScore(ChatColor.values()[score % ChatColor.values().length].toString()).setScore(score);
+            score--;
         }
 
         player.setScoreboard(scoreboard);
-    }
-
-    private void addScoreboardLine(Scoreboard scoreboard, Objective objective, String entryName, String displayText, int score) {
-        String formattedText = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("scoreboard.lines." + entryName, displayText));
-        if (formattedText.length() > 40) {
-            formattedText = formattedText.substring(0, 40);
-        }
-        Team team = scoreboard.registerNewTeam(entryName);
-        team.addEntry(ChatColor.values()[score].toString());
-        team.setPrefix(formattedText);
-        objective.getScore(ChatColor.values()[score].toString()).setScore(score);
     }
 
     public void clearScoreboard(Player player) {

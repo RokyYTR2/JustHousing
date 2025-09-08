@@ -3,6 +3,7 @@ package dev.meyba.justHousing.listeners;
 import dev.meyba.justHousing.JustHousing;
 import dev.meyba.justHousing.managers.HousingManager;
 import dev.meyba.justHousing.managers.ScoreboardManager;
+import dev.meyba.justHousing.managers.ChatManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,11 +22,13 @@ public class HousingListener implements Listener {
     private final HousingManager housingManager;
     private final JustHousing plugin;
     private final ScoreboardManager scoreboardManager;
+    private final ChatManager chatManager;
 
-    public HousingListener(HousingManager housingManager, JustHousing plugin) {
+    public HousingListener(HousingManager housingManager, JustHousing plugin, ChatManager chatManager) {
         this.housingManager = housingManager;
         this.plugin = plugin;
         this.scoreboardManager = new ScoreboardManager(plugin, housingManager);
+        this.chatManager = chatManager;
     }
 
     private void updatePlayerVisibility(Player player) {
@@ -106,6 +109,9 @@ public class HousingListener implements Listener {
         String senderWorldName = sender.getWorld().getName();
         boolean senderIsInHousing = senderWorldName.startsWith("housing_");
         HousingManager.Housing senderHousing = senderIsInHousing ? housingManager.getHousingById(senderWorldName) : null;
+
+        String formattedMessage = chatManager.formatChatMessage(sender, event.getMessage());
+        event.setFormat(formattedMessage);
 
         event.getRecipients().clear();
         for (Player recipient : Bukkit.getOnlinePlayers()) {
