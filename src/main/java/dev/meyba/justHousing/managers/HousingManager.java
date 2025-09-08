@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class HousingManager {
     private final Map<UUID, String> playerHousingMap;
@@ -156,13 +157,11 @@ public class HousingManager {
             housingConfig.set(path + ".placeBlocksEnabled", housing.isPlaceBlocksEnabled());
             housingConfig.set(path + ".mobSpawningEnabled", housing.isMobSpawningEnabled());
             housingConfig.set(path + ".pvpEnabled", housing.isPvpEnabled());
+            housingConfig.set(path + ".fallDamageEnabled", housing.isFallDamageEnabled());
 
-            List<String> members = new ArrayList<>();
-            for (Map.Entry<UUID, Member> entry : housing.getMembers().entrySet()) {
-                String memberData = entry.getKey().toString() + ":" + entry.getValue().isAdmin();
-                members.add(memberData);
-            }
-            housingConfig.set(path + ".members", members);
+            housingConfig.set(path + ".members", housing.getMembers().entrySet().stream()
+                    .map(entry -> entry.getKey().toString() + ":" + entry.getValue().isAdmin())
+                    .collect(Collectors.toList()));
             housingConfig.set(path + ".banned", new ArrayList<>(housing.getBannedPlayers()));
         }
 
@@ -238,6 +237,7 @@ public class HousingManager {
                     housing.setPlaceBlocksEnabled(housingConfig.getBoolean(path + ".placeBlocksEnabled", true));
                     housing.setMobSpawningEnabled(housingConfig.getBoolean(path + ".mobSpawningEnabled", false));
                     housing.setPvpEnabled(housingConfig.getBoolean(path + ".pvpEnabled", false));
+                    housing.setFallDamageEnabled(housingConfig.getBoolean(path + ".fallDamageEnabled", false));
 
                     List<String> membersData = housingConfig.getStringList(path + ".members");
                     for (String memberData : membersData) {
@@ -280,6 +280,7 @@ public class HousingManager {
         private boolean placeBlocksEnabled;
         private boolean mobSpawningEnabled;
         private boolean pvpEnabled;
+        private boolean fallDamageEnabled;
         private int votes;
 
         public Housing(String id, UUID owner, Location center, String name) {
@@ -293,6 +294,7 @@ public class HousingManager {
             this.placeBlocksEnabled = true;
             this.mobSpawningEnabled = false;
             this.pvpEnabled = false;
+            this.fallDamageEnabled = true;
             this.votes = 0;
         }
 
@@ -363,6 +365,14 @@ public class HousingManager {
             if (world != null) {
                 world.setPVP(pvpEnabled);
             }
+        }
+
+        public boolean isFallDamageEnabled() {
+            return fallDamageEnabled;
+        }
+
+        public void setFallDamageEnabled(boolean fallDamageEnabled) {
+            this.fallDamageEnabled = fallDamageEnabled;
         }
 
         public Set<UUID> getBannedPlayers() {

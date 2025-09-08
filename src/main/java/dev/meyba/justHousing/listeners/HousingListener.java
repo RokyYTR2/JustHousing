@@ -13,10 +13,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.*;
 
 public class HousingListener implements Listener {
     private final HousingManager housingManager;
@@ -137,6 +135,32 @@ public class HousingListener implements Listener {
                 if (!housing.isPvpEnabled()) {
                     event.setCancelled(true);
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player player && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            HousingManager.Housing housing = housingManager.getHousingById(player.getWorld().getName());
+            if (housing != null && !housing.isFallDamageEnabled()) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        String worldName = player.getWorld().getName();
+        if (worldName.startsWith("housing_")) {
+            HousingManager.Housing housing = housingManager.getHousingById(worldName);
+            if (housing != null && housing.getOwner().equals(player.getUniqueId())) {
+                event.setRespawnLocation(housing.getCenter());
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    updatePlayerVisibility(player);
+                    scoreboardManager.updateScoreboard(player);
+                }, 1L);
             }
         }
     }
