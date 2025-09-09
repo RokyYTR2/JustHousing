@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -107,18 +108,15 @@ public class HousingListGUI implements Listener {
                 break;
         }
 
-        int slot = 12;
+        int[] slotOrder = {12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 30, 31, 32, 33, 34, 39, 40, 41, 42, 43};
+        int slotIndex = 0;
         for (HousingManager.Housing housing : housings) {
-            if (slot > 43) break;
+            if (slotIndex >= slotOrder.length) break;
             OfflinePlayer owner = Bukkit.getOfflinePlayer(housing.getOwner());
             if (owner != null) {
                 ItemStack playerHead = createPlayerHead(owner, housing);
-                inventory.setItem(slot, playerHead);
-                if ((slot + 1) % 9 == 0) {
-                    slot += 2;
-                } else {
-                    slot++;
-                }
+                inventory.setItem(slotOrder[slotIndex], playerHead);
+                slotIndex++;
             }
         }
     }
@@ -153,10 +151,14 @@ public class HousingListGUI implements Listener {
                     .map(line -> line.replace("%player_count%", String.valueOf(housing.getMembers().size() + (owner.isOnline() ? 1 : 0))))
                     .map(line -> line.replace("%members_count%", String.valueOf(housing.getMembers().size())))
                     .map(line -> line.replace("%votes%", String.valueOf(housing.getVotes())))
+                    .map(line -> line.replace("%super_votes%", String.valueOf(housing.getSuperVotes())))
                     .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                     .collect(Collectors.toList());
             skullMeta.setDisplayName(displayName);
             skullMeta.setLore(formattedLore);
+            if (housing.getSuperVotes() > 0) {
+                skullMeta.addEnchant(Enchantment.UNBREAKING, 1, true);
+            }
             playerHead.setItemMeta(skullMeta);
         }
         return playerHead;
@@ -225,7 +227,7 @@ public class HousingListGUI implements Listener {
         HousingManager.Housing housing = gui.housingManager.findHousingByOwner(housingOwner.getPlayer());
         if (housing != null) {
             String prefix = plugin.getConfig().getString("prefix");
-            if (event.isRightClick()) {
+            if (event.isRightClick() && !event.isShiftClick()) {
                 if (housing.getOwner().equals(player.getUniqueId())) {
                     String ownerCannotVoteMsg = plugin.getConfig().getString("messages.owner-cannot-vote");
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + ownerCannotVoteMsg));
@@ -243,7 +245,18 @@ public class HousingListGUI implements Listener {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + votedMsg.replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown")));
                     gui.setupInventory(player);
                 }
-            } else {
+            } else if (event.isRightClick() && event.isShiftClick() && player.isOp()) {
+                if (housing.getOwner().equals(player.getUniqueId())) {
+                    String ownerCannotVoteMsg = plugin.getConfig().getString("messages.owner-cannot-vote");
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + ownerCannotVoteMsg));
+                    return;
+                }
+                housing.addSuperVote();
+                gui.housingManager.saveHousings();
+                String superVotedMsg = plugin.getConfig().getString("messages.super-voted");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + superVotedMsg.replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown")));
+                gui.setupInventory(player);
+            } else if (event.isLeftClick()) {
                 player.teleport(housing.getCenter());
                 String msg = gui.plugin.getConfig().getString("messages.joined-housing").replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));

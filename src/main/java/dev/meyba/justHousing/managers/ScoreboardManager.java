@@ -46,6 +46,7 @@ public class ScoreboardManager {
                     .replace("%name%", housing.getName())
                     .replace("%owner%", ownerName)
                     .replace("%votes%", String.valueOf(housing.getVotes()))
+                    .replace("%super_votes%", String.valueOf(housing.getSuperVotes()))
                     .replace("%player_count%", String.valueOf(playerCount))
                     .replace("%members_count%", String.valueOf(housing.getMembers().size()));
 

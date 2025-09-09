@@ -140,6 +140,7 @@ public class HousingManager {
             housingConfig.set(path + ".owner", housing.getOwner().toString());
             housingConfig.set(path + ".name", housing.getName());
             housingConfig.set(path + ".votes", housing.getVotes());
+            housingConfig.set(path + ".supervote", housing.getSuperVotes());
 
             World world = Bukkit.getWorld(housing.getId());
             if (world != null) {
@@ -199,6 +200,7 @@ public class HousingManager {
                     UUID ownerId = UUID.fromString(housingConfig.getString(path + ".owner"));
                     String name = housingConfig.getString(path + ".name", "Unknown Housing");
                     int votes = housingConfig.getInt(path + ".votes", 0);
+                    int supervotes = housingConfig.getInt(path + ".supervote", 0);
                     boolean worldExists = housingConfig.getBoolean(path + ".worldExists", true);
 
                     World world = null;
@@ -235,6 +237,7 @@ public class HousingManager {
 
                     Housing housing = new Housing(id, ownerId, center, name);
                     housing.setVotes(votes);
+                    housing.setSuperVotes(supervotes);
                     housing.setBreakBlocksEnabled(housingConfig.getBoolean(path + ".breakBlocksEnabled", true));
                     housing.setPlaceBlocksEnabled(housingConfig.getBoolean(path + ".placeBlocksEnabled", true));
                     housing.setMobSpawningEnabled(housingConfig.getBoolean(path + ".mobSpawningEnabled", false));
@@ -289,6 +292,7 @@ public class HousingManager {
         private boolean naturalRegenerationEnabled;
         private GameMode defaultGameMode = GameMode.SURVIVAL;
         private int votes;
+        private int superVotes;
 
         public Housing(String id, UUID owner, Location center, String name) {
             this.id = id;
@@ -305,6 +309,7 @@ public class HousingManager {
             this.naturalRegenerationEnabled = true;
             this.defaultGameMode = GameMode.SURVIVAL;
             this.votes = 0;
+            this.superVotes = 0;
         }
 
         public UUID getOwner() {
@@ -426,6 +431,18 @@ public class HousingManager {
 
         public void addVote() {
             this.votes++;
+        }
+
+        public int getSuperVotes() {
+            return superVotes;
+        }
+
+        public void setSuperVotes(int superVotes) {
+            this.superVotes = superVotes;
+        }
+
+        public void addSuperVote() {
+            this.superVotes++;
         }
     }
 

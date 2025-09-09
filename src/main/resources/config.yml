@@ -43,8 +43,9 @@ messages:
   player-unbanned: "&aᴘʟᴀʏᴇʀ %player% ʜᴀꜱ ʙᴇᴇɴ ᴜɴʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
   already-banned: "&cᴘʟᴀʏᴇʀ %player% ɪꜱ ᴀʟʀᴇᴀᴅʏ ʙᴀɴɴᴇᴅ."
   already-voted: "&cʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ᴠᴏᴛᴇᴅ ꜰᴏʀ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
-  voted: "&aʏᴏᴜ ʜᴀᴠᴇ ᴠᴏᴛᴇᴅ ꜰᴏʀ %player%’ꜱ ʜᴏᴜꜱɪɴɢ!"
+  voted: "&aʏᴏᴜ ʜᴀᴠᴇ ᴠᴏᴛᴇᴅ ꜰᴏʀ %player%'ꜱ ʜᴏᴜꜱɪɴɢ!"
   owner-cannot-vote: "&cʏᴏᴜ ᴄᴀɴɴᴏᴛ ᴠᴏᴛᴇ ꜰᴏʀ ʏᴏᴜʀ ᴏᴡɴ ʜᴏᴜꜱɪɴɢ!"
+  super-voted: "&aʏᴏᴜ ʜᴀᴠᴇ ꜱᴜᴘᴇʀ ᴠᴏᴛᴇ ꜰᴏʀ %player%'ꜱ ʜᴏᴜꜱɪɴɢ!"
   break-blocks-denied: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ʙʀᴇᴀᴋ ʙʟᴏᴄᴋꜱ ɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
   place-blocks-denied: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ᴘʟᴀᴄᴇ ʙʟᴏᴄᴋꜱ ɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
   break-blocks-toggled: "&aʙʟᴏᴄᴋ ʙʀᴇᴀᴋɪɴɢ ʜᴀꜱ ʙᴇᴇɴ %status%."
@@ -138,6 +139,7 @@ gui:
         - "&8» &7ᴘʟᴀʏᴇʀꜱ: &a%player_count%"
         - "&8» &7ᴍᴇᴍʙᴇʀꜱ: &a%members_count%"
         - "&8» &7ᴠᴏᴛᴇꜱ: &a%votes%"
+        - "&8» &7ꜱᴜᴘᴇʀᴠᴏᴛᴇꜱ: &a%super_votes%"
         - ""
         - "&eʟᴇꜰᴛ-ᴄʟɪᴄᴋ ᴛᴏ ᴊᴏɪɴ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
         - "&eʀɪɢʜᴛ-ᴄʟɪᴄᴋ ᴛᴏ ᴠᴏᴛᴇ ꜰᴏʀ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
@@ -217,6 +219,7 @@ scoreboard:
   lines:
     - "&8» &7ᴏᴡɴᴇʀ: &a%owner%"
     - "&8» &7ᴠᴏᴛᴇꜱ: &a%votes%"
+    - "&8» &7ꜱᴜᴘᴇʀᴠᴏᴛᴇꜱ: &a%super_votes%"
     - "&8» &7ᴘʟᴀʏᴇʀꜱ: &a%player_count%"
     - "&8» &7ᴍᴇᴍʙᴇʀꜱ: &a%members_count%"
 

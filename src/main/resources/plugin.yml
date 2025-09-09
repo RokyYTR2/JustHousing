@@ -12,6 +12,15 @@ permissions:
   housing.use:
     description: Allows use of basic housing commands
     default: op
+  housing.create:
+    description: Allows creating a housing
+    default: op
+  housing.invite:
+    description: Allows inviting players to a housing
+    default: op
+  housing.join:
+    description: Allows joining a player's housing
+    default: op
   housing.reload:
     description: Allows reloading the config
     default: op

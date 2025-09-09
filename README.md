@@ -2,5 +2,7 @@
 - More Actions Bars
 - More Sounds
 - Void
-- Max Housings 3
 - Fix Chat
+- Max Housing Name 16 Characters
+- Max Housing Description 500 Characters
+- Add Housing Description
