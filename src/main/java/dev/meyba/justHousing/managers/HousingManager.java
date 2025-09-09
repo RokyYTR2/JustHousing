@@ -158,6 +158,8 @@ public class HousingManager {
             housingConfig.set(path + ".mobSpawningEnabled", housing.isMobSpawningEnabled());
             housingConfig.set(path + ".pvpEnabled", housing.isPvpEnabled());
             housingConfig.set(path + ".fallDamageEnabled", housing.isFallDamageEnabled());
+            housingConfig.set(path + ".naturalRegenerationEnabled", housing.isNaturalRegenerationEnabled());
+            housingConfig.set(path + ".defaultGameMode", housing.getDefaultGameMode().name());
 
             housingConfig.set(path + ".members", housing.getMembers().entrySet().stream()
                     .map(entry -> entry.getKey().toString() + ":" + entry.getValue().isAdmin())
@@ -238,6 +240,9 @@ public class HousingManager {
                     housing.setMobSpawningEnabled(housingConfig.getBoolean(path + ".mobSpawningEnabled", false));
                     housing.setPvpEnabled(housingConfig.getBoolean(path + ".pvpEnabled", false));
                     housing.setFallDamageEnabled(housingConfig.getBoolean(path + ".fallDamageEnabled", false));
+                    housing.setNaturalRegenerationEnabled(housingConfig.getBoolean(path + ".naturalRegenerationEnabled", true));
+                    String gmStr = housingConfig.getString(path + ".defaultGameMode", "SURVIVAL");
+                    housing.setDefaultGameMode(GameMode.valueOf(gmStr.toUpperCase()));
 
                     List<String> membersData = housingConfig.getStringList(path + ".members");
                     for (String memberData : membersData) {
@@ -281,6 +286,8 @@ public class HousingManager {
         private boolean mobSpawningEnabled;
         private boolean pvpEnabled;
         private boolean fallDamageEnabled;
+        private boolean naturalRegenerationEnabled;
+        private GameMode defaultGameMode = GameMode.SURVIVAL;
         private int votes;
 
         public Housing(String id, UUID owner, Location center, String name) {
@@ -290,11 +297,13 @@ public class HousingManager {
             this.name = name;
             this.members = new HashMap<>();
             this.bannedPlayers = new HashSet<>();
-            this.breakBlocksEnabled = true;
-            this.placeBlocksEnabled = true;
+            this.breakBlocksEnabled = false;
+            this.placeBlocksEnabled = false;
             this.mobSpawningEnabled = false;
             this.pvpEnabled = false;
-            this.fallDamageEnabled = true;
+            this.fallDamageEnabled = false;
+            this.naturalRegenerationEnabled = true;
+            this.defaultGameMode = GameMode.SURVIVAL;
             this.votes = 0;
         }
 
@@ -373,6 +382,22 @@ public class HousingManager {
 
         public void setFallDamageEnabled(boolean fallDamageEnabled) {
             this.fallDamageEnabled = fallDamageEnabled;
+        }
+
+        public boolean isNaturalRegenerationEnabled() {
+            return naturalRegenerationEnabled;
+        }
+
+        public void setNaturalRegenerationEnabled(boolean naturalRegenerationEnabled) {
+            this.naturalRegenerationEnabled = naturalRegenerationEnabled;
+        }
+
+        public GameMode getDefaultGameMode() {
+            return defaultGameMode;
+        }
+
+        public void setDefaultGameMode(GameMode defaultGameMode) {
+            this.defaultGameMode = defaultGameMode;
         }
 
         public Set<UUID> getBannedPlayers() {

@@ -14,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.*;
 
 public class HousingListener implements Listener {
@@ -155,8 +156,11 @@ public class HousingListener implements Listener {
         String worldName = player.getWorld().getName();
         if (worldName.startsWith("housing_")) {
             HousingManager.Housing housing = housingManager.getHousingById(worldName);
-            if (housing != null && housing.getOwner().equals(player.getUniqueId())) {
-                event.setRespawnLocation(housing.getCenter());
+            if (housing != null) {
+                if (housing.getOwner().equals(player.getUniqueId())) {
+                    event.setRespawnLocation(housing.getCenter());
+                }
+                player.setGameMode(housing.getDefaultGameMode());
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     updatePlayerVisibility(player);
                     scoreboardManager.updateScoreboard(player);
@@ -184,6 +188,15 @@ public class HousingListener implements Listener {
         if (event.getFrom().getWorld() == null || event.getTo().getWorld() == null || event.getFrom().getWorld().equals(event.getTo().getWorld())) {
             return;
         }
+        Player player = event.getPlayer();
+        String toWorldName = event.getTo().getWorld().getName();
+        String fromWorldName = event.getFrom().getWorld().getName();
+        if (toWorldName.startsWith("housing_") && !fromWorldName.startsWith("housing_")) {
+            HousingManager.Housing housing = housingManager.getHousingById(toWorldName);
+            if (housing != null) {
+                player.setGameMode(housing.getDefaultGameMode());
+            }
+        }
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             updatePlayerVisibility(event.getPlayer());
             scoreboardManager.updateScoreboard(event.getPlayer());
@@ -199,5 +212,15 @@ public class HousingListener implements Listener {
             }
         }
         scoreboardManager.clearScoreboard(quittingPlayer);
+    }
+
+    @EventHandler
+    public void onEntityRegainHealth(EntityRegainHealthEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            HousingManager.Housing housing = housingManager.getHousingById(player.getWorld().getName());
+            if (housing != null && event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED && !housing.isNaturalRegenerationEnabled()) {
+                event.setCancelled(true);
+            }
+        }
     }
 }

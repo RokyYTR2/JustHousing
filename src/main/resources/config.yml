@@ -17,6 +17,7 @@ messages:
   housing-created: "&aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ʜᴀꜱ ʙᴇᴇɴ ᴄʀᴇᴀᴛᴇᴅ!"
   no-housing-to-delete: "&cʏᴏᴜ ᴅᴏɴ’ᴛ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ ᴛᴏ ᴅᴇʟᴇᴛᴇ!"
   housing-deleted: "&aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ʜᴀꜱ ʙᴇᴇɴ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ!"
+  no-housing: "&aʏᴏᴜ ᴅᴏɴ’ᴛ ʜᴀᴠᴇ ʜᴏᴜꜱɪɴɢ"
   player-not-found: "&cᴘʟᴀʏᴇʀ %player% ɴᴏᴛ ꜰᴏᴜɴᴅ!"
   invite-player-you: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ꜱᴇɴᴅ ᴀɴ ɪɴᴠɪᴛᴇ ᴛᴏ ʏᴏᴜʀꜱᴇʟꜰ."
   kick-player-you: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ᴋɪᴄᴋ ʏᴏᴜʀ ʏᴏᴜʀꜱᴇʟꜰ."
@@ -49,6 +50,8 @@ messages:
   break-blocks-toggled: "&aʙʟᴏᴄᴋ ʙʀᴇᴀᴋɪɴɢ ʜᴀꜱ ʙᴇᴇɴ %status%."
   place-blocks-toggled: "&aʙʟᴏᴄᴋ ᴘʟᴀᴄɪɴɢ ʜᴀꜱ ʙᴇᴇɴ %status%."
   mob-spawning-toggled: "&aᴍᴏʙ ꜱᴘᴀᴡɴɪɴɢ ʜᴀꜱ ʙᴇᴇɴ %status%."
+  natural-regeneration-toggled: "&eɴᴀᴛᴜʀᴀʟ ʀᴇɢᴇɴᴇʀᴀᴛɪᴏɴ ʜᴀꜱ ʙᴇᴇɴ %status%."
+  default-gamemode-changed: "&aᴅᴇꜰᴀᴜʟᴛ ɢᴀᴍᴇᴍᴏᴅᴇ ᴄʜᴀɴɢᴇᴅ ᴛᴏ %gamemode%."
   pvp-toggled: "&aᴘᴠᴘ ʜᴀꜱ ʙᴇᴇɴ %status%."
   fall-damage-toggled: "&aꜰᴀʟʟ ᴅᴀᴍᴀɢᴇ ʜᴀꜱ ʙᴇᴇɴ %status%."
   gamemode-creative: "&aꜱᴇᴛ %player%'ꜱ ɢᴀᴍᴇᴍᴏᴅᴇ ᴛᴏ ᴄʀᴇᴀᴛɪᴠᴇ."
@@ -110,6 +113,22 @@ gui:
         - "&8» &7ꜱᴛᴀᴛᴜꜱ: %status%"
         - ""
         - "&eʟᴇꜰᴛ-ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"
+    natural-regeneration:
+      name: "&aɴᴀᴛᴜʀᴀʟ ʀᴇɢᴇɴᴇʀᴀᴛɪᴏɴ"
+      lore:
+        - "&8» &7ᴀʟʟᴏᴡꜱ ɴᴀᴛᴜʀᴀʟ ʀᴇɢᴇɴᴇʀᴀᴛɪᴏɴ"
+        - "&8» &7ɪɴ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
+        - "&8» &7ꜱᴛᴀᴛᴜꜱ: %status%"
+        - ""
+        - "&eʟᴇꜰᴛ-ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"
+    default-gamemode:
+      name: "&aᴅᴇꜰᴀᴜʟᴛ ɢᴀᴍᴇᴍᴏᴅᴇ"
+      lore:
+        - "&8» &7ꜱᴇᴛꜱ ᴅᴇꜰᴀᴜʟᴛ ɢᴀᴍᴇᴍᴏᴅᴇ"
+        - "&8» &7ɪɴ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
+        - "&8» &7ᴄᴜʀʀᴇɴᴛ: %gamemode%"
+        - ""
+        - "&eeʟᴇꜰᴛ-ᴄʟɪᴄᴋ ᴛᴏ ᴄʏᴄʟᴇ!"
   list:
     name: "&lʜᴏᴜꜱɪɴɢ ʟɪꜱᴛ"
     item:

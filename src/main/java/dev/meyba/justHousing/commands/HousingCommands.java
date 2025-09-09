@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class HousingCommands implements CommandExecutor, TabCompleter {
@@ -234,7 +235,12 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
                     return true;
                 }
-                if (playerHousing == null || !player.getWorld().getName().equals(playerHousing.getId())) {
+                if (playerHousing == null) {
+                    String noHousingMsg = this.plugin.getConfig().getString("messages.no-housing");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noHousingMsg));
+                    return true;
+                }
+                if (!player.getWorld().getName().equals(playerHousing.getId())) {
                     String notInHousingMsg = this.plugin.getConfig().getString("messages.not-in-own-housing");
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', notInHousingMsg));
                     return true;
@@ -270,7 +276,12 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
                     return true;
                 }
-                if (playerHousing == null || !player.getWorld().getName().equals(playerHousing.getId())) {
+                if (playerHousing == null) {
+                    String noHousingMsg = this.plugin.getConfig().getString("messages.no-housing");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noHousingMsg));
+                    return true;
+                }
+                if (!player.getWorld().getName().equals(playerHousing.getId())) {
                     String notInHousingMsg = this.plugin.getConfig().getString("messages.not-in-own-housing");
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', notInHousingMsg));
                     return true;
@@ -308,7 +319,12 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
                     return true;
                 }
-                if (playerHousing == null || !player.getWorld().getName().equals(playerHousing.getId())) {
+                if (playerHousing == null) {
+                    String noHousingMsg = this.plugin.getConfig().getString("messages.no-housing");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noHousingMsg));
+                    return true;
+                }
+                if (!player.getWorld().getName().equals(playerHousing.getId())) {
                     String notInHousingMsg = this.plugin.getConfig().getString("messages.not-in-own-housing");
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', notInHousingMsg));
                     return true;
@@ -340,7 +356,12 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
                     return true;
                 }
-                if (playerHousing == null || !player.getWorld().getName().equals(playerHousing.getId())) {
+                if (playerHousing == null) {
+                    String noHousingMsg = this.plugin.getConfig().getString("messages.no-housing");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noHousingMsg));
+                    return true;
+                }
+                if (!player.getWorld().getName().equals(playerHousing.getId())) {
                     String notInHousingMsg = this.plugin.getConfig().getString("messages.not-in-own-housing");
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', notInHousingMsg));
                     return true;
@@ -391,8 +412,8 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> completions = new ArrayList<>();
         if (args.length == 1) {
+            List<String> completions = new ArrayList<>();
             if (sender.hasPermission("housing.use")) {
                 completions.add("create");
                 completions.add("invite");
@@ -412,7 +433,14 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("housing.help")) {
                 completions.add("help");
             }
+            return completions.stream()
+                    .filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase()))
+                    .collect(Collectors.toList());
         } else if (args.length == 2) {
+            if (!(sender instanceof Player)) {
+                return new ArrayList<>();
+            }
+            Player p = (Player) sender;
             if (args[0].equalsIgnoreCase("invite") && sender.hasPermission("housing.use")) {
                 return Bukkit.getOnlinePlayers().stream()
                         .map(Player::getName)
@@ -424,15 +452,27 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                         .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
             } else if ((args[0].equalsIgnoreCase("kick") || args[0].equalsIgnoreCase("ban") || args[0].equalsIgnoreCase("unban")) && sender.hasPermission("housing.use")) {
-                Player p = (Player) sender;
                 HousingManager.Housing h = housingManager.findHousingByOwner(p);
-                if (h != null && h.getId().equals(p.getWorld().getName())) {
+                if (h == null) {
+                    return new ArrayList<>();
+                }
+                List<String> suggestions = new ArrayList<>();
+                if (args[0].equalsIgnoreCase("unban")) {
+                    for (UUID bannedId : h.getBannedPlayers()) {
+                        OfflinePlayer op = Bukkit.getOfflinePlayer(bannedId);
+                        String name = op.getName();
+                        if (name != null && name.toLowerCase().startsWith(args[1].toLowerCase())) {
+                            suggestions.add(name);
+                        }
+                    }
+                } else {
                     return Bukkit.getOnlinePlayers().stream()
                             .filter(pl -> h.getMembers().containsKey(pl.getUniqueId()))
                             .map(Player::getName)
                             .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
                             .collect(Collectors.toList());
                 }
+                return suggestions;
             } else if (args[0].equalsIgnoreCase("gamemode") && sender.hasPermission("housing.gamemode")) {
                 List<String> modes = Arrays.asList("creative", "c", "adventure", "a", "survival", "s");
                 return modes.stream()
@@ -441,25 +481,19 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
             } else if (args[0].equalsIgnoreCase("create") && sender.hasPermission("housing.create")) {
                 return new ArrayList<>();
             }
-        } else if (args.length == 3 && (args[0].equalsIgnoreCase("kick") || args[0].equalsIgnoreCase("ban")) && sender.hasPermission("housing.use")) {
-            Player p = (Player) sender;
-            HousingManager.Housing h = housingManager.findHousingByOwner(p);
-            if (h != null && h.getId().equals(p.getWorld().getName())) {
+        } else if (args.length > 2) {
+            if (args[0].equalsIgnoreCase("gamemode") && sender.hasPermission("housing.gamemode")) {
+                if (!(sender instanceof Player)) {
+                    return new ArrayList<>();
+                }
                 return Bukkit.getOnlinePlayers().stream()
-                        .filter(pl -> h.getMembers().containsKey(pl.getUniqueId()))
                         .map(Player::getName)
-                        .filter(name -> name.toLowerCase().startsWith(args[2].toLowerCase()))
+                        .filter(name -> name.toLowerCase().startsWith(args[args.length - 1].toLowerCase()))
                         .collect(Collectors.toList());
+            } else if ((args[0].equalsIgnoreCase("kick") || args[0].equalsIgnoreCase("ban")) && sender.hasPermission("housing.use")) {
+                return new ArrayList<>();
             }
-        } else if (args.length > 2 && args[0].equalsIgnoreCase("gamemode") && sender.hasPermission("housing.gamemode")) {
-            return Bukkit.getOnlinePlayers().stream()
-                    .map(Player::getName)
-                    .filter(name -> name.toLowerCase().startsWith(args[args.length - 1].toLowerCase()))
-                    .collect(Collectors.toList());
         }
-
-        return completions.stream()
-                .filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase()))
-                .collect(Collectors.toList());
+        return new ArrayList<>();
     }
 }
