@@ -59,7 +59,7 @@ public class HousingSettingsGUI implements Listener {
 
         String breakBlocksName = plugin.getConfig().getString("gui.settings.break-blocks.name");
         List<String> breakBlocksLore = plugin.getConfig().getStringList("gui.settings.break-blocks.lore").stream()
-                .map(line -> line.replace("%status%", housing.isBreakBlocksEnabled() ? "§aenabled" : "§cdisabled")
+                .map(line -> line.replace("%status%", housing.isBreakBlocksEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cdisabled")
                         .replace("%toggletype%", "Click to toggle!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -72,7 +72,7 @@ public class HousingSettingsGUI implements Listener {
 
         String placeBlocksName = plugin.getConfig().getString("gui.settings.place-blocks.name");
         List<String> placeBlocksLore = plugin.getConfig().getStringList("gui.settings.place-blocks.lore").stream()
-                .map(line -> line.replace("%status%", housing.isPlaceBlocksEnabled() ? "§aenabled" : "§cdisabled")
+                .map(line -> line.replace("%status%", housing.isPlaceBlocksEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cdisabled")
                         .replace("%toggletype%", "Click to toggle!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -85,7 +85,7 @@ public class HousingSettingsGUI implements Listener {
 
         String mobSpawningName = plugin.getConfig().getString("gui.settings.mob-spawning.name");
         List<String> mobSpawningLore = plugin.getConfig().getStringList("gui.settings.mob-spawning.lore").stream()
-                .map(line -> line.replace("%status%", housing.isMobSpawningEnabled() ? "§aenabled" : "§cdisabled")
+                .map(line -> line.replace("%status%", housing.isMobSpawningEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
                         .replace("%toggletype%", "Click to toggle!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -98,7 +98,7 @@ public class HousingSettingsGUI implements Listener {
 
         String pvpName = plugin.getConfig().getString("gui.settings.pvp.name");
         List<String> pvpLore = plugin.getConfig().getStringList("gui.settings.pvp.lore").stream()
-                .map(line -> line.replace("%status%", housing.isPvpEnabled() ? "§aenabled" : "§cdisabled")
+                .map(line -> line.replace("%status%", housing.isPvpEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
                         .replace("%toggletype%", "Click to toggle!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -111,7 +111,7 @@ public class HousingSettingsGUI implements Listener {
 
         String fallDamageName = plugin.getConfig().getString("gui.settings.fall-damage.name");
         List<String> fallDamageLore = plugin.getConfig().getStringList("gui.settings.fall-damage.lore").stream()
-                .map(line -> line.replace("%status%", housing.isFallDamageEnabled() ? "§aenabled" : "§cdisabled")
+                .map(line -> line.replace("%status%", housing.isFallDamageEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
                         .replace("%toggletype%", "Click to toggle!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -124,7 +124,7 @@ public class HousingSettingsGUI implements Listener {
 
         String naturalRegenerationName = plugin.getConfig().getString("gui.settings.natural-regeneration.name");
         List<String> naturalRegenerationLore = plugin.getConfig().getStringList("gui.settings.natural-regeneration.lore").stream()
-                .map(line -> line.replace("%status%", housing.isNaturalRegenerationEnabled() ? "§aenabled" : "§cdisabled")
+                .map(line -> line.replace("%status%", housing.isNaturalRegenerationEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
                         .replace("%toggletype%", "Click to toggle!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -203,7 +203,7 @@ public class HousingSettingsGUI implements Listener {
         switch (slot) {
             case 10:
                 currentHousing.setBreakBlocksEnabled(!currentHousing.isBreakBlocksEnabled());
-                String msgBreak = plugin.getConfig().getString("messages.break-blocks-toggled").replace("%status%", currentHousing.isBreakBlocksEnabled() ? "§aenabled" : "§cdisabled");
+                String msgBreak = plugin.getConfig().getString("messages.toggles.break-blocks-toggled").replace("%status%", currentHousing.isBreakBlocksEnabled() ? "§aenabled" : "§cdisabled");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgBreak));
                 inventory.setItem(10, createItem(
                         currentHousing.isBreakBlocksEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
@@ -217,7 +217,7 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 12:
                 currentHousing.setPlaceBlocksEnabled(!currentHousing.isPlaceBlocksEnabled());
-                String msgPlace = plugin.getConfig().getString("messages.place-blocks-toggled").replace("%status%", currentHousing.isPlaceBlocksEnabled() ? "§aenabled" : "§cdisabled");
+                String msgPlace = plugin.getConfig().getString("messages.toggles.place-blocks-toggled").replace("%status%", currentHousing.isPlaceBlocksEnabled() ? "§aenabled" : "§cdisabled");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgPlace));
                 inventory.setItem(12, createItem(
                         currentHousing.isPlaceBlocksEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
@@ -231,7 +231,7 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 14:
                 currentHousing.setMobSpawningEnabled(!currentHousing.isMobSpawningEnabled());
-                String msgMobSpawning = plugin.getConfig().getString("messages.mob-spawning-toggled").replace("%status%", currentHousing.isMobSpawningEnabled() ? "§aenabled" : "§cdisabled");
+                String msgMobSpawning = plugin.getConfig().getString("messages.toggles.mob-spawning-toggled").replace("%status%", currentHousing.isMobSpawningEnabled() ? "§aenabled" : "§cdisabled");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgMobSpawning));
                 inventory.setItem(14, createItem(
                         currentHousing.isMobSpawningEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
@@ -245,7 +245,7 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 16:
                 currentHousing.setPvpEnabled(!currentHousing.isPvpEnabled());
-                String msgPvp = plugin.getConfig().getString("messages.pvp-toggled").replace("%status%", currentHousing.isPvpEnabled() ? "§aenabled" : "§cdisabled");
+                String msgPvp = plugin.getConfig().getString("messages.toggles.pvp-toggled").replace("%status%", currentHousing.isPvpEnabled() ? "§aenabled" : "§cdisabled");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgPvp));
                 inventory.setItem(16, createItem(
                         currentHousing.isPvpEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
@@ -259,7 +259,7 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 20:
                 currentHousing.setFallDamageEnabled(!currentHousing.isFallDamageEnabled());
-                String msgFallDamage = plugin.getConfig().getString("messages.fall-damage-toggled").replace("%status%", currentHousing.isPvpEnabled() ? "§aenabled" : "§cdisabled");
+                String msgFallDamage = plugin.getConfig().getString("messages.toggles.fall-damage-toggled").replace("%status%", currentHousing.isPvpEnabled() ? "§aenabled" : "§cdisabled");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgFallDamage));
                 inventory.setItem(20, createItem(
                         currentHousing.isFallDamageEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
@@ -273,7 +273,7 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 22:
                 currentHousing.setNaturalRegenerationEnabled(!currentHousing.isNaturalRegenerationEnabled());
-                String msgNaturalRegeneration = plugin.getConfig().getString("messages.natural-regeneration-toggled").replace("%status%", currentHousing.isNaturalRegenerationEnabled() ? "§aenabled" : "§cdisabled");
+                String msgNaturalRegeneration = plugin.getConfig().getString("messages.toggles.natural-regeneration-toggled").replace("%status%", currentHousing.isNaturalRegenerationEnabled() ? "§aenabled" : "§cdisabled");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgNaturalRegeneration));
                 inventory.setItem(22, createItem(
                         currentHousing.isNaturalRegenerationEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
@@ -296,7 +296,7 @@ public class HousingSettingsGUI implements Listener {
                 }
                 GameMode newMode = modes[(currentIndex + 1) % modes.length];
                 currentHousing.setDefaultGameMode(newMode);
-                String msgDefaultGamemode = plugin.getConfig().getString("messages.default-gamemode-changed", "&aDefault gamemode changed to %gamemode%.");
+                String msgDefaultGamemode = plugin.getConfig().getString("messages.toggles.default-gamemode-changed");
                 msgDefaultGamemode = msgDefaultGamemode.replace("%gamemode%", newMode.name().toLowerCase());
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgDefaultGamemode));
                 List<String> updatedLore = plugin.getConfig().getStringList("gui.settings.default-gamemode.lore").stream()
@@ -317,7 +317,7 @@ public class HousingSettingsGUI implements Listener {
                 }
                 inventory.setItem(24, createItem(
                         newMaterial,
-                        plugin.getConfig().getString("gui.settings.default-gamemode.name", "§eDefault Gamemode"),
+                        plugin.getConfig().getString("gui.settings.default-gamemode.name"),
                         updatedLore
                 ));
                 break;
