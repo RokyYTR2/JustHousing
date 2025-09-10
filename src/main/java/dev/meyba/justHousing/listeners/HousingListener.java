@@ -67,10 +67,10 @@ public class HousingListener implements Listener {
         if (housing != null) {
             boolean isOwner = player.getUniqueId().equals(housing.getOwner());
             boolean isAdmin = housing.isMemberAdmin(player.getUniqueId());
-            if (!housing.isBreakBlocksEnabled() && !isOwner && !isAdmin) {
+            if (!housing.isBreakBlocksEnabled() && !isOwner && !isAdmin || player.isOp()) {
                 event.setCancelled(true);
                 String prefix = plugin.getConfig().getString("prefix");
-                String msg = plugin.getConfig().getString("messages.break-blocks-denied");
+                String msg = plugin.getConfig().getString("messages.toggles.break-blocks-denied");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
             }
         }
@@ -83,10 +83,10 @@ public class HousingListener implements Listener {
         if (housing != null) {
             boolean isOwner = player.getUniqueId().equals(housing.getOwner());
             boolean isAdmin = housing.isMemberAdmin(player.getUniqueId());
-            if (!housing.isPlaceBlocksEnabled() && !isOwner && !isAdmin) {
+            if (!housing.isPlaceBlocksEnabled() && !isOwner && !isAdmin || player.isOp()) {
                 event.setCancelled(true);
                 String prefix = plugin.getConfig().getString("prefix");
-                String msg = plugin.getConfig().getString("messages.place-blocks-denied");
+                String msg = plugin.getConfig().getString("messages.toggles.place-blocks-denied");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
             }
         }
