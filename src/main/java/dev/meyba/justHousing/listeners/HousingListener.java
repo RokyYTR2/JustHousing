@@ -67,7 +67,12 @@ public class HousingListener implements Listener {
         if (housing != null) {
             boolean isOwner = player.getUniqueId().equals(housing.getOwner());
             boolean isAdmin = housing.isMemberAdmin(player.getUniqueId());
-            if (!housing.isBreakBlocksEnabled() && !isOwner && !isAdmin || player.isOp()) {
+
+            if (player.isOp() || isOwner) {
+                return;
+            }
+
+            if (!housing.isBreakBlocksEnabled() && !isAdmin) {
                 event.setCancelled(true);
                 String prefix = plugin.getConfig().getString("prefix");
                 String msg = plugin.getConfig().getString("messages.toggles.break-blocks-denied");
@@ -83,7 +88,11 @@ public class HousingListener implements Listener {
         if (housing != null) {
             boolean isOwner = player.getUniqueId().equals(housing.getOwner());
             boolean isAdmin = housing.isMemberAdmin(player.getUniqueId());
-            if (!housing.isPlaceBlocksEnabled() && !isOwner && !isAdmin || player.isOp()) {
+            if (player.isOp() || isOwner) {
+                return;
+            }
+
+            if (!housing.isPlaceBlocksEnabled() && !isAdmin) {
                 event.setCancelled(true);
                 String prefix = plugin.getConfig().getString("prefix");
                 String msg = plugin.getConfig().getString("messages.toggles.place-blocks-denied");
