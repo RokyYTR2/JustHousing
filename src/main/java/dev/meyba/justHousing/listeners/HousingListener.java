@@ -118,6 +118,7 @@ public class HousingListener implements Listener {
         boolean senderIsInHousing = senderWorldName.startsWith("housing_");
         HousingManager.Housing senderHousing = senderIsInHousing ? housingManager.getHousingById(senderWorldName) : null;
 
+        event.setCancelled(true);
         String formattedMessage = chatManager.formatChatMessage(sender, event.getMessage());
         event.setFormat(formattedMessage);
 
