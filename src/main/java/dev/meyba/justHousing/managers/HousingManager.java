@@ -39,7 +39,7 @@ public class HousingManager {
         if (world != null) {
             world.setPVP(false);
             world.getWorldBorder().setCenter(0, 0);
-            world.getWorldBorder().setSize(64);
+            world.getWorldBorder().setSize(100);
 
             world.setAutoSave(true);
 

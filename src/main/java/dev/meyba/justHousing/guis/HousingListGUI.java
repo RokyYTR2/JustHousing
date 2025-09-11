@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -21,13 +21,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class HousingListGUI implements Listener {
-    private static final String GUI_NAME = ChatColor.translateAlternateColorCodes('&', "&lʜᴏᴜꜱɪɴɢ ʟɪꜱᴛ");
+    private static final String GUI_NAME_PREFIX = ChatColor.translateAlternateColorCodes('&', "&lʜᴏᴜꜱɪɴɢ ʟɪꜱᴛ");
     private final JustHousing plugin;
     private final HousingManager housingManager;
-    private final Inventory inventory;
 
     private static final Map<Player, HousingListGUI> openGUIs = new HashMap<>();
     private static final Map<Player, SortMode> playerSortModes = new HashMap<>();
+    private static final Map<Player, Integer> playerPages = new HashMap<>();
     private static final Map<UUID, UUID> playerLastVoted = new HashMap<>();
 
     private enum SortMode {
@@ -35,7 +35,8 @@ public class HousingListGUI implements Listener {
         MOST_PLAYERS("§aᴍᴏꜱᴛ ᴘʟᴀʏᴇʀꜱ", Material.PLAYER_HEAD, "MHF_ArrowUp"),
         LEAST_PLAYERS("§aʟᴇᴀꜱᴛ ᴘʟᴀʏᴇʀꜱ", Material.PLAYER_HEAD, "MHF_ArrowDown"),
         ALPHABETICAL("§aᴀʟᴘʜᴀʙᴇᴛɪᴄᴀʟ", Material.PLAYER_HEAD, "MHF_Book"),
-        MOST_VOTES("§aᴍᴏꜱᴛ ᴠᴏᴛᴇꜱ", Material.PLAYER_HEAD, "MHF_Star");
+        MOST_VOTES("§aᴍᴏꜱᴛ ᴠᴏᴛᴇꜱ", Material.PLAYER_HEAD, "MHF_Star"),
+        MOST_SUPER_VOTES("§aᴍᴏꜱᴛ ꜱᴜᴘᴇʀ ᴠᴏᴛᴇꜱ", Material.PLAYER_HEAD, "MHF_Star");
 
         private final String displayName;
         private final Material icon;
@@ -59,10 +60,16 @@ public class HousingListGUI implements Listener {
     public HousingListGUI(JustHousing plugin, HousingManager housingManager) {
         this.plugin = plugin;
         this.housingManager = housingManager;
-        this.inventory = Bukkit.createInventory(null, 54, GUI_NAME);
     }
 
-    private void setupInventory(Player viewer) {
+    private Inventory createInventory(Player viewer, int page) {
+        String guiName = GUI_NAME_PREFIX + ChatColor.translateAlternateColorCodes('&', " &8(Page " + page + ")");
+        Inventory inventory = Bukkit.createInventory(null, 54, guiName);
+        setupInventory(inventory, viewer, page);
+        return inventory;
+    }
+
+    private void setupInventory(Inventory inventory, Player viewer, int page) {
         inventory.clear();
 
         SortMode sortMode = playerSortModes.getOrDefault(viewer, SortMode.DEFAULT);
@@ -103,28 +110,74 @@ public class HousingListGUI implements Listener {
             case MOST_VOTES:
                 housings.sort((h1, h2) -> Integer.compare(h2.getVotes(), h1.getVotes()));
                 break;
+            case MOST_SUPER_VOTES:
+                housings.sort((h1, h2) -> Integer.compare(h2.getSuperVotes(), h1.getSuperVotes()));
+                break;
             case DEFAULT:
             default:
                 break;
         }
 
+        int itemsPerPage = 20;
+        int totalPages = (int) Math.ceil((double) housings.size() / itemsPerPage);
+        if (page > totalPages) page = totalPages;
+        if (page < 1) page = 1;
+
+        int startIndex = (page - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, housings.size());
+
         int[] slotOrder = {12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 30, 31, 32, 33, 34, 39, 40, 41, 42, 43};
         int slotIndex = 0;
 
-        for (HousingManager.Housing housing : housings) {
-            if (slotIndex >= slotOrder.length) break;
-
+        for (int i = startIndex; i < endIndex; i++) {
+            HousingManager.Housing housing = housings.get(i);
             OfflinePlayer owner = Bukkit.getOfflinePlayer(housing.getOwner());
             if (owner != null) {
-                ItemStack playerHead = createPlayerHead(owner, housing);
+                ItemStack playerHead = createPlayerHead(viewer, owner, housing);
                 inventory.setItem(slotOrder[slotIndex], playerHead);
                 slotIndex++;
             }
         }
+
+        if (page > 1) {
+            String name = plugin.getConfig().getString("gui.list.previous-page.name");
+            List<String> lore = plugin.getConfig().getStringList("gui.list.previous-page.item.lore");
+
+            ItemStack previousPage = createItem(Material.ARROW, name, lore);
+            inventory.setItem(49, previousPage);
+        }
+
+        if (page < totalPages) {
+            String name = plugin.getConfig().getString("gui.list.next-page.name");
+            List<String> lore = plugin.getConfig().getStringList("gui.list.next-page.item.lore");
+
+            ItemStack nextPage = createItem(Material.ARROW, name, lore);
+            inventory.setItem(51, nextPage);
+        }
+
+        String materialName = plugin.getConfig().getString("gui.list.page-info.material");
+        Material pageInfoMaterial = Material.matchMaterial(materialName);
+        if (pageInfoMaterial == null) {
+            pageInfoMaterial = Material.PAPER;
+        }
+
+        String pageInfoName = plugin.getConfig().getString("gui.list.page-info.name")
+                .replace("%page%", String.valueOf(page))
+                .replace("%total_pages%", String.valueOf(totalPages));
+
+        List<String> pageInfoLore = plugin.getConfig().getStringList("gui.list.page-info.lore");
+        List<String> formattedLore = new ArrayList<>();
+        for (String line : pageInfoLore) {
+            formattedLore.add(line.replace("%total_houses%", String.valueOf(housings.size())));
+        }
+
+        ItemStack pageInfo = createItem(pageInfoMaterial, pageInfoName, formattedLore);
+        inventory.setItem(50, pageInfo);
     }
 
     public void open(Player player) {
-        setupInventory(player);
+        int page = playerPages.getOrDefault(player, 1);
+        Inventory inventory = createInventory(player, page);
         player.openInventory(inventory);
         openGUIs.put(player, this);
     }
@@ -140,7 +193,7 @@ public class HousingListGUI implements Listener {
         return item;
     }
 
-    private ItemStack createPlayerHead(OfflinePlayer owner, HousingManager.Housing housing) {
+    private ItemStack createPlayerHead(Player viewer, OfflinePlayer owner, HousingManager.Housing housing) {
         ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) playerHead.getItemMeta();
         if (skullMeta != null) {
@@ -158,8 +211,16 @@ public class HousingListGUI implements Listener {
                     .collect(Collectors.toList());
             skullMeta.setDisplayName(displayName);
             skullMeta.setLore(formattedLore);
+            if (viewer.isOp()) {
+                List<String> opLore = new ArrayList<>(formattedLore);
+                opLore.add(ChatColor.translateAlternateColorCodes('&', "&eʀɪɢʜᴛ-ᴄʟɪᴄᴋ ꜱʜɪꜰᴛ ᴛᴏ ꜱᴜᴘᴇʀ ᴠᴏᴛᴇ ꜰᴏʀ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"));
+                skullMeta.setLore(opLore);
+            } else {
+                skullMeta.setLore(formattedLore);
+            }
             if (housing.getSuperVotes() > 0) {
                 skullMeta.addEnchant(Enchantment.UNBREAKING, 1, true);
+                skullMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
             playerHead.setItemMeta(skullMeta);
         }
@@ -187,20 +248,42 @@ public class HousingListGUI implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getView().getTitle().equals(GUI_NAME)) {
-            openGUIs.remove((Player) event.getPlayer());
-        }
-    }
-
-    @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!event.getView().getTitle().equals(GUI_NAME)) return;
+        String title = event.getView().getTitle();
+        if (!title.startsWith(GUI_NAME_PREFIX)) return;
 
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
-        HousingListGUI gui = openGUIs.get(player);
-        if (gui == null || !event.getClickedInventory().equals(gui.inventory)) return;
+        HousingListGUI gui = this;
+        if (gui == null || !event.getClickedInventory().equals(event.getView().getTopInventory())) return;
+
+        int currentPage = playerPages.getOrDefault(player, 1);
+
+        if (event.getSlot() == 49 && event.getCurrentItem() != null &&
+                event.getCurrentItem().getType() == Material.ARROW) {
+            if (currentPage > 1) {
+                playerPages.put(player, currentPage - 1);
+                Inventory newInventory = createInventory(player, currentPage - 1);
+                player.openInventory(newInventory);
+                openGUIs.put(player, this);
+            }
+            return;
+        }
+
+        if (event.getSlot() == 51 && event.getCurrentItem() != null &&
+                event.getCurrentItem().getType() == Material.ARROW) {
+            List<HousingManager.Housing> housings = new ArrayList<>(housingManager.getHousings().values());
+            int itemsPerPage = 20;
+            int totalPages = Math.max(1, (int) Math.ceil((double) housings.size() / itemsPerPage));
+
+            if (currentPage < totalPages) {
+                playerPages.put(player, currentPage + 1);
+                Inventory newInventory = createInventory(player, currentPage + 1);
+                player.openInventory(newInventory);
+                openGUIs.put(player, this);
+            }
+            return;
+        }
 
         if (event.getSlot() == 10) {
             SortMode currentMode = playerSortModes.getOrDefault(player, SortMode.DEFAULT);
@@ -215,7 +298,12 @@ public class HousingListGUI implements Listener {
                 return;
             }
             playerSortModes.put(player, nextMode);
-            gui.setupInventory(player);
+
+            int CurrentPage = playerPages.getOrDefault(player, 1);
+
+            Inventory newInventory = createInventory(player, CurrentPage);
+            player.openInventory(newInventory);
+            openGUIs.put(player, this);
             return;
         }
 
@@ -245,7 +333,7 @@ public class HousingListGUI implements Listener {
                     gui.housingManager.saveHousings();
                     String votedMsg = plugin.getConfig().getString("messages.vote.voted");
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + votedMsg.replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown")));
-                    gui.setupInventory(player);
+                    player.openInventory(createInventory(player, currentPage));
                 }
             } else if (event.isRightClick() && event.isShiftClick() && player.isOp()) {
                 if (housing.getOwner().equals(player.getUniqueId())) {
@@ -257,7 +345,7 @@ public class HousingListGUI implements Listener {
                 gui.housingManager.saveHousings();
                 String superVotedMsg = plugin.getConfig().getString("messages.vote.super-voted");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + superVotedMsg.replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown")));
-                gui.setupInventory(player);
+                player.openInventory(createInventory(player, currentPage));
             } else if (event.isLeftClick()) {
                 player.teleport(housing.getCenter());
                 String msg = gui.plugin.getConfig().getString("messages.commands.join.joined-housing").replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown");
