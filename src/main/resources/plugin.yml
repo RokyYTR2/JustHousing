@@ -25,8 +25,8 @@ permissions:
     description: Allows reloading the config
     default: op
   housing.help:
-    description: Allows viewing the help menu
-    default: op
+    description: Allows a player to see the help menu.
+    default: true
   housing.settings:
     description: Allows opening the housing settings GUI
     default: op

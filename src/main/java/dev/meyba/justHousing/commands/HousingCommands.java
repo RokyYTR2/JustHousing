@@ -74,11 +74,6 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', reloadSuccessMsg));
                 return true;
             case "help":
-                if (!player.hasPermission("housing.help")) {
-                    String noPermissionMsg = this.plugin.getConfig().getString("messages.commands.permissions.no-permission");
-                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
-                    return true;
-                }
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "&7ʜᴇʟᴘ ᴍᴇɴᴜ:"));
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "&7/housing create <ɴᴀᴍᴇ> - ᴄʀᴇᴀᴛᴇꜱ ᴀ ɴᴇᴡ ʜᴏᴜꜱɪɴɢ."));
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "&7/housing delete - ᴅᴇʟᴇᴛᴇꜱ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."));
