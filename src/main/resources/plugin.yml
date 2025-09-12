@@ -9,45 +9,36 @@ commands:
     description: Manages housings
     usage: /<command> [create [name]|invite <player>|join <player>|settings|reload|help|list|delete|delete confirm|kick <player> [reason]|ban <player> [reason]|gamemode creative|adventure|survival [player]]
 permissions:
-  housing.use:
+  justhousing.use:
     description: Allows use of basic housing commands
     default: op
-  housing.create:
-    description: Allows creating a housing
-    default: op
-  housing.invite:
-    description: Allows inviting players to a housing
-    default: op
-  housing.join:
-    description: Allows joining a player's housing
-    default: op
-  housing.reload:
+  justhousing.reload:
     description: Allows reloading the config
     default: op
-  housing.help:
-    description: Allows a player to see the help menu.
+  justhousing.help:
+    description: Allows a player to see the help menu
     default: true
-  housing.settings:
-    description: Allows opening the housing settings GUI
+  justhousing.create:
+    description: Allows creating a housing
     default: op
-  housing.list:
-    description: Allows opening the housing list GUI
-    default: op
-  housing.permissions:
-    description: Allows opening the housing permissions GUI
-    default: op
-  housing.delete:
+  justhousing.delete:
     description: Allows deleting a housing
     default: op
-  housing.kick:
-    description: Allows kicking players
+  justhousing.invite:
+    description: Allows inviting players to a housing
     default: op
-  housing.ban:
-    description: Allows banning players
+  justhousing.join:
+    description: Allows joining a player's housing
+    default: true
+  justhousing.settings:
+    description: Allows opening the housing settings GUI
     default: op
-  housing.unban:
-    description: Allows unbanning players
-    default: op
-  housing.gamemode:
+  justhousing.list:
+    description: Allows opening the housing list GUI
+    default: true
+  justhousing.gamemode:
     description: Allows changing gamemode of players
+    default: op
+  justhousing.time:
+    description: Allows changing the housing world time
     default: op
