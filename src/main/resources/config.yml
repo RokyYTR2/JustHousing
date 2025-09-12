@@ -1,69 +1,56 @@
 # =======================
 # HousingPlugin Config
 # =======================
-
 # Prefix used for all plugin messages
+# =======================
 prefix: "§x§A§2§8§B§5§9§lʜ§x§A§4§8§D§5§A§lᴏ§x§A§5§8§E§5§C§lᴜ§x§A§7§9§0§5§D§lꜱ§x§A§9§9§1§5§E§lɪ§x§A§A§9§3§6§0§lɴ§x§A§C§9§4§6§1§lɢ §8» §f"
 
 # =======================
 # Messages
 # =======================
 # Messages shown in chat
+# =======================
 messages:
   commands:
     permissions:
-      no-permission: "&cʏᴏᴜ ᴅᴏɴ’ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ."
-      not-a-player: "&cᴏɴʟʏ ᴘʟᴀʏᴇʀꜱ ᴄᴀɴ ᴇxᴇᴄᴜᴛᴇ ᴛʜɪꜱ ᴄᴏᴍᴍᴀɴᴅ."
-      player-not-found: "&cᴘʟᴀʏᴇʀ %player% ɴᴏᴛ ꜰᴏᴜɴᴅ!"
-      invite-player-you: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ꜱᴇɴᴅ ᴀɴ ɪɴᴠɪᴛᴇ ᴛᴏ ʏᴏᴜʀꜱᴇʟꜰ."
-      kick-player-you: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ᴋɪᴄᴋ ʏᴏᴜʀ ʏᴏᴜʀꜱᴇʟꜰ."
-      ban-player-you: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ʙᴀɴ ʏᴏᴜʀ ʏᴏᴜʀꜱᴇʟꜰ."
-      housing-not-found: "&cʜᴏᴜꜱɪɴɢ ꜰᴏʀ %player% ɴᴏᴛ ꜰᴏᴜɴᴅ!"
+      no-permission: "&cʏᴏᴜ ᴅᴏɴ’ᴛ ʜᴀᴠᴇ ᴘᴇʀᴍɪꜱꜱɪᴏɴ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ."
+      not-a-player: "&cᴏɴʟʏ ᴘʟᴀʏᴇʀꜱ ᴄᴀɴ ᴅᴏ ᴛʜᴀᴛ."
+      player-not-found: "&cᴘʟᴀʏᴇʀ &e%player% &cɴᴏᴛ ꜰᴏᴜɴᴅ!"
+      invite-player-you: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ɪɴᴠɪᴛᴇ ʏᴏᴜʀꜱᴇʟꜰ."
+      housing-not-found: "&cʜᴏᴜꜱɪɴɢ ꜰᴏʀ &e%player% &cɴᴏᴛ ꜰᴏᴜɴᴅ!"
       not-in-own-housing: "&cʏᴏᴜ ᴀʀᴇɴ’ᴛ ɪɴ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
-      no-housing: "&aʏᴏᴜ ᴅᴏɴ’ᴛ ʜᴀᴠᴇ ʜᴏᴜꜱɪɴɢ"
-      player-not-in-housing: "&cᴘʟᴀʏᴇʀ ɴᴏᴛ ꜰᴏᴜɴᴅ ɪɴ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
+      no-housing: "&cʏᴏᴜ ᴅᴏɴ’ᴛ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ!"
+      player-not-in-housing: "&cᴘʟᴀʏᴇʀ ɪꜱɴ’ᴛ ɪɴ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
     reload:
-      reload-success: "&aᴄᴏɴꜰɪɢ ʀᴇʟᴏᴀᴅᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ!"
+      reload-success: "&aᴄᴏɴꜰɪɢ ʀᴇʟᴏᴀᴅᴇᴅ!"
     create:
       create-usage: "&cᴜꜱᴇ: /housing create <ɴᴀᴍᴇ>"
-      housing-created: "&aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ʜᴀꜱ ʙᴇᴇɴ ᴄʀᴇᴀᴛᴇᴅ!"
+      housing-created: "&aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ᴡᴀꜱ ᴄʀᴇᴀᴛᴇᴅ!"
       already-has-housing: "&cʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ!"
     delete:
       no-housing-to-delete: "&cʏᴏᴜ ᴅᴏɴ’ᴛ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ ᴛᴏ ᴅᴇʟᴇᴛᴇ!"
-      housing-deleted: "&aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ʜᴀꜱ ʙᴇᴇɴ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱꜰᴜʟʟʏ!"
+      housing-deleted: "&aʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ ᴡᴀꜱ ᴅᴇʟᴇᴛᴇᴅ!"
     invite:
       invite-usage: "&cᴜꜱᴇ: /housing invite <ᴘʟᴀʏᴇʀ>"
-      already-invited: "&cʏᴏᴜ ᴀʟʀᴇᴀᴅʏ ɪɴᴠɪᴛᴇᴅ %player% ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
-      invite-received: "&aʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ɪɴᴠɪᴛᴇᴅ ᴛᴏ ᴀ ʜᴏᴜꜱɪɴɢ! &eᴄʟɪᴄᴋ &7ᴛᴏ ᴊᴏɪɴ!"
-      invite-sent: "&aᴘʟᴀʏᴇʀ %player% ʜᴀꜱ ʙᴇᴇɴ ɪɴᴠɪᴛᴇᴅ ᴛᴏ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
-      cannot-invite-self: "&cYou cant invite your self"
+      already-invited: "&cʏᴏᴜ’ᴠᴇ ᴀʟʀᴇᴀᴅʏ ɪɴᴠɪᴛᴇᴅ &e%player%&c!"
+      invite-received: "&aʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ɪɴᴠɪᴛᴇᴅ ᴛᴏ ᴀ ʜᴏᴜꜱɪɴɢ! &eᴄʟɪᴄᴋ &7ᴛᴏ ᴊᴏɪɴ."
+      invite-sent: "&aɪɴᴠɪᴛᴇ sᴇɴᴛ ᴛᴏ &e%player%&a!"
+      cannot-invite-self: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ɪɴᴠɪᴛᴇ ʏᴏᴜʀꜱᴇʟꜰ."
     join:
       join-usage: "&cᴜꜱᴇ: /housing join <ᴘʟᴀʏᴇʀ>"
-      joined-housing: "&aʏᴏᴜ ʜᴀᴠᴇ ᴊᴏɪɴᴇᴅ %player%’ꜱ ʜᴏᴜꜱɪɴɢ!"
+      joined-housing: "&aʏᴏᴜ ᴊᴏɪɴᴇᴅ &e%player%’ꜱ &aʜᴏᴜꜱɪɴɢ!"
     gamemode:
-      gamemode-usage-invalid: "&cɪɴᴠᴀʟɪᴅ ɢᴀᴍᴇᴍᴏᴅᴇ! ᴜꜱᴇ 'c' (ᴄʀᴇᴀᴛɪᴠᴇ), 'ᴀ' (ᴀᴅᴠᴇɴᴛᴜʀᴇ), or 'ꜱ' (ꜱᴜʀᴠɪᴠᴀʟ)."
-      gamemode-usage: "&cᴜꜱᴇ: /housing gamemode ᴄʀᴇᴀᴛɪᴠᴇ|ᴀᴅᴠᴇɴᴛᴜʀᴇ|ꜱᴜʀᴠɪᴠᴀʟ [ᴘʟᴀʏᴇʀ]"
-      gamemode-creative: "&aꜱᴇᴛ %player%'ꜱ ɢᴀᴍᴇᴍᴏᴅᴇ ᴛᴏ ᴄʀᴇᴀᴛɪᴠᴇ."
-      gamemode-adventure: "&aꜱᴇᴛ %player%'ꜱ ɢᴀᴍᴇᴍᴏᴅᴇ ᴛᴏ ᴀᴅᴠᴇɴᴛᴜʀᴇ."
-      gamemode-survival: "&aꜱᴇᴛ %player%'ꜱ ɢᴀᴍᴇᴍᴏᴅᴇ ᴛᴏ ꜱᴜʀᴠɪᴠᴀʟ."
-    ban:
-      ban-usage: "&cᴜꜱᴇ: /housing ban <ᴘʟᴀʏᴇʀ> [ʀᴇᴀꜱᴏɴ]"
-      banned: "&cʏᴏᴜ ᴡᴇʀᴇ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ %housing%! ʀᴇᴀꜱᴏɴ: %reason%"
-      player-banned: "&aᴘʟᴀʏᴇʀ %player% ʜᴀꜱ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
-      not-banned: "&cᴘʟᴀʏᴇʀ %player% ɪꜱ ɴᴏᴛ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
-      already-banned: "&cᴘʟᴀʏᴇʀ %player% ɪꜱ ᴀʟʀᴇᴀᴅʏ ʙᴀɴɴᴇᴅ."
-    kick:
-      kick-usage: "&cᴜꜱᴇ: /housing kick <ᴘʟᴀʏᴇʀ> [ʀᴇᴀꜱᴏɴ]"
-      kicked: "&cʏᴏᴜ ᴡᴇʀᴇ ᴋɪᴄᴋᴇᴅ ꜰʀᴏᴍ %housing%! ʀᴇᴀꜱᴏɴ: %reason%"
-    unban:
-      unban-usage: "&cᴜꜱᴇ: /housing unban <ᴘʟᴀʏᴇʀ>"
-      player-unbanned: "&aᴘʟᴀʏᴇʀ %player% ʜᴀꜱ ʙᴇᴇɴ ᴜɴʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
+      gamemode-usage-invalid: "&cɪɴᴠᴀʟɪᴅ ɢᴀᴍᴇᴍᴏᴅᴇ! ᴜꜱᴇ: ᴄʀᴇᴀᴛɪᴠᴇ, ᴀᴅᴠᴇɴᴛᴜʀᴇ, ꜱᴜʀᴠɪᴠᴀʟ."
+      gamemode-usage: "&cᴜꜱᴇ: /housing gamemode <ᴄʀᴇᴀᴛɪᴠᴇ|ᴀᴅᴠᴇɴᴛᴜʀᴇ|ꜱᴜʀᴠɪᴠᴀʟ> [ᴘʟᴀʏᴇʀ]"
+      gamemode-creative: "&a%player%'ꜱ ɢᴀᴍᴇᴍᴏᴅᴇ ꜱᴇᴛ ᴛᴏ &eᴄʀᴇᴀᴛɪᴠᴇ&a."
+      gamemode-adventure: "&a%player%'ꜱ ɢᴀᴍᴇᴍᴏᴅᴇ ꜱᴇᴛ ᴛᴏ &eᴀᴅᴠᴇɴᴛᴜʀᴇ&a."
+      gamemode-survival: "&a%player%'ꜱ ɢᴀᴍᴇᴍᴏᴅᴇ ꜱᴇᴛ ᴛᴏ &eꜱᴜʀᴠɪᴠᴀʟ&a."
     time:
       time-usage: "&cᴜꜱᴇ: /housing time <ᴅᴀʏ|ɴɪɢʜᴛ|ᴅᴀᴡɴ|ɴᴏᴏɴ>"
-      time-day: "&aꜱᴇᴛ ᴛɪᴍᴇ ᴛᴏ ᴅᴀʏ!"
-      time-night: "&aꜱᴇᴛ ᴛɪᴍᴇ ᴛᴏ ɴɪɢʜᴛ!"
-      time-dawn: "&aꜱᴇᴛ ᴛɪᴍᴇ ᴛᴏ ᴅᴀᴡɴ!"
-      time-noon: "&aꜱᴇᴛ ᴛɪᴍᴇ ᴛᴏ ɴᴏᴏɴ!"
+      time-day: "&aᴛɪᴍᴇ ꜱᴇᴛ ᴛᴏ &eᴅᴀʏ&a!"
+      time-night: "&aᴛɪᴍᴇ ꜱᴇᴛ ᴛᴏ &eɴɪɢʜᴛ&a!"
+      time-dawn: "&aᴛɪᴍᴇ ꜱᴇᴛ ᴛᴏ &eᴅᴀᴡɴ&a!"
+      time-noon: "&aᴛɪᴍᴇ ꜱᴇᴛ ᴛᴏ &eɴᴏᴏɴ&a!"
   vote:
     already-voted: "&cʏᴏᴜ ʜᴀᴠᴇ ᴀʟʀᴇᴀᴅʏ ᴠᴏᴛᴇᴅ ꜰᴏʀ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
     voted: "&aʏᴏᴜ ʜᴀᴠᴇ ᴠᴏᴛᴇᴅ ꜰᴏʀ %player%'ꜱ ʜᴏᴜꜱɪɴɢ!"
@@ -85,6 +72,7 @@ messages:
 # Sounds
 # =======================
 # Sounds played on certain events
+# =======================
 sounds:
   housing-created: "ENTITY_PLAYER_LEVELUP"
   player-invited: "ENTITY_VILLAGER_TRADE"
@@ -93,7 +81,8 @@ sounds:
 # =======================
 # GUI Configuration
 # =======================
-# GUI settings
+# Settings for the Housing GUI.
+# =======================
 gui:
   settings:
     break-blocks:
@@ -151,7 +140,7 @@ gui:
         - "&8» &7ɪɴ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
         - "&8» &7ᴄᴜʀʀᴇɴᴛ: %gamemode%"
         - ""
-        - "&eeʟᴇꜰᴛ-ᴄʟɪᴄᴋ ᴛᴏ ᴄʏᴄʟᴇ!"
+        - "&eʟᴇꜰᴛ-ᴄʟɪᴄᴋ ᴛᴏ ᴄʏᴄʟᴇ!"
   list:
     name: "&lʜᴏᴜꜱɪɴɢ ʟɪꜱᴛ"
     item:
@@ -198,7 +187,7 @@ gui:
       most_players:
         name: "&aᴍᴏꜱᴛ ᴘʟᴀʏᴇʀꜱ"
         lore:
-          - "&7ꜱᴏʀᴛᴇᴅ ʙʏ ᴛʜᴇ ɴᴜᴍʙᴇʀ ᴏꜰ ᴘʟᴀʏᴇʀꜱ."
+          - "&7ꜱᴏʀᴛᴇᴅ ʙʏ ᴛʜᴇ ɴᴜᴍʙᴇʀ ᴏꜰ ᴍᴏꜱᴛ ᴘʟᴀʏᴇʀꜱ."
           - ""
           - "&8» &7ᴅᴇꜰᴀᴜʟᴛ ꜱᴏʀᴛ"
           - "&8» &aᴍᴏꜱᴛ ᴘʟᴀʏᴇʀꜱ"
@@ -212,7 +201,7 @@ gui:
       least_players:
         name: "&aʟᴇᴀꜱᴛ ᴘʟᴀʏᴇʀꜱ"
         lore:
-          - "&7ꜱᴏʀᴛᴇᴅ ʙʏ ᴛʜᴇ ɴᴜᴍʙᴇʀ ᴏꜰ ᴘʟᴀʏᴇʀꜱ."
+          - "&7ꜱᴏʀᴛᴇᴅ ʙʏ ᴛʜᴇ ɴᴜᴍʙᴇʀ ᴏꜰ ʟᴇᴀꜱᴛ ᴘʟᴀʏᴇʀꜱ."
           - ""
           - "&8» &7ᴅᴇꜰᴀᴜʟᴛ ꜱᴏʀᴛ"
           - "&8» &7ᴍᴏꜱᴛ ᴘʟᴀʏᴇʀꜱ"
@@ -270,6 +259,7 @@ gui:
 # Scoreboard Configuration
 # =======================
 # Scoreboard configuration
+# =======================
 scoreboard:
   title: "&a%name%"
   lines:
@@ -283,6 +273,7 @@ scoreboard:
 # Chat Configuration
 # =======================
 # Chat configuration
+# =======================
 chat:
   format: "%rank% &f%player% &8» &r%message%"
   default-rank: ""

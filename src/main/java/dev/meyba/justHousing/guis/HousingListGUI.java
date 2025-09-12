@@ -63,7 +63,7 @@ public class HousingListGUI implements Listener {
     }
 
     private Inventory createInventory(Player viewer, int page) {
-        String guiName = GUI_NAME_PREFIX + ChatColor.translateAlternateColorCodes('&', " &8(Page " + page + ")");
+        String guiName = GUI_NAME_PREFIX + ChatColor.translateAlternateColorCodes('&', " &8(ᴘᴀɢᴇ " + page + ")");
         Inventory inventory = Bukkit.createInventory(null, 54, guiName);
         setupInventory(inventory, viewer, page);
         return inventory;
