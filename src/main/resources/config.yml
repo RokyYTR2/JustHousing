@@ -38,7 +38,25 @@ messages:
       cannot-invite-self: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ɪɴᴠɪᴛᴇ ʏᴏᴜʀꜱᴇʟꜰ."
     join:
       join-usage: "&cᴜꜱᴇ: /housing join <ᴘʟᴀʏᴇʀ>"
-      joined-housing: "&aʏᴏᴜ ᴊᴏɪɴᴇᴅ &e%player%’ꜱ &aʜᴏᴜꜱɪɴɢ!"
+      joined-housing: "&aʏᴏᴜ ᴊᴏɪɴᴇᴅ &e%player%'ꜱ &aʜᴏᴜꜱɪɴɢ!"
+    kick:
+      kick-usage: "&cᴜꜱᴇ: /housing kick <ᴘʟᴀʏᴇʀ> [ʀᴇᴀꜱᴏɴ]"
+      player-kicked: "&aʏᴏᴜ ʜᴀᴠᴇ ᴋɪᴄᴋᴇᴅ &e%player% &aꜰʀᴏᴍ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
+      you-were-kicked: "&cʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ᴋɪᴄᴋᴇᴅ ꜰʀᴏᴍ &e%housing%&c!"
+      you-were-kicked-reason: "&cʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ᴋɪᴄᴋᴇᴅ ꜰʀᴏᴍ &e%housing%&c! &7ʀᴇᴀꜱᴏɴ: &e%reason%"
+      cannot-kick-self: "&cʏᴏᴜ ᴄᴀɴ'ᴛ ᴋɪᴄᴋ ʏᴏᴜʀꜱᴇʟꜰ!"
+    ban:
+      ban-usage: "&cᴜꜱᴇ: /housing ban <ᴘʟᴀʏᴇʀ> [ʀᴇᴀꜱᴏɴ]"
+      player-banned: "&aʏᴏᴜ ʜᴀᴠᴇ ʙᴀɴɴᴇᴅ &e%player% &aꜰʀᴏᴍ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
+      you-were-banned: "&cʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ &e%housing%&c!"
+      you-were-banned-reason: "&cʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ &e%housing%&c! &7ʀᴇᴀꜱᴏɴ: &e%reason%"
+      cannot-ban-self: "&cʏᴏᴜ ᴄᴀɴ'ᴛ ʙᴀɴ ʏᴏᴜʀꜱᴇʟꜰ!"
+      already-banned: "&e%player% &cɪꜱ ᴀʟʀᴇᴀᴅʏ ʙᴀɴɴᴇᴅ!"
+      housing-banned: "&cʏᴏᴜ ᴀʀᴇ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ᴛʜɪꜱ ʜᴏᴜꜱɪɴɢ!"
+    unban:
+      unban-usage: "&cᴜꜱᴇ: /housing unban <ᴘʟᴀʏᴇʀ>"
+      player-unbanned: "&aʏᴏᴜ ʜᴀᴠᴇ ᴜɴʙᴀɴɴᴇᴅ &e%player% &aꜰʀᴏᴍ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
+      player-not-banned: "&e%player% &cɪꜱ ɴᴏᴛ ʙᴀɴɴᴇᴅ!"
     gamemode:
       gamemode-usage-invalid: "&cɪɴᴠᴀʟɪᴅ ɢᴀᴍᴇᴍᴏᴅᴇ! ᴜꜱᴇ: ᴄʀᴇᴀᴛɪᴠᴇ, ᴀᴅᴠᴇɴᴛᴜʀᴇ, ꜱᴜʀᴠɪᴠᴀʟ."
       gamemode-usage: "&cᴜꜱᴇ: /housing gamemode <ᴄʀᴇᴀᴛɪᴠᴇ|ᴀᴅᴠᴇɴᴛᴜʀᴇ|ꜱᴜʀᴠɪᴠᴀʟ> [ᴘʟᴀʏᴇʀ]"

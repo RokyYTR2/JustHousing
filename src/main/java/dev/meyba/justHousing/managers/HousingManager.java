@@ -1,6 +1,7 @@
 package dev.meyba.justHousing.managers;
 
 import dev.meyba.justHousing.JustHousing;
+import dev.meyba.justHousing.generators.VoidChunkGenerator;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class HousingManager {
 
         WorldCreator creator = new WorldCreator(housingId);
         creator.environment(World.Environment.NORMAL);
-        creator.type(WorldType.FLAT);
+        creator.generator(new VoidChunkGenerator(100));
         creator.generateStructures(false);
 
         World world = creator.createWorld();
@@ -43,7 +44,7 @@ public class HousingManager {
 
             world.setAutoSave(true);
 
-            Location center = new Location(world, 0.5, -60, 0.5);
+            Location center = new Location(world, 0.5, 2, 0.5);
             world.setSpawnLocation(center.getBlockX(), center.getBlockY(), center.getBlockZ());
 
             Housing newHousing = new Housing(housingId, player.getUniqueId(), center, name);
@@ -165,7 +166,9 @@ public class HousingManager {
             housingConfig.set(path + ".members", housing.getMembers().entrySet().stream()
                     .map(entry -> entry.getKey().toString() + ":" + entry.getValue().isAdmin())
                     .collect(Collectors.toList()));
-            housingConfig.set(path + ".banned", new ArrayList<>(housing.getBannedPlayers()));
+            housingConfig.set(path + ".banned", housing.getBannedPlayers().stream()
+                    .map(UUID::toString)
+                    .collect(Collectors.toList()));
         }
 
         try {
@@ -211,7 +214,7 @@ public class HousingManager {
                         if (world == null) {
                             WorldCreator creator = new WorldCreator(id);
                             creator.environment(World.Environment.NORMAL);
-                            creator.type(WorldType.FLAT);
+                            creator.generator(new VoidChunkGenerator(64));
                             creator.generateStructures(false);
                             world = creator.createWorld();
                         }
@@ -229,7 +232,7 @@ public class HousingManager {
                     world.setAutoSave(true);
 
                     double x = housingConfig.getDouble(path + ".center.x", 0.5);
-                    double y = housingConfig.getDouble(path + ".center.y", -60);
+                    double y = housingConfig.getDouble(path + ".center.y", 2);
                     double z = housingConfig.getDouble(path + ".center.z", 0.5);
                     Location center = new Location(world, x, y, z);
 

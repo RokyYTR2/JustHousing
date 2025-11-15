@@ -321,12 +321,14 @@ public class HousingListGUI implements Listener {
                 if (housing.getOwner().equals(player.getUniqueId())) {
                     String ownerCannotVoteMsg = plugin.getConfig().getString("messages.vote.owner-cannot-vote");
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + ownerCannotVoteMsg));
+                    player.closeInventory();
                     return;
                 }
                 UUID lastVotedHousing = playerLastVoted.get(player.getUniqueId());
                 if (lastVotedHousing != null && lastVotedHousing.equals(housing.getOwner())) {
                     String alreadyVotedMsg = plugin.getConfig().getString("messages.vote.already-voted");
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + alreadyVotedMsg));
+                    player.closeInventory();
                 } else {
                     housing.addVote();
                     playerLastVoted.put(player.getUniqueId(), housing.getOwner());
@@ -334,11 +336,13 @@ public class HousingListGUI implements Listener {
                     String votedMsg = plugin.getConfig().getString("messages.vote.voted");
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + votedMsg.replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown")));
                     player.openInventory(createInventory(player, currentPage));
+                    return;
                 }
             } else if (event.isRightClick() && event.isShiftClick() && player.isOp()) {
                 if (housing.getOwner().equals(player.getUniqueId())) {
                     String ownerCannotVoteMsg = plugin.getConfig().getString("messages.vote.owner-cannot-supervote");
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + ownerCannotVoteMsg));
+                    player.closeInventory();
                     return;
                 }
                 housing.addSuperVote();
@@ -346,6 +350,7 @@ public class HousingListGUI implements Listener {
                 String superVotedMsg = plugin.getConfig().getString("messages.vote.super-voted");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + superVotedMsg.replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown")));
                 player.openInventory(createInventory(player, currentPage));
+                return;
             } else if (event.isLeftClick()) {
                 player.teleport(housing.getCenter());
                 String msg = gui.plugin.getConfig().getString("messages.commands.join.joined-housing").replace("%player%", housingOwner.getName() != null ? housingOwner.getName() : "Unknown");

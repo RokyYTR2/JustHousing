@@ -204,6 +204,13 @@ public class HousingListener implements Listener {
         if (toWorldName.startsWith("housing_") && !fromWorldName.startsWith("housing_")) {
             HousingManager.Housing housing = housingManager.getHousingById(toWorldName);
             if (housing != null) {
+                if (housing.isBanned(player.getUniqueId()) && !player.getUniqueId().equals(housing.getOwner())) {
+                    event.setCancelled(true);
+                    String prefix = plugin.getConfig().getString("prefix");
+                    String msg = plugin.getConfig().getString("messages.commands.ban.housing-banned");
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
+                    return;
+                }
                 player.setGameMode(housing.getDefaultGameMode());
             }
         }

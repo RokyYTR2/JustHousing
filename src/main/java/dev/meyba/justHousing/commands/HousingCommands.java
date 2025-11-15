@@ -171,7 +171,15 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', joinUsageMsg));
                     return true;
                 }
-                OfflinePlayer targetJoin = Bukkit.getOfflinePlayer(args[1]);
+                Player targetJoinPlayer = Bukkit.getPlayer(args[1]);
+                OfflinePlayer targetJoin;
+                if (targetJoinPlayer != null) {
+                    targetJoin = targetJoinPlayer;
+                } else {
+                    @SuppressWarnings("deprecation")
+                    OfflinePlayer offlineTarget = Bukkit.getOfflinePlayer(args[1]);
+                    targetJoin = offlineTarget;
+                }
                 HousingManager.Housing targetHousing = housingManager.findHousingByOwner(targetJoin);
                 if (targetHousing == null) {
                     String housingNotFoundMsg = this.plugin.getConfig().getString("messages.commands.permissions.housing-not-found").replace("%player%", args[1]);
@@ -179,7 +187,7 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 player.teleport(targetHousing.getCenter());
-                String joinedMsg = this.plugin.getConfig().getString("messages.commands.join.joined-housing").replace("%player%", targetJoin.getName());
+                String joinedMsg = this.plugin.getConfig().getString("messages.commands.join.joined-housing").replace("%player%", args[1]);
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', joinedMsg));
                 return true;
             case "settings":
@@ -310,6 +318,158 @@ public class HousingCommands implements CommandExecutor, TabCompleter {
                         player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', timeUsageMsgInvalid));
                         return true;
                 }
+                return true;
+            case "kick":
+                if (!player.hasPermission("housing.kick")) {
+                    String noPermissionMsg = this.plugin.getConfig().getString("messages.commands.permissions.no-permission");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
+                    return true;
+                }
+                if (playerHousing == null) {
+                    String noHousingMsg = this.plugin.getConfig().getString("messages.commands.permissions.no-housing");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noHousingMsg));
+                    return true;
+                }
+                if (args.length < 2) {
+                    String kickUsageMsg = this.plugin.getConfig().getString("messages.commands.kick.kick-usage");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', kickUsageMsg));
+                    return true;
+                }
+                Player targetKick = Bukkit.getPlayer(args[1]);
+                if (targetKick == null) {
+                    String playerNotFoundMsg = this.plugin.getConfig().getString("messages.commands.permissions.player-not-found").replace("%player%", args[1]);
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', playerNotFoundMsg));
+                    return true;
+                }
+                if (targetKick.equals(player)) {
+                    String cannotKickSelfMsg = this.plugin.getConfig().getString("messages.commands.kick.cannot-kick-self");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', cannotKickSelfMsg));
+                    return true;
+                }
+                if (!targetKick.getWorld().getName().equals(playerHousing.getId())) {
+                    String playerNotInHousingMsg = this.plugin.getConfig().getString("messages.commands.permissions.player-not-in-housing");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', playerNotInHousingMsg));
+                    return true;
+                }
+                Location spawnLocation = Bukkit.getWorlds().get(0).getSpawnLocation();
+                targetKick.teleport(spawnLocation);
+
+                String kickedMsg = this.plugin.getConfig().getString("messages.commands.kick.player-kicked").replace("%player%", targetKick.getName());
+                player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', kickedMsg));
+
+                if (args.length > 2) {
+                    StringBuilder reason = new StringBuilder();
+                    for (int i = 2; i < args.length; i++) {
+                        reason.append(args[i]).append(" ");
+                    }
+                    String youWereKickedMsg = this.plugin.getConfig().getString("messages.commands.kick.you-were-kicked-reason")
+                            .replace("%housing%", playerHousing.getName())
+                            .replace("%reason%", reason.toString().trim());
+                    targetKick.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', youWereKickedMsg));
+                } else {
+                    String youWereKickedMsg = this.plugin.getConfig().getString("messages.commands.kick.you-were-kicked").replace("%housing%", playerHousing.getName());
+                    targetKick.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', youWereKickedMsg));
+                }
+                return true;
+            case "ban":
+                if (!player.hasPermission("housing.ban")) {
+                    String noPermissionMsg = this.plugin.getConfig().getString("messages.commands.permissions.no-permission");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
+                    return true;
+                }
+                if (playerHousing == null) {
+                    String noHousingMsg = this.plugin.getConfig().getString("messages.commands.permissions.no-housing");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noHousingMsg));
+                    return true;
+                }
+                if (args.length < 2) {
+                    String banUsageMsg = this.plugin.getConfig().getString("messages.commands.ban.ban-usage");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', banUsageMsg));
+                    return true;
+                }
+                Player targetBanPlayer = Bukkit.getPlayer(args[1]);
+                OfflinePlayer targetBan;
+                if (targetBanPlayer != null) {
+                    targetBan = targetBanPlayer;
+                } else {
+                    @SuppressWarnings("deprecation")
+                    OfflinePlayer offlineTarget = Bukkit.getOfflinePlayer(args[1]);
+                    targetBan = offlineTarget;
+                }
+                if (targetBan.getUniqueId().equals(player.getUniqueId())) {
+                    String cannotBanSelfMsg = this.plugin.getConfig().getString("messages.commands.ban.cannot-ban-self");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', cannotBanSelfMsg));
+                    return true;
+                }
+                if (playerHousing.isBanned(targetBan.getUniqueId())) {
+                    String alreadyBannedMsg = this.plugin.getConfig().getString("messages.commands.ban.already-banned").replace("%player%", args[1]);
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', alreadyBannedMsg));
+                    return true;
+                }
+                playerHousing.banPlayer(targetBan.getUniqueId());
+                playerHousing.removeMember(targetBan.getUniqueId());
+                housingManager.saveHousings();
+
+                String bannedMsg = this.plugin.getConfig().getString("messages.commands.ban.player-banned").replace("%player%", args[1]);
+                player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', bannedMsg));
+
+                if (targetBan.isOnline()) {
+                    Player onlineTarget = targetBan.getPlayer();
+                    if (onlineTarget.getWorld().getName().equals(playerHousing.getId())) {
+                        Location spawn = Bukkit.getWorlds().get(0).getSpawnLocation();
+                        onlineTarget.teleport(spawn);
+                    }
+
+                    if (args.length > 2) {
+                        StringBuilder reason = new StringBuilder();
+                        for (int i = 2; i < args.length; i++) {
+                            reason.append(args[i]).append(" ");
+                        }
+                        String youWereBannedMsg = this.plugin.getConfig().getString("messages.commands.ban.you-were-banned-reason")
+                                .replace("%housing%", playerHousing.getName())
+                                .replace("%reason%", reason.toString().trim());
+                        onlineTarget.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', youWereBannedMsg));
+                    } else {
+                        String youWereBannedMsg = this.plugin.getConfig().getString("messages.commands.ban.you-were-banned").replace("%housing%", playerHousing.getName());
+                        onlineTarget.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', youWereBannedMsg));
+                    }
+                }
+                return true;
+            case "unban":
+                if (!player.hasPermission("housing.unban")) {
+                    String noPermissionMsg = this.plugin.getConfig().getString("messages.commands.permissions.no-permission");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noPermissionMsg));
+                    return true;
+                }
+                if (playerHousing == null) {
+                    String noHousingMsg = this.plugin.getConfig().getString("messages.commands.permissions.no-housing");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', noHousingMsg));
+                    return true;
+                }
+                if (args.length != 2) {
+                    String unbanUsageMsg = this.plugin.getConfig().getString("messages.commands.unban.unban-usage");
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', unbanUsageMsg));
+                    return true;
+                }
+                Player targetUnbanPlayer = Bukkit.getPlayer(args[1]);
+                OfflinePlayer targetUnban;
+                if (targetUnbanPlayer != null) {
+                    targetUnban = targetUnbanPlayer;
+                } else {
+                    @SuppressWarnings("deprecation")
+                    OfflinePlayer offlineTarget = Bukkit.getOfflinePlayer(args[1]);
+                    targetUnban = offlineTarget;
+                }
+                if (!playerHousing.isBanned(targetUnban.getUniqueId())) {
+                    String playerNotBannedMsg = this.plugin.getConfig().getString("messages.commands.unban.player-not-banned").replace("%player%", args[1]);
+                    player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', playerNotBannedMsg));
+                    return true;
+                }
+                playerHousing.unbanPlayer(targetUnban.getUniqueId());
+                housingManager.saveHousings();
+
+                String unbannedMsg = this.plugin.getConfig().getString("messages.commands.unban.player-unbanned").replace("%player%", args[1]);
+                player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', unbannedMsg));
                 return true;
             default:
                 player.sendMessage(prefix + ChatColor.translateAlternateColorCodes('&', "&7ʜᴇʟᴘ ᴍᴇɴᴜ:"));
