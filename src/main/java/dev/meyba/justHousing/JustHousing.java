@@ -17,16 +17,16 @@ public final class JustHousing extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.saveDefaultConfig();
+        saveDefaultConfig();
 
-        this.housingManager = new HousingManager(this);
-        this.housingListGUI = new HousingListGUI(this, this.housingManager);
-        this.chatManager = new ChatManager(this, this.housingManager);
+        housingManager = new HousingManager(this);
+        housingListGUI = new HousingListGUI(this, housingManager);
+        chatManager = new ChatManager(this, housingManager);
 
-        this.getCommand("housing").setExecutor(new HousingCommands(this.housingManager, this, this.housingListGUI));
+        getCommand("housing").setExecutor(new HousingCommands(housingManager, this, housingListGUI));
 
-        this.getServer().getPluginManager().registerEvents(new HousingListener(this.housingManager, this, this.chatManager), this);
-        this.getServer().getPluginManager().registerEvents(this.housingListGUI, this);
+        getServer().getPluginManager().registerEvents(new HousingListener(housingManager, this, chatManager), this);
+        getServer().getPluginManager().registerEvents(housingListGUI, this);
 
         getLogger().info("Housing has been enabled!");
     }
