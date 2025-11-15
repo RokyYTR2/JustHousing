@@ -11,8 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class JustHousing extends JavaPlugin {
     private HousingManager housingManager;
-    private HousingListGUI housingListGUI;
-    private ChatManager chatManager;
     private ScoreboardManager scoreboardManager;
 
     @Override
@@ -20,8 +18,8 @@ public final class JustHousing extends JavaPlugin {
         saveDefaultConfig();
 
         housingManager = new HousingManager(this);
-        housingListGUI = new HousingListGUI(this, housingManager);
-        chatManager = new ChatManager(this, housingManager);
+        HousingListGUI housingListGUI = new HousingListGUI(this, housingManager);
+        ChatManager chatManager = new ChatManager(this, housingManager);
 
         getCommand("housing").setExecutor(new HousingCommands(housingManager, this, housingListGUI));
 
