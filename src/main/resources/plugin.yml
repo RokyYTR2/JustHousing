@@ -42,3 +42,12 @@ permissions:
   justhousing.time:
     description: Allows changing the housing world time
     default: op
+  justhousing.ban:
+    description: Allows to ban players from your housing
+    default: op
+  justhousing.unban:
+    description: Allows to unban players from your housing
+    default: op
+  justhousing.kick:
+    description: Allows to kick players from your housing
+    default: op
