@@ -28,7 +28,7 @@ public final class JustHousing extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HousingListener(housingManager, this, chatManager), this);
         getServer().getPluginManager().registerEvents(housingListGUI, this);
 
-        getLogger().info("Housing has been enabled!");
+        getLogger().info("JustHousing has been enabled!");
     }
 
     @Override
@@ -42,7 +42,7 @@ public final class JustHousing extends JavaPlugin {
             }
             housingManager.saveHousings();
         }
-        getLogger().info("Housing has been disabled!");
+        getLogger().info("JustHousing has been disabled!");
     }
 
     public ScoreboardManager getScoreboardManager() {
