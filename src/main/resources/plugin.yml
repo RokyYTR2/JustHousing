@@ -1,5 +1,5 @@
 name: JustHousing
-version: '0.0.1'
+version: '0.0.2'
 main: dev.meyba.justHousing.JustHousing
 api-version: '1.21'
 authors: [ Meyba._. ]
