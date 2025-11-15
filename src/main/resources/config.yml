@@ -1,14 +1,14 @@
 # =======================
 # HousingPlugin Config
 # =======================
-# Prefix used for all plugin messages
+# Prefix used for all plugin messages.
 # =======================
 prefix: "§x§A§2§8§B§5§9§lʜ§x§A§4§8§D§5§A§lᴏ§x§A§5§8§E§5§C§lᴜ§x§A§7§9§0§5§D§lꜱ§x§A§9§9§1§5§E§lɪ§x§A§A§9§3§6§0§lɴ§x§A§C§9§4§6§1§lɢ §8» §f"
 
 # =======================
 # Messages
 # =======================
-# Messages shown in chat
+# Messages shown in chat.
 # =======================
 messages:
   commands:
@@ -89,7 +89,7 @@ messages:
 # =======================
 # Sounds
 # =======================
-# Sounds played on certain events
+# Sounds played on certain events.
 # =======================
 sounds:
   housing-created: "ENTITY_PLAYER_LEVELUP"
@@ -276,7 +276,7 @@ gui:
 # =======================
 # Scoreboard Configuration
 # =======================
-# Scoreboard configuration
+# Scoreboard configuration.
 # =======================
 scoreboard:
   title: "&a%name%"
@@ -290,7 +290,7 @@ scoreboard:
 # =======================
 # Chat Configuration
 # =======================
-# Chat configuration
+# Chat configuration.
 # =======================
 chat:
   format: "%rank% &f%player% &8» &r%message%"
