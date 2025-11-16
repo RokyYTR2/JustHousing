@@ -161,6 +161,10 @@ public class HousingManager {
             housingConfig.set(path + ".pvpEnabled", housing.isPvpEnabled());
             housingConfig.set(path + ".fallDamageEnabled", housing.isFallDamageEnabled());
             housingConfig.set(path + ".naturalRegenerationEnabled", housing.isNaturalRegenerationEnabled());
+            housingConfig.set(path + ".keepInventoryEnabled", housing.isKeepInventoryEnabled());
+            housingConfig.set(path + ".daylightCycleEnabled", housing.isDaylightCycleEnabled());
+            housingConfig.set(path + ".weatherCycleEnabled", housing.isWeatherCycleEnabled());
+            housingConfig.set(path + ".doFireTickEnabled", housing.isDoFireTickEnabled());
             housingConfig.set(path + ".defaultGameMode", housing.getDefaultGameMode().name());
 
             housingConfig.set(path + ".members", housing.getMembers().entrySet().stream()
@@ -247,6 +251,10 @@ public class HousingManager {
                     housing.setPvpEnabled(housingConfig.getBoolean(path + ".pvpEnabled", false));
                     housing.setFallDamageEnabled(housingConfig.getBoolean(path + ".fallDamageEnabled", false));
                     housing.setNaturalRegenerationEnabled(housingConfig.getBoolean(path + ".naturalRegenerationEnabled", true));
+                    housing.setKeepInventoryEnabled(housingConfig.getBoolean(path + ".keepInventoryEnabled", false));
+                    housing.setDaylightCycleEnabled(housingConfig.getBoolean(path + ".daylightCycleEnabled", true));
+                    housing.setWeatherCycleEnabled(housingConfig.getBoolean(path + ".weatherCycleEnabled", true));
+                    housing.setDoFireTickEnabled(housingConfig.getBoolean(path + ".doFireTickEnabled", false));
                     String gmStr = housingConfig.getString(path + ".defaultGameMode", "SURVIVAL");
                     housing.setDefaultGameMode(GameMode.valueOf(gmStr.toUpperCase()));
 
@@ -293,6 +301,10 @@ public class HousingManager {
         private boolean pvpEnabled;
         private boolean fallDamageEnabled;
         private boolean naturalRegenerationEnabled;
+        private boolean keepInventoryEnabled;
+        private boolean daylightCycleEnabled;
+        private boolean weatherCycleEnabled;
+        private boolean doFireTickEnabled;
         private GameMode defaultGameMode;
         private int votes;
         private int superVotes;
@@ -310,6 +322,10 @@ public class HousingManager {
             this.pvpEnabled = false;
             this.fallDamageEnabled = false;
             this.naturalRegenerationEnabled = true;
+            this.keepInventoryEnabled = false;
+            this.daylightCycleEnabled = true;
+            this.weatherCycleEnabled = true;
+            this.doFireTickEnabled = false;
             this.defaultGameMode = GameMode.SURVIVAL;
             this.votes = 0;
             this.superVotes = 0;
@@ -446,6 +462,54 @@ public class HousingManager {
 
         public void addSuperVote() {
             this.superVotes++;
+        }
+
+        public boolean isKeepInventoryEnabled() {
+            return keepInventoryEnabled;
+        }
+
+        public void setKeepInventoryEnabled(boolean keepInventoryEnabled) {
+            this.keepInventoryEnabled = keepInventoryEnabled;
+            World world = Bukkit.getWorld(this.id);
+            if (world != null) {
+                world.setGameRule(GameRule.KEEP_INVENTORY, keepInventoryEnabled);
+            }
+        }
+
+        public boolean isDaylightCycleEnabled() {
+            return daylightCycleEnabled;
+        }
+
+        public void setDaylightCycleEnabled(boolean daylightCycleEnabled) {
+            this.daylightCycleEnabled = daylightCycleEnabled;
+            World world = Bukkit.getWorld(this.id);
+            if (world != null) {
+                world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, daylightCycleEnabled);
+            }
+        }
+
+        public boolean isWeatherCycleEnabled() {
+            return weatherCycleEnabled;
+        }
+
+        public void setWeatherCycleEnabled(boolean weatherCycleEnabled) {
+            this.weatherCycleEnabled = weatherCycleEnabled;
+            World world = Bukkit.getWorld(this.id);
+            if (world != null) {
+                world.setGameRule(GameRule.DO_WEATHER_CYCLE, weatherCycleEnabled);
+            }
+        }
+
+        public boolean isDoFireTickEnabled() {
+            return doFireTickEnabled;
+        }
+
+        public void setDoFireTickEnabled(boolean doFireTickEnabled) {
+            this.doFireTickEnabled = doFireTickEnabled;
+            World world = Bukkit.getWorld(this.id);
+            if (world != null) {
+                world.setGameRule(GameRule.DO_FIRE_TICK, doFireTickEnabled);
+            }
         }
     }
 

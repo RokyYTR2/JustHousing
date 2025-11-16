@@ -158,6 +158,54 @@ public class HousingSettingsGUI implements Listener {
                 defaultGamemodeLore
         );
         inventory.setItem(24, defaultGamemodeItem);
+
+        String keepInventoryName = plugin.getConfig().getString("gui.settings.keep-inventory.name");
+        List<String> keepInventoryLore = plugin.getConfig().getStringList("gui.settings.keep-inventory.lore").stream()
+                .map(line -> line.replace("%status%", housing.isKeepInventoryEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                .collect(Collectors.toList());
+        ItemStack keepInventoryItem = createItem(
+                housing.isKeepInventoryEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
+                keepInventoryName,
+                keepInventoryLore
+        );
+        inventory.setItem(28, keepInventoryItem);
+
+        String daylightCycleName = plugin.getConfig().getString("gui.settings.daylight-cycle.name");
+        List<String> daylightCycleLore = plugin.getConfig().getStringList("gui.settings.daylight-cycle.lore").stream()
+                .map(line -> line.replace("%status%", housing.isDaylightCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                .collect(Collectors.toList());
+        ItemStack daylightCycleItem = createItem(
+                housing.isDaylightCycleEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
+                daylightCycleName,
+                daylightCycleLore
+        );
+        inventory.setItem(30, daylightCycleItem);
+
+        String weatherCycleName = plugin.getConfig().getString("gui.settings.weather-cycle.name");
+        List<String> weatherCycleLore = plugin.getConfig().getStringList("gui.settings.weather-cycle.lore").stream()
+                .map(line -> line.replace("%status%", housing.isWeatherCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                .collect(Collectors.toList());
+        ItemStack weatherCycleItem = createItem(
+                housing.isWeatherCycleEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
+                weatherCycleName,
+                weatherCycleLore
+        );
+        inventory.setItem(32, weatherCycleItem);
+
+        String doFireTickName = plugin.getConfig().getString("gui.settings.do-fire-tick.name");
+        List<String> doFireTickLore = plugin.getConfig().getStringList("gui.settings.do-fire-tick.lore").stream()
+                .map(line -> line.replace("%status%", housing.isDoFireTickEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                .collect(Collectors.toList());
+        ItemStack doFireTickItem = createItem(
+                housing.isDoFireTickEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
+                doFireTickName,
+                doFireTickLore
+        );
+        inventory.setItem(34, doFireTickItem);
     }
 
     public void open(Player player) {
@@ -211,6 +259,58 @@ public class HousingSettingsGUI implements Listener {
                         plugin.getConfig().getStringList("gui.settings.break-blocks.lore").stream()
                                 .map(line -> line.replace("%status%", currentHousing.isBreakBlocksEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
                                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList())
+                ));
+                break;
+            case 28:
+                currentHousing.setKeepInventoryEnabled(!currentHousing.isKeepInventoryEnabled());
+                String msgKeepInventory = plugin.getConfig().getString("messages.toggles.keep-inventory-toggled").replace("%status%", currentHousing.isKeepInventoryEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgKeepInventory));
+                inventory.setItem(28, createItem(
+                        currentHousing.isKeepInventoryEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
+                        plugin.getConfig().getString("gui.settings.keep-inventory.name"),
+                        plugin.getConfig().getStringList("gui.settings.keep-inventory.lore").stream()
+                                .map(line -> line.replace("%status%", currentHousing.isKeepInventoryEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList())
+                ));
+                break;
+            case 30:
+                currentHousing.setDaylightCycleEnabled(!currentHousing.isDaylightCycleEnabled());
+                String msgDaylightCycle = plugin.getConfig().getString("messages.toggles.daylight-cycle-toggled").replace("%status%", currentHousing.isDaylightCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgDaylightCycle));
+                inventory.setItem(30, createItem(
+                        currentHousing.isDaylightCycleEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
+                        plugin.getConfig().getString("gui.settings.daylight-cycle.name"),
+                        plugin.getConfig().getStringList("gui.settings.daylight-cycle.lore").stream()
+                                .map(line -> line.replace("%status%", currentHousing.isDaylightCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList())
+                ));
+                break;
+            case 32:
+                currentHousing.setWeatherCycleEnabled(!currentHousing.isWeatherCycleEnabled());
+                String msgWeatherCycle = plugin.getConfig().getString("messages.toggles.weather-cycle-toggled").replace("%status%", currentHousing.isWeatherCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgWeatherCycle));
+                inventory.setItem(32, createItem(
+                        currentHousing.isWeatherCycleEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
+                        plugin.getConfig().getString("gui.settings.weather-cycle.name"),
+                        plugin.getConfig().getStringList("gui.settings.weather-cycle.lore").stream()
+                                .map(line -> line.replace("%status%", currentHousing.isWeatherCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                                .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                                .collect(Collectors.toList())
+                ));
+                break;
+            case 34:
+                currentHousing.setDoFireTickEnabled(!currentHousing.isDoFireTickEnabled());
+                String msgDoFireTick = plugin.getConfig().getString("messages.toggles.do-fire-tick-toggled").replace("%status%", currentHousing.isDoFireTickEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgDoFireTick));
+                inventory.setItem(34, createItem(
+                        currentHousing.isDoFireTickEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
+                        plugin.getConfig().getString("gui.settings.do-fire-tick.name"),
+                        plugin.getConfig().getStringList("gui.settings.do-fire-tick.lore").stream()
+                                .map(line -> line.replace("%status%", currentHousing.isDoFireTickEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
                 ));
