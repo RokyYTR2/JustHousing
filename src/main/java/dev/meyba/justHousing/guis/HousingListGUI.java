@@ -77,6 +77,9 @@ public class HousingListGUI implements Listener {
         ItemStack sortButton = createSortButton(sortMode);
         inventory.setItem(10, sortButton);
 
+        ItemStack randomButton = createRandomButton();
+        inventory.setItem(19, randomButton);
+
         ItemStack grayGlassPane = createItem(Material.GRAY_STAINED_GLASS_PANE, "§r", Collections.emptyList());
         for (int i = 0; i < 9; i++) {
             inventory.setItem(i, grayGlassPane);
@@ -227,6 +230,29 @@ public class HousingListGUI implements Listener {
         return playerHead;
     }
 
+    private ItemStack createRandomButton() {
+        @SuppressWarnings("deprecation")
+
+        ItemStack item = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        if (meta != null) {
+            String skullOwner = plugin.getConfig().getString("gui.list.random-housing.skull-owner");
+            meta.setOwner(skullOwner);
+
+            String displayName = plugin.getConfig().getString("gui.list.random-housing.name");
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
+
+            List<String> lore = plugin.getConfig().getStringList("gui.list.random-housing.lore");
+            List<String> formattedLore = lore.stream()
+                    .map(s -> ChatColor.translateAlternateColorCodes('&', s))
+                    .collect(Collectors.toList());
+            meta.setLore(formattedLore);
+
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
     private ItemStack createSortButton(SortMode mode) {
         String configPath = "gui.list.sort-modes." + mode.name().toLowerCase();
         String displayName = plugin.getConfig().getString(configPath + ".name", mode.getDisplayName());
@@ -282,6 +308,29 @@ public class HousingListGUI implements Listener {
                 player.openInventory(newInventory);
                 openGUIs.put(player, this);
             }
+            return;
+        }
+
+        if (event.getSlot() == 19) {
+            List<HousingManager.Housing> housings = new ArrayList<>(housingManager.getHousings().values());
+            if (housings.isEmpty()) {
+                String prefix = plugin.getConfig().getString("prefix");
+                String msg = plugin.getConfig().getString("messages.commands.permissions.no-housings");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
+                player.closeInventory();
+                return;
+            }
+
+            Random random = new Random();
+            HousingManager.Housing randomHousing = housings.get(random.nextInt(housings.size()));
+
+            player.teleport(randomHousing.getCenter());
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(randomHousing.getOwner());
+            String prefix = plugin.getConfig().getString("prefix");
+            String msg = plugin.getConfig().getString("messages.commands.join.joined-housing")
+                    .replace("%player%", owner.getName() != null ? owner.getName() : "Unknown");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msg));
+            player.closeInventory();
             return;
         }
 

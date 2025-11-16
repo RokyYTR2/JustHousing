@@ -19,8 +19,9 @@ messages:
       invite-player-you: "&cʏᴏᴜ ᴄᴀɴ’ᴛ ɪɴᴠɪᴛᴇ ʏᴏᴜʀꜱᴇʟꜰ."
       housing-not-found: "&cʜᴏᴜꜱɪɴɢ ꜰᴏʀ &e%player% &cɴᴏᴛ ꜰᴏᴜɴᴅ!"
       not-in-own-housing: "&cʏᴏᴜ ᴀʀᴇɴ’ᴛ ɪɴ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ."
-      no-housing: "&cʏᴏᴜ ᴅᴏɴ’ᴛ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ!"
-      player-not-in-housing: "&cᴘʟᴀʏᴇʀ ɪꜱɴ’ᴛ ɪɴ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
+      no-housing: "&cʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴀ ʜᴏᴜꜱɪɴɢ!"
+      no-housings: "&cᴛʜᴇʀᴇ ᴀʀᴇ ɴᴏ ʜᴏᴜꜱɪɴɢꜱ ᴀᴠᴀɪʟᴀʙʟᴇ!"
+      player-not-in-housing: "&cᴘʟᴀʏᴇʀ ɪꜱɴ'ᴛ ɪɴ ʏᴏᴜʀ ʜᴏᴜꜱɪɴɢ!"
     reload:
       reload-success: "&aᴄᴏɴꜰɪɢ ʀᴇʟᴏᴀᴅᴇᴅ!"
     create:
@@ -272,6 +273,11 @@ gui:
           - ""
           - "&eʟᴇꜰᴛ-ᴄʟɪᴄᴋ ᴛᴏ ᴄʏᴄʟᴇ ᴅᴏᴡɴ."
           - "&eʀɪɢʜᴛ-ᴄʟɪᴄᴋ ᴛᴏ ᴄʏᴄʟᴇ ᴜᴘ."
+    random-housing:
+      name: "&bʀᴀɴᴅᴏᴍ ʜᴏᴜꜱɪɴɢ"
+      lore:
+        - "&7ᴄʟɪᴄᴋ ᴛᴏ ᴊᴏɪɴ ᴀ ʀᴀɴᴅᴏᴍ ʜᴏᴜꜱɪɴɢ!"
+      skull-owner: "MHF_Question"
 
 # =======================
 # Scoreboard Configuration
