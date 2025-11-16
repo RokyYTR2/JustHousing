@@ -69,7 +69,7 @@ public class HousingManager {
                 World worldToDelete = Bukkit.getWorld(housingId);
                 if (worldToDelete != null) {
                     for (Player p : worldToDelete.getPlayers()) {
-                        p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+                        p.teleport(Bukkit.getWorlds().getFirst().getSpawnLocation());
                     }
 
                     worldToDelete.save();
@@ -293,7 +293,7 @@ public class HousingManager {
         private boolean pvpEnabled;
         private boolean fallDamageEnabled;
         private boolean naturalRegenerationEnabled;
-        private GameMode defaultGameMode = GameMode.SURVIVAL;
+        private GameMode defaultGameMode;
         private int votes;
         private int superVotes;
 
