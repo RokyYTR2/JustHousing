@@ -6,6 +6,7 @@ import dev.meyba.justHousing.listeners.HousingListener;
 import dev.meyba.justHousing.managers.ChatManager;
 import dev.meyba.justHousing.managers.HousingManager;
 import dev.meyba.justHousing.managers.ScoreboardManager;
+import dev.meyba.justHousing.utils.VersionChecker;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,6 +26,8 @@ public final class JustHousing extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new HousingListener(housingManager, this, chatManager), this);
         getServer().getPluginManager().registerEvents(housingListGUI, this);
+
+        new VersionChecker(this, "RokyYTR2", "JustHousing").checkForUpdates();
 
         getLogger().info("JustHousing has been enabled!");
     }
