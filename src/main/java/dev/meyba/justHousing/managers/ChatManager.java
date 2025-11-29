@@ -19,16 +19,28 @@ public class ChatManager {
 
         String rank;
         if (housing == null) {
-            rank = plugin.getConfig().getString("chat.default-rank");
+            rank = plugin.getConfig().getString("chat.default-rank", "");
         } else if (player.getUniqueId().equals(housing.getOwner())) {
-            rank = plugin.getConfig().getString("chat.ranks.owner");
+            rank = plugin.getConfig().getString("chat.ranks.owner", "&4Owner");
         } else {
-            rank = plugin.getConfig().getString("chat.ranks.member");
+            HousingManager.Member member = housing.getMembers().get(player.getUniqueId());
+            if (member != null) {
+                String roleKey = "chat.ranks." + member.getRole().getConfigKey();
+                rank = plugin.getConfig().getString(roleKey, "&7Member");
+            } else {
+                rank = plugin.getConfig().getString("chat.default-rank", "");
+            }
         }
 
-        String format = plugin.getConfig().getString("chat.format");
+        String format = plugin.getConfig().getString("chat.format", "%rank% &f%player% &8» &r%message%");
+        String formattedRank = ChatColor.translateAlternateColorCodes('&', rank);
+        // Add spacing after rank if rank is not empty
+        if (!rank.isEmpty() && !formattedRank.isEmpty()) {
+            formattedRank = formattedRank + " ";
+        }
+
         return ChatColor.translateAlternateColorCodes('&', format)
-                .replace("%rank%", rank)
+                .replace("%rank%", formattedRank)
                 .replace("%player%", player.getName())
                 .replace("%message%", message);
     }

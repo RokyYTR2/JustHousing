@@ -120,6 +120,34 @@ public class HousingManager {
         return null;
     }
 
+    public boolean hasAdminRights(Player player, Housing housing) {
+        if (housing == null || player == null) {
+            player.sendMessage("§cDEBUG: housing or player is null");
+            return false;
+        }
+
+        // Owner has all rights
+        if (player.getUniqueId().equals(housing.getOwner())) {
+            player.sendMessage("§aDEBUG: You are the owner - GRANTED");
+            return true;
+        }
+
+        // Check if player is member with admin role
+        Member member = housing.getMembers().get(player.getUniqueId());
+        player.sendMessage("§eDEBUG: Member object: " + (member != null ? "EXISTS" : "NULL"));
+
+        if (member != null) {
+            MemberRole role = member.getRole();
+            player.sendMessage("§eDEBUG: Your role: " + role.name() + " (" + role.getConfigKey() + ")");
+            boolean hasRights = role == MemberRole.CO_OWNER || role == MemberRole.ADMIN;
+            player.sendMessage("§" + (hasRights ? "a" : "c") + "DEBUG: Admin rights: " + hasRights);
+            return hasRights;
+        }
+
+        player.sendMessage("§cDEBUG: You are not a member - DENIED");
+        return false;
+    }
+
     public Housing getHousingById(String id) {
         return this.housings.get(id);
     }
@@ -168,7 +196,7 @@ public class HousingManager {
             housingConfig.set(path + ".defaultGameMode", housing.getDefaultGameMode().name());
 
             housingConfig.set(path + ".members", housing.getMembers().entrySet().stream()
-                    .map(entry -> entry.getKey().toString() + ":" + entry.getValue().isAdmin())
+                    .map(entry -> entry.getKey().toString() + ":" + entry.getValue().getRole().getConfigKey())
                     .collect(Collectors.toList()));
             housingConfig.set(path + ".banned", housing.getBannedPlayers().stream()
                     .map(UUID::toString)
@@ -263,9 +291,20 @@ public class HousingManager {
                         try {
                             String[] parts = memberData.split(":");
                             UUID memberId = UUID.fromString(parts[0]);
-                            boolean isAdmin = Boolean.parseBoolean(parts[1]);
-                            Member member = new Member();
-                            member.setAdmin(isAdmin);
+                            MemberRole role;
+                            if (parts.length > 1) {
+                                // Try to parse as role first
+                                role = MemberRole.fromString(parts[1]);
+                                // If it's "true" or "false", it's old format (backwards compatibility)
+                                if (parts[1].equalsIgnoreCase("true")) {
+                                    role = MemberRole.ADMIN;
+                                } else if (parts[1].equalsIgnoreCase("false")) {
+                                    role = MemberRole.MEMBER;
+                                }
+                            } else {
+                                role = MemberRole.MEMBER;
+                            }
+                            Member member = new Member(role);
                             housing.getMembers().put(memberId, member);
                             this.playerHousingMap.put(memberId, id);
                         } catch (Exception ignored) {
@@ -514,18 +553,61 @@ public class HousingManager {
     }
 
     public static class Member {
-        private boolean admin;
+        private MemberRole role;
 
         public Member() {
-            this.admin = false;
+            this.role = MemberRole.MEMBER;
         }
 
+        public Member(MemberRole role) {
+            this.role = role;
+        }
+
+        public MemberRole getRole() {
+            return role;
+        }
+
+        public void setRole(MemberRole role) {
+            this.role = role;
+        }
+
+        // Backwards compatibility
         public boolean isAdmin() {
-            return admin;
+            return role == MemberRole.ADMIN || role == MemberRole.CO_OWNER;
         }
 
         public void setAdmin(boolean admin) {
-            this.admin = admin;
+            if (admin) {
+                this.role = MemberRole.ADMIN;
+            } else {
+                this.role = MemberRole.MEMBER;
+            }
+        }
+    }
+
+    public enum MemberRole {
+        CO_OWNER("co-owner"),
+        ADMIN("admin"),
+        BUILDER("builder"),
+        MEMBER("member");
+
+        private final String configKey;
+
+        MemberRole(String configKey) {
+            this.configKey = configKey;
+        }
+
+        public String getConfigKey() {
+            return configKey;
+        }
+
+        public static MemberRole fromString(String role) {
+            for (MemberRole r : values()) {
+                if (r.configKey.equalsIgnoreCase(role) || r.name().equalsIgnoreCase(role)) {
+                    return r;
+                }
+            }
+            return MEMBER;
         }
     }
 }

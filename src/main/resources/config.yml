@@ -335,8 +335,11 @@ scoreboard:
 # Chat configuration.
 # =======================
 chat:
-  format: "%rank% &f%player% &8» &r%message%"
+  format: "%rank%&f%player% &8» &r%message%"
   default-rank: ""
   ranks:
-    owner: "&4Owner"
-    member: "&7Member"
+    owner: "&4[Owner]"
+    co-owner: "&c[Co-Owner]"
+    admin: "&6[Admin]"
+    builder: "&e[Builder]"
+    member: "&7[Member]"

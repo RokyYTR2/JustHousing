@@ -7,47 +7,50 @@ description: Just a housing plugin.
 commands:
   housing:
     description: Manages housings
-    usage: /<command> [create [name]|invite <player>|join <player>|settings|reload|help|list|delete|delete confirm|kick <player> [reason]|ban <player> [reason]|gamemode creative|adventure|survival [player]]
+    usage: /<command> [create [name]|invite <player>|join <player>|settings|reload|help|list|delete|delete confirm|kick <player> [reason]|ban <player> [reason]|setrole <player> <role>|gamemode creative|adventure|survival [player]]
 permissions:
-  justhousing.use:
+  housing.use:
     description: Allows use of basic housing commands
     default: op
-  justhousing.reload:
+  housing.reload:
     description: Allows reloading the config
     default: op
-  justhousing.help:
+  housing.help:
     description: Allows a player to see the help menu
     default: true
-  justhousing.create:
+  housing.create:
     description: Allows creating a housing
     default: op
-  justhousing.delete:
+  housing.delete:
     description: Allows deleting a housing
     default: op
-  justhousing.invite:
+  housing.invite:
     description: Allows inviting players to a housing
     default: op
-  justhousing.join:
+  housing.join:
     description: Allows joining a player's housing
     default: true
-  justhousing.settings:
+  housing.settings:
     description: Allows opening the housing settings GUI
     default: op
-  justhousing.list:
+  housing.list:
     description: Allows opening the housing list GUI
     default: true
-  justhousing.gamemode:
+  housing.gamemode:
     description: Allows changing gamemode of players
     default: op
-  justhousing.time:
+  housing.time:
     description: Allows changing the housing world time
     default: op
-  justhousing.ban:
+  housing.ban:
     description: Allows to ban players from your housing
     default: op
-  justhousing.unban:
+  housing.unban:
     description: Allows to unban players from your housing
     default: op
-  justhousing.kick:
+  housing.kick:
     description: Allows to kick players from your housing
+    default: op
+  housing.setrole:
+    description: Allows setting member roles in your housing
     default: op
