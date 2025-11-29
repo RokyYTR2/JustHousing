@@ -9,48 +9,48 @@ commands:
     description: Manages housings
     usage: /<command> [create [name]|invite <player>|join <player>|settings|reload|help|list|delete|delete confirm|kick <player> [reason]|ban <player> [reason]|setrole <player> <role>|gamemode creative|adventure|survival [player]]
 permissions:
-  housing.use:
+  justhousing.use:
     description: Allows use of basic housing commands
     default: op
-  housing.reload:
+  justhousing.reload:
     description: Allows reloading the config
     default: op
-  housing.help:
+  justhousing.help:
     description: Allows a player to see the help menu
     default: true
-  housing.create:
+  justhousing.create:
     description: Allows creating a housing
     default: op
-  housing.delete:
+  justhousing.delete:
     description: Allows deleting a housing
     default: op
-  housing.invite:
+  justhousing.invite:
     description: Allows inviting players to a housing
     default: op
-  housing.join:
+  justhousing.join:
     description: Allows joining a player's housing
     default: true
-  housing.settings:
+  justhousing.settings:
     description: Allows opening the housing settings GUI
     default: op
-  housing.list:
+  justhousing.list:
     description: Allows opening the housing list GUI
     default: true
-  housing.gamemode:
+  justhousing.gamemode:
     description: Allows changing gamemode of players
     default: op
-  housing.time:
+  justhousing.time:
     description: Allows changing the housing world time
     default: op
-  housing.ban:
+  justhousing.ban:
     description: Allows to ban players from your housing
     default: op
-  housing.unban:
+  justhousing.unban:
     description: Allows to unban players from your housing
     default: op
-  housing.kick:
+  justhousing.kick:
     description: Allows to kick players from your housing
     default: op
-  housing.setrole:
+  justhousing.setrole:
     description: Allows setting member roles in your housing
     default: op
