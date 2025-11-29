@@ -32,15 +32,15 @@ public class HousingManager {
 
         WorldCreator creator = new WorldCreator(housingId);
         creator.environment(World.Environment.NORMAL);
-        creator.generator(new VoidChunkGenerator(100));
         creator.generateStructures(false);
+        creator.generator(new VoidChunkGenerator(64));
 
         World world = creator.createWorld();
 
         if (world != null) {
             world.setPVP(false);
             world.getWorldBorder().setCenter(0, 0);
-            world.getWorldBorder().setSize(100);
+            world.getWorldBorder().setSize(64);
 
             world.setAutoSave(true);
 
@@ -218,8 +218,8 @@ public class HousingManager {
                         if (world == null) {
                             WorldCreator creator = new WorldCreator(id);
                             creator.environment(World.Environment.NORMAL);
-                            creator.generator(new VoidChunkGenerator(64));
                             creator.generateStructures(false);
+                            creator.generator(new VoidChunkGenerator(64));
                             world = creator.createWorld();
                         }
                     } else if (!worldExists || !worldFolder.exists()) {

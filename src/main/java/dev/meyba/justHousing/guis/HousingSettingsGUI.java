@@ -59,7 +59,7 @@ public class HousingSettingsGUI implements Listener {
 
         String breakBlocksName = plugin.getConfig().getString("gui.settings.break-blocks.name");
         List<String> breakBlocksLore = plugin.getConfig().getStringList("gui.settings.break-blocks.lore").stream()
-                .map(line -> line.replace("%status%", housing.isBreakBlocksEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cdisabled")
+                .map(line -> line.replace("%status%", housing.isBreakBlocksEnabled() ? "&a●" : "&c●")
                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -72,7 +72,7 @@ public class HousingSettingsGUI implements Listener {
 
         String placeBlocksName = plugin.getConfig().getString("gui.settings.place-blocks.name");
         List<String> placeBlocksLore = plugin.getConfig().getStringList("gui.settings.place-blocks.lore").stream()
-                .map(line -> line.replace("%status%", housing.isPlaceBlocksEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cdisabled")
+                .map(line -> line.replace("%status%", housing.isPlaceBlocksEnabled() ? "&a●" : "&c●")
                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -85,7 +85,7 @@ public class HousingSettingsGUI implements Listener {
 
         String mobSpawningName = plugin.getConfig().getString("gui.settings.mob-spawning.name");
         List<String> mobSpawningLore = plugin.getConfig().getStringList("gui.settings.mob-spawning.lore").stream()
-                .map(line -> line.replace("%status%", housing.isMobSpawningEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                .map(line -> line.replace("%status%", housing.isMobSpawningEnabled() ? "&a●" : "&c●")
                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -98,7 +98,7 @@ public class HousingSettingsGUI implements Listener {
 
         String pvpName = plugin.getConfig().getString("gui.settings.pvp.name");
         List<String> pvpLore = plugin.getConfig().getStringList("gui.settings.pvp.lore").stream()
-                .map(line -> line.replace("%status%", housing.isPvpEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                .map(line -> line.replace("%status%", housing.isPvpEnabled() ? "&a●" : "&c●")
                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -111,7 +111,7 @@ public class HousingSettingsGUI implements Listener {
 
         String fallDamageName = plugin.getConfig().getString("gui.settings.fall-damage.name");
         List<String> fallDamageLore = plugin.getConfig().getStringList("gui.settings.fall-damage.lore").stream()
-                .map(line -> line.replace("%status%", housing.isFallDamageEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                .map(line -> line.replace("%status%", housing.isFallDamageEnabled() ? "&a●" : "&c●")
                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -124,7 +124,7 @@ public class HousingSettingsGUI implements Listener {
 
         String naturalRegenerationName = plugin.getConfig().getString("gui.settings.natural-regeneration.name");
         List<String> naturalRegenerationLore = plugin.getConfig().getStringList("gui.settings.natural-regeneration.lore").stream()
-                .map(line -> line.replace("%status%", housing.isNaturalRegenerationEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                .map(line -> line.replace("%status%", housing.isNaturalRegenerationEnabled() ? "&a●" : "&c●")
                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
@@ -161,7 +161,7 @@ public class HousingSettingsGUI implements Listener {
 
         String keepInventoryName = plugin.getConfig().getString("gui.settings.keep-inventory.name");
         List<String> keepInventoryLore = plugin.getConfig().getStringList("gui.settings.keep-inventory.lore").stream()
-                .map(line -> line.replace("%status%", housing.isKeepInventoryEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                .map(line -> line.replace("%status%", housing.isKeepInventoryEnabled() ? "&a●" : "&c●"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
         ItemStack keepInventoryItem = createItem(
@@ -173,7 +173,7 @@ public class HousingSettingsGUI implements Listener {
 
         String daylightCycleName = plugin.getConfig().getString("gui.settings.daylight-cycle.name");
         List<String> daylightCycleLore = plugin.getConfig().getStringList("gui.settings.daylight-cycle.lore").stream()
-                .map(line -> line.replace("%status%", housing.isDaylightCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                .map(line -> line.replace("%status%", housing.isDaylightCycleEnabled() ? "&a●" : "&c●"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
         ItemStack daylightCycleItem = createItem(
@@ -185,7 +185,7 @@ public class HousingSettingsGUI implements Listener {
 
         String weatherCycleName = plugin.getConfig().getString("gui.settings.weather-cycle.name");
         List<String> weatherCycleLore = plugin.getConfig().getStringList("gui.settings.weather-cycle.lore").stream()
-                .map(line -> line.replace("%status%", housing.isWeatherCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                .map(line -> line.replace("%status%", housing.isWeatherCycleEnabled() ? "&a●" : "&c●"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
         ItemStack weatherCycleItem = createItem(
@@ -197,7 +197,7 @@ public class HousingSettingsGUI implements Listener {
 
         String doFireTickName = plugin.getConfig().getString("gui.settings.do-fire-tick.name");
         List<String> doFireTickLore = plugin.getConfig().getStringList("gui.settings.do-fire-tick.lore").stream()
-                .map(line -> line.replace("%status%", housing.isDoFireTickEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                .map(line -> line.replace("%status%", housing.isDoFireTickEnabled() ? "&a●" : "&c●"))
                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                 .collect(Collectors.toList());
         ItemStack doFireTickItem = createItem(
@@ -251,13 +251,13 @@ public class HousingSettingsGUI implements Listener {
         switch (slot) {
             case 10:
                 currentHousing.setBreakBlocksEnabled(!currentHousing.isBreakBlocksEnabled());
-                String msgBreak = plugin.getConfig().getString("messages.toggles.break-blocks-toggled").replace("%status%", currentHousing.isBreakBlocksEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgBreak = plugin.getConfig().getString("messages.toggles.break-blocks-toggled").replace("%status%", currentHousing.isBreakBlocksEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgBreak));
                 inventory.setItem(10, createItem(
                         currentHousing.isBreakBlocksEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.break-blocks.name"),
                         plugin.getConfig().getStringList("gui.settings.break-blocks.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isBreakBlocksEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                                .map(line -> line.replace("%status%", currentHousing.isBreakBlocksEnabled() ? "&a●" : "&c●")
                                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
@@ -265,65 +265,65 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 28:
                 currentHousing.setKeepInventoryEnabled(!currentHousing.isKeepInventoryEnabled());
-                String msgKeepInventory = plugin.getConfig().getString("messages.toggles.keep-inventory-toggled").replace("%status%", currentHousing.isKeepInventoryEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgKeepInventory = plugin.getConfig().getString("messages.toggles.keep-inventory-toggled").replace("%status%", currentHousing.isKeepInventoryEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgKeepInventory));
                 inventory.setItem(28, createItem(
                         currentHousing.isKeepInventoryEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.keep-inventory.name"),
                         plugin.getConfig().getStringList("gui.settings.keep-inventory.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isKeepInventoryEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                                .map(line -> line.replace("%status%", currentHousing.isKeepInventoryEnabled() ? "&a●" : "&c●"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
                 ));
                 break;
             case 30:
                 currentHousing.setDaylightCycleEnabled(!currentHousing.isDaylightCycleEnabled());
-                String msgDaylightCycle = plugin.getConfig().getString("messages.toggles.daylight-cycle-toggled").replace("%status%", currentHousing.isDaylightCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgDaylightCycle = plugin.getConfig().getString("messages.toggles.daylight-cycle-toggled").replace("%status%", currentHousing.isDaylightCycleEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgDaylightCycle));
                 inventory.setItem(30, createItem(
                         currentHousing.isDaylightCycleEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.daylight-cycle.name"),
                         plugin.getConfig().getStringList("gui.settings.daylight-cycle.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isDaylightCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                                .map(line -> line.replace("%status%", currentHousing.isDaylightCycleEnabled() ? "&a●" : "&c●"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
                 ));
                 break;
             case 32:
                 currentHousing.setWeatherCycleEnabled(!currentHousing.isWeatherCycleEnabled());
-                String msgWeatherCycle = plugin.getConfig().getString("messages.toggles.weather-cycle-toggled").replace("%status%", currentHousing.isWeatherCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgWeatherCycle = plugin.getConfig().getString("messages.toggles.weather-cycle-toggled").replace("%status%", currentHousing.isWeatherCycleEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgWeatherCycle));
                 inventory.setItem(32, createItem(
                         currentHousing.isWeatherCycleEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.weather-cycle.name"),
                         plugin.getConfig().getStringList("gui.settings.weather-cycle.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isWeatherCycleEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                                .map(line -> line.replace("%status%", currentHousing.isWeatherCycleEnabled() ? "&a●" : "&c●"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
                 ));
                 break;
             case 34:
                 currentHousing.setDoFireTickEnabled(!currentHousing.isDoFireTickEnabled());
-                String msgDoFireTick = plugin.getConfig().getString("messages.toggles.do-fire-tick-toggled").replace("%status%", currentHousing.isDoFireTickEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgDoFireTick = plugin.getConfig().getString("messages.toggles.do-fire-tick-toggled").replace("%status%", currentHousing.isDoFireTickEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgDoFireTick));
                 inventory.setItem(34, createItem(
                         currentHousing.isDoFireTickEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.do-fire-tick.name"),
                         plugin.getConfig().getStringList("gui.settings.do-fire-tick.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isDoFireTickEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ"))
+                                .map(line -> line.replace("%status%", currentHousing.isDoFireTickEnabled() ? "&a●" : "&c●"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
                 ));
                 break;
             case 12:
                 currentHousing.setPlaceBlocksEnabled(!currentHousing.isPlaceBlocksEnabled());
-                String msgPlace = plugin.getConfig().getString("messages.toggles.place-blocks-toggled").replace("%status%", currentHousing.isPlaceBlocksEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgPlace = plugin.getConfig().getString("messages.toggles.place-blocks-toggled").replace("%status%", currentHousing.isPlaceBlocksEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgPlace));
                 inventory.setItem(12, createItem(
                         currentHousing.isPlaceBlocksEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.place-blocks.name"),
                         plugin.getConfig().getStringList("gui.settings.place-blocks.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isPlaceBlocksEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                                .map(line -> line.replace("%status%", currentHousing.isPlaceBlocksEnabled() ? "&a●" : "&c●")
                                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
@@ -331,13 +331,13 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 14:
                 currentHousing.setMobSpawningEnabled(!currentHousing.isMobSpawningEnabled());
-                String msgMobSpawning = plugin.getConfig().getString("messages.toggles.mob-spawning-toggled").replace("%status%", currentHousing.isMobSpawningEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgMobSpawning = plugin.getConfig().getString("messages.toggles.mob-spawning-toggled").replace("%status%", currentHousing.isMobSpawningEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgMobSpawning));
                 inventory.setItem(14, createItem(
                         currentHousing.isMobSpawningEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.mob-spawning.name"),
                         plugin.getConfig().getStringList("gui.settings.mob-spawning.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isMobSpawningEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                                .map(line -> line.replace("%status%", currentHousing.isMobSpawningEnabled() ? "&a●" : "&c●")
                                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
@@ -345,13 +345,13 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 16:
                 currentHousing.setPvpEnabled(!currentHousing.isPvpEnabled());
-                String msgPvp = plugin.getConfig().getString("messages.toggles.pvp-toggled").replace("%status%", currentHousing.isPvpEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgPvp = plugin.getConfig().getString("messages.toggles.pvp-toggled").replace("%status%", currentHousing.isPvpEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgPvp));
                 inventory.setItem(16, createItem(
                         currentHousing.isPvpEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.pvp.name"),
                         plugin.getConfig().getStringList("gui.settings.pvp.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isPvpEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                                .map(line -> line.replace("%status%", currentHousing.isPvpEnabled() ? "&a●" : "&c●")
                                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
@@ -359,13 +359,13 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 20:
                 currentHousing.setFallDamageEnabled(!currentHousing.isFallDamageEnabled());
-                String msgFallDamage = plugin.getConfig().getString("messages.toggles.fall-damage-toggled").replace("%status%", currentHousing.isPvpEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgFallDamage = plugin.getConfig().getString("messages.toggles.fall-damage-toggled").replace("%status%", currentHousing.isPvpEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgFallDamage));
                 inventory.setItem(20, createItem(
                         currentHousing.isFallDamageEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.fall-damage.name"),
                         plugin.getConfig().getStringList("gui.settings.fall-damage.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isFallDamageEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                                .map(line -> line.replace("%status%", currentHousing.isFallDamageEnabled() ? "&a●" : "&c●")
                                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
@@ -373,13 +373,13 @@ public class HousingSettingsGUI implements Listener {
                 break;
             case 22:
                 currentHousing.setNaturalRegenerationEnabled(!currentHousing.isNaturalRegenerationEnabled());
-                String msgNaturalRegeneration = plugin.getConfig().getString("messages.toggles.natural-regeneration-toggled").replace("%status%", currentHousing.isNaturalRegenerationEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ");
+                String msgNaturalRegeneration = plugin.getConfig().getString("messages.toggles.natural-regeneration-toggled").replace("%status%", currentHousing.isNaturalRegenerationEnabled() ? "&a●" : "&c●");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + msgNaturalRegeneration));
                 inventory.setItem(22, createItem(
                         currentHousing.isNaturalRegenerationEnabled() ? Material.LIME_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE,
                         plugin.getConfig().getString("gui.settings.natural-regeneration.name"),
                         plugin.getConfig().getStringList("gui.settings.natural-regeneration.lore").stream()
-                                .map(line -> line.replace("%status%", currentHousing.isNaturalRegenerationEnabled() ? "§aᴇɴᴀʙʟᴇᴅ" : "§cᴅɪꜱᴀʙʟᴇᴅ")
+                                .map(line -> line.replace("%status%", currentHousing.isNaturalRegenerationEnabled() ? "&a●" : "&c●")
                                         .replace("%toggletype%", "ᴄʟɪᴄᴋ ᴛᴏ ᴛᴏɢɢʟᴇ!"))
                                 .map(s -> ChatColor.translateAlternateColorCodes('&', s))
                                 .collect(Collectors.toList())
