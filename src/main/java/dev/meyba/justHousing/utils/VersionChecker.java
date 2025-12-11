@@ -34,7 +34,7 @@ public class VersionChecker {
                     plugin.getLogger().warning("Download: https://github.com/" + githubUser + "/" + repoName);
                     plugin.getLogger().warning("================================================");
                 } else if (latestVersion != null) {
-                    plugin.getLogger().info("You are running the latest version!");
+                    plugin.getLogger().info("You are running the latest version! (Version: " + currentVersion + ")");
                 }
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to check for updates: " + e.getMessage());
