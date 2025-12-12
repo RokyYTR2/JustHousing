@@ -4,6 +4,7 @@ main: dev.meyba.justHousing.JustHousing
 api-version: '1.21'
 authors: [ Meyba._., Jezevcik20 ]
 description: Just a housing plugin.
+
 commands:
   housing:
     description: Manages housings
