@@ -27,12 +27,10 @@ public class VersionChecker {
                 String latestVersion = getLatestVersion();
 
                 if (latestVersion != null && !currentVersion.equals(latestVersion)) {
-                    plugin.getLogger().warning("================================================");
                     plugin.getLogger().warning("A new version is available!");
                     plugin.getLogger().warning("Current version: " + currentVersion);
                     plugin.getLogger().warning("Latest version: " + latestVersion);
-                    plugin.getLogger().warning("Download: https://github.com/" + githubUser + "/" + repoName);
-                    plugin.getLogger().warning("================================================");
+                    plugin.getLogger().warning("Download: https://www.spigotmc.org/resources/justhousing.128794/");
                 } else if (latestVersion != null) {
                     plugin.getLogger().info("You are running the latest version! (Version: " + currentVersion + ")");
                 }
